@@ -18,10 +18,12 @@ namespace ASLHelper
 
         public static void Dispose()
         {
+            // Main
             s_Helper = null;
             s_Layout = null;
             s_State = null;
 
+            // Unity
             s_MonoModule = null;
             s_UnityPlayer = null;
             s_SceneManager = IntPtr.Zero;

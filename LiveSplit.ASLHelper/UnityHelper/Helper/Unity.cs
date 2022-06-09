@@ -14,6 +14,9 @@ namespace ASLHelper
             Debug.Log("  => Unity features will be available.");
         }
 
+        public Unity(LiveSplitState state, object compiledScript)
+            : this(state, null, compiledScript) { }
+
         #region Fields
         private readonly CancellationTokenSource _cancelSource = new CancellationTokenSource();
         #endregion

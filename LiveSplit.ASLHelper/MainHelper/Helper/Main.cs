@@ -20,8 +20,10 @@ namespace ASLHelper
             Data.s_LayoutComponents = state.Layout.LayoutComponents;
 
             Timer = new TimerHelper(state);
-            Settings = new SettingsHelper(settings);
             Texts = new TextComponentHelper();
+
+            if (settings != null)
+                Settings = new SettingsHelper(settings);
 
             _form = state.Form;
             _script =
@@ -36,6 +38,9 @@ namespace ASLHelper
 
             Debug.Log("Created ASL helper.");
         }
+
+        public Main(LiveSplitState state, object compiledScript)
+            : this(state, null, compiledScript) { }
 
         #region Fields
         private Process _game;
@@ -71,8 +76,8 @@ namespace ASLHelper
         }
 
         public TimerHelper Timer { get; }
-        public SettingsHelper Settings { get; }
         public TextComponentHelper Texts { get; }
+        public SettingsHelper Settings { get; }
         #endregion
 
         protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
