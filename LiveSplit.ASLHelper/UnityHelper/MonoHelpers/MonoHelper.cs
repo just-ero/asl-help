@@ -15,13 +15,13 @@ namespace ASLHelper
     {
         public abstract partial class MonoHelper
         {
-			public MonoHelper(string type, string version)
+            public MonoHelper(string type, string version)
             {
 
             }
 
-			#region Fields
-			protected readonly Xml Engine;
+            #region Fields
+            protected readonly Xml Engine;
             protected IntPtr _loadedImages;
             protected readonly Dictionary<string, MonoImage> _imageCache = new Dictionary<string, MonoImage>();
             #endregion
@@ -40,136 +40,136 @@ namespace ASLHelper
             public void ClearImages()
             {
                 _imageCache.Clear();
-			}
+            }
 
-			protected MonoClass MakeClass(IntPtr klass)
-			{
-				return new MonoClass
-				{
-					NameSpace = ClassNameSpace(klass),
-					Name = ClassName(klass),
-					Address = klass,
-					Static = GetStaticAddress(klass),
-					Fields = GetAllFields(klass)
-				};
-			}
-			#endregion
+            protected MonoClass MakeClass(IntPtr klass)
+            {
+                return new MonoClass
+                {
+                    NameSpace = ClassNameSpace(klass),
+                    Name = ClassName(klass),
+                    Address = klass,
+                    Static = GetStaticAddress(klass),
+                    Fields = GetAllFields(klass)
+                };
+            }
+            #endregion
 
-			#region Classes
-			public MonoClass GetClass(string imageName, uint classToken, int depth = 0)
-			{
-				return GetClass(GetImage(imageName), classToken, depth);
-			}
+            #region Classes
+            public MonoClass GetClass(string imageName, uint classToken, int depth = 0)
+            {
+                return GetClass(GetImage(imageName), classToken, depth);
+            }
 
-			public MonoClass GetClass(string imageName, string className, int depth = 0)
-			{
-				return GetClass(GetImage(imageName), className, depth);
-			}
+            public MonoClass GetClass(string imageName, string className, int depth = 0)
+            {
+                return GetClass(GetImage(imageName), className, depth);
+            }
 
-			public MonoClass GetParent(MonoClass monoClass)
-			{
-				return MakeClass(ReadPtr(monoClass.Address + Engine["MonoClass"]["parent"]));
-			}
+            public MonoClass GetParent(MonoClass monoClass)
+            {
+                return MakeClass(ReadPtr(monoClass.Address + Engine["MonoClass"]["parent"]));
+            }
 
-			protected IntPtr ClassParent(IntPtr klass)
-			{
-				return ReadPtr(klass + Engine["MonoClass"]["parent"]);
-			}
+            protected IntPtr ClassParent(IntPtr klass)
+            {
+                return ReadPtr(klass + Engine["MonoClass"]["parent"]);
+            }
 
-			protected IntPtr ClassFromIndex(IntPtr table, int index)
-			{
-				return ReadPtr(table + Data.s_Helper.PtrSize * index);
-			}
+            protected IntPtr ClassFromIndex(IntPtr table, int index)
+            {
+                return ReadPtr(table + Data.s_Helper.PtrSize * index);
+            }
 
-			protected string ClassName(IntPtr klass)
-			{
-				return ReadStr(ReadPtr(klass + Engine["MonoClass"]["name"]), 128);
-			}
+            protected string ClassName(IntPtr klass)
+            {
+                return ReadStr(ReadPtr(klass + Engine["MonoClass"]["name"]), 128);
+            }
 
-			protected string ClassNameSpace(IntPtr klass)
-			{
-				return ReadStr(ReadPtr(klass + Engine["MonoClass"]["name_space"]), 256);
-			}
+            protected string ClassNameSpace(IntPtr klass)
+            {
+                return ReadStr(ReadPtr(klass + Engine["MonoClass"]["name_space"]), 256);
+            }
 
-			protected bool ClassHasFields(IntPtr klass, out IntPtr fields, out int fieldCount)
-			{
-				fields = ReadPtr(klass + Engine["MonoClass"]["fields"]);
-				fieldCount = ClassFieldCount(klass);
-				return fields != IntPtr.Zero && fieldCount > 0;
-			}
-			#endregion
+            protected bool ClassHasFields(IntPtr klass, out IntPtr fields, out int fieldCount)
+            {
+                fields = ReadPtr(klass + Engine["MonoClass"]["fields"]);
+                fieldCount = ClassFieldCount(klass);
+                return fields != IntPtr.Zero && fieldCount > 0;
+            }
+            #endregion
 
-			#region Fields
-			protected List<MonoField> GetAllFields(IntPtr klass)
-			{
-				var fields = new List<MonoField>();
-				foreach (var field in Fields(klass))
-				{
-					var attrs = FieldAttrs(field);
+            #region Fields
+            protected List<MonoField> GetAllFields(IntPtr klass)
+            {
+                var fields = new List<MonoField>();
+                foreach (var field in Fields(klass))
+                {
+                    var attrs = FieldAttrs(field);
 
-					fields.Add(new MonoField
-					{
-						Name = FieldName(field),
-						Offset = FieldOffset(field),
-						IsConst = attrs.HasFlag(MonoFieldAttribute.MONO_FIELD_ATTR_LITERAL),
-						IsStatic = attrs.HasFlag(MonoFieldAttribute.MONO_FIELD_ATTR_STATIC)
-					});
-				}
+                    fields.Add(new MonoField
+                    {
+                        Name = FieldName(field),
+                        Offset = FieldOffset(field),
+                        IsConst = attrs.HasFlag(MonoFieldAttribute.MONO_FIELD_ATTR_LITERAL),
+                        IsStatic = attrs.HasFlag(MonoFieldAttribute.MONO_FIELD_ATTR_STATIC)
+                    });
+                }
 
-				foreach (var field in fields.OrderBy(f => f.Offset).Where(f => !f.IsConst))
-					Debug.Log(string.Format("    => 0x{0:X3}: {1,-6} {2}", field.Offset, field.IsStatic ? "static" : "", field.Name));
+                foreach (var field in fields.OrderBy(f => f.Offset).Where(f => !f.IsConst))
+                    Debug.Log(string.Format("    => 0x{0:X3}: {1,-6} {2}", field.Offset, field.IsStatic ? "static" : "", field.Name));
 
-				return fields;
-			}
+                return fields;
+            }
 
-			protected IEnumerable<IntPtr> Fields(IntPtr klass)
-			{
-				if (!ClassHasFields(klass, out var fields, out var fieldCount))
-				{
-					Debug.Log("  => No fields.");
-					yield break;
-				}
+            protected IEnumerable<IntPtr> Fields(IntPtr klass)
+            {
+                if (!ClassHasFields(klass, out var fields, out var fieldCount))
+                {
+                    Debug.Log("  => No fields.");
+                    yield break;
+                }
 
-				Debug.Log("  => Searching for fields...");
+                Debug.Log("  => Searching for fields...");
 
-				var fieldSize = Engine["MonoClassField"]["size"];
-				for (int i = 0; i < fieldCount; ++i)
-					yield return fields + fieldSize * i;
-			}
+                var fieldSize = Engine["MonoClassField"]["size"];
+                for (int i = 0; i < fieldCount; ++i)
+                    yield return fields + fieldSize * i;
+            }
 
-			protected string FieldName(IntPtr field)
-			{
-				var name = ReadStr(ReadPtr(field + Engine["MonoClassField"]["name"]), 128);
-				var split = name.Split('<', '>');
-				if (split.Length == 3 && !string.IsNullOrEmpty(split[1]))
-					name = split[1];
+            protected string FieldName(IntPtr field)
+            {
+                var name = ReadStr(ReadPtr(field + Engine["MonoClassField"]["name"]), 128);
+                var split = name.Split('<', '>');
+                if (split.Length == 3 && !string.IsNullOrEmpty(split[1]))
+                    name = split[1];
 
-				return name;
-			}
+                return name;
+            }
 
-			protected int FieldOffset(IntPtr field)
-			{
-				return ReadI32(field + Engine["MonoClassField"]["offset"]);
-			}
+            protected int FieldOffset(IntPtr field)
+            {
+                return ReadI32(field + Engine["MonoClassField"]["offset"]);
+            }
 
-			protected MonoFieldAttribute FieldAttrs(IntPtr field)
-			{
-				var monoType = ReadPtr(field + Engine["MonoClassField"]["type"]);
-				return Data.s_Helper.Read<MonoFieldAttribute>(monoType + Engine["MonoType"]["attrs"]);
-			}
-			#endregion
+            protected MonoFieldAttribute FieldAttrs(IntPtr field)
+            {
+                var monoType = ReadPtr(field + Engine["MonoClassField"]["type"]);
+                return Data.s_Helper.Read<MonoFieldAttribute>(monoType + Engine["MonoType"]["attrs"]);
+            }
+            #endregion
 
 
 
-			#region Helpers
-			protected IntPtr ReadRel(IntPtr address) => address + 0x4 + Data.s_Helper.Read<int>(address);
-			protected IntPtr ReadPtr(IntPtr address) => Data.s_Helper.Read<IntPtr>(address);
-			protected int ReadI32(IntPtr address) => Data.s_Helper.Read<int>(address);
-			protected uint ReadU32(IntPtr address) => Data.s_Helper.Read<uint>(address);
-			protected ushort ReadU16(IntPtr address) => Data.s_Helper.Read<ushort>(address);
-			protected byte ReadI8(IntPtr address) => Data.s_Helper.Read<byte>(address);
-			protected string ReadStr(IntPtr address, int length) => Data.s_Helper.ReadString(length, ReadStringType.UTF8, address);
-			#endregion
-		}
-	}
+            #region Helpers
+            protected IntPtr ReadRel(IntPtr address) => address + 0x4 + Data.s_Helper.Read<int>(address);
+            protected IntPtr ReadPtr(IntPtr address) => Data.s_Helper.Read<IntPtr>(address);
+            protected int ReadI32(IntPtr address) => Data.s_Helper.Read<int>(address);
+            protected uint ReadU32(IntPtr address) => Data.s_Helper.Read<uint>(address);
+            protected ushort ReadU16(IntPtr address) => Data.s_Helper.Read<ushort>(address);
+            protected byte ReadI8(IntPtr address) => Data.s_Helper.Read<byte>(address);
+            protected string ReadStr(IntPtr address, int length) => Data.s_Helper.ReadString(length, ReadStringType.UTF8, address);
+            #endregion
+        }
+    }
 }
