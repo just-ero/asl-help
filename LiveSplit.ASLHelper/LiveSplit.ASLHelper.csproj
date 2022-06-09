@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,13 +30,21 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveSplit.Core">
       <HintPath>..\Resources\LiveSplit.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,8 +61,10 @@
     <Compile Include="MainHelper\Helper\Main.cs" />
     <Compile Include="MainHelper\Helper\Main_Template.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main_ReadString.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main_ReadSpan_T.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main_Read_T.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main_Deref.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main_MemoryCore.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanAll.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPagesRel.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPages.cs" />

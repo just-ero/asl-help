@@ -38,7 +38,10 @@ namespace ASLHelper
         public IEnumerable<IntPtr> ScanAll(ProcessModuleWow64Safe module, int offset, params string[] pattern)
         {
             if (module == null)
+            {
+                Debug.Warn("[Scan] Module could not be found!");
                 return Enumerable.Empty<IntPtr>();
+            }
 
             var start = module.BaseAddress;
             var size = module.ModuleMemorySize;
@@ -101,7 +104,10 @@ namespace ASLHelper
         public IEnumerable<IntPtr> ScanAll(ProcessModuleWow64Safe module, SigScanTarget target)
         {
             if (module == null)
+            {
+                Debug.Warn("[Scan] Module could not be found!");
                 return Enumerable.Empty<IntPtr>();
+            }
 
             var start = module.BaseAddress;
             var size = module.ModuleMemorySize;

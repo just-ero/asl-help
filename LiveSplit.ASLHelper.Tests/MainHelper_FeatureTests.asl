@@ -7,7 +7,7 @@ startup
 	#region Helper Setup
 	var bytes = File.ReadAllBytes(@"Components\LiveSplit.ASLHelper.bin");
 	var type = Assembly.Load(bytes).GetType("ASLHelper.Main");
-	vars.Helper = Activator.CreateInstance(type, timer, settings, this);
+	vars.Helper = Activator.CreateInstance(type, timer, this);
 	#endregion
 }
 

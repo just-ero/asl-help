@@ -17,11 +17,11 @@ namespace ASLHelper
         {
             public MonoHelper(string type, string version)
             {
-
+                _engine = Xml.Load(type, version);
             }
 
             #region Fields
-            protected readonly Xml Engine;
+            protected readonly Xml _engine;
             protected IntPtr _loadedImages;
             protected readonly Dictionary<string, MonoImage> _imageCache = new Dictionary<string, MonoImage>();
             #endregion
@@ -68,12 +68,12 @@ namespace ASLHelper
 
             public MonoClass GetParent(MonoClass monoClass)
             {
-                return MakeClass(ReadPtr(monoClass.Address + Engine["MonoClass"]["parent"]));
+                return MakeClass(ReadPtr(monoClass.Address + _engine["MonoClass"]["parent"]));
             }
 
             protected IntPtr ClassParent(IntPtr klass)
             {
-                return ReadPtr(klass + Engine["MonoClass"]["parent"]);
+                return ReadPtr(klass + _engine["MonoClass"]["parent"]);
             }
 
             protected IntPtr ClassFromIndex(IntPtr table, int index)
@@ -83,17 +83,17 @@ namespace ASLHelper
 
             protected string ClassName(IntPtr klass)
             {
-                return ReadStr(ReadPtr(klass + Engine["MonoClass"]["name"]), 128);
+                return ReadStr(ReadPtr(klass + _engine["MonoClass"]["name"]), 128);
             }
 
             protected string ClassNameSpace(IntPtr klass)
             {
-                return ReadStr(ReadPtr(klass + Engine["MonoClass"]["name_space"]), 256);
+                return ReadStr(ReadPtr(klass + _engine["MonoClass"]["name_space"]), 256);
             }
 
             protected bool ClassHasFields(IntPtr klass, out IntPtr fields, out int fieldCount)
             {
-                fields = ReadPtr(klass + Engine["MonoClass"]["fields"]);
+                fields = ReadPtr(klass + _engine["MonoClass"]["fields"]);
                 fieldCount = ClassFieldCount(klass);
                 return fields != IntPtr.Zero && fieldCount > 0;
             }
@@ -132,14 +132,14 @@ namespace ASLHelper
 
                 Debug.Log("  => Searching for fields...");
 
-                var fieldSize = Engine["MonoClassField"]["size"];
-                for (int i = 0; i < fieldCount; ++i)
+                var fieldSize = _engine["MonoClassField"]["size"];
+                for (int i = 0; i < fieldCount; i++)
                     yield return fields + fieldSize * i;
             }
 
             protected string FieldName(IntPtr field)
             {
-                var name = ReadStr(ReadPtr(field + Engine["MonoClassField"]["name"]), 128);
+                var name = ReadStr(ReadPtr(field + _engine["MonoClassField"]["name"]), 128);
                 var split = name.Split('<', '>');
                 if (split.Length == 3 && !string.IsNullOrEmpty(split[1]))
                     name = split[1];
@@ -149,13 +149,13 @@ namespace ASLHelper
 
             protected int FieldOffset(IntPtr field)
             {
-                return ReadI32(field + Engine["MonoClassField"]["offset"]);
+                return ReadI32(field + _engine["MonoClassField"]["offset"]);
             }
 
             protected MonoFieldAttribute FieldAttrs(IntPtr field)
             {
-                var monoType = ReadPtr(field + Engine["MonoClassField"]["type"]);
-                return Data.s_Helper.Read<MonoFieldAttribute>(monoType + Engine["MonoType"]["attrs"]);
+                var monoType = ReadPtr(field + _engine["MonoClassField"]["type"]);
+                return Data.s_Helper.Read<MonoFieldAttribute>(monoType + _engine["MonoType"]["attrs"]);
             }
             #endregion
 

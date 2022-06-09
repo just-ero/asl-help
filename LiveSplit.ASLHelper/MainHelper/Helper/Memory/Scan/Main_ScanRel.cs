@@ -39,7 +39,10 @@ namespace ASLHelper
         public IntPtr ScanRel(ProcessModuleWow64Safe module, int offset, params string[] pattern)
         {
             if (module == null)
+            {
+                Debug.Warn("[Scan] Module could not be found!");
                 return IntPtr.Zero;
+            }
 
             var start = module.BaseAddress;
             var size = module.ModuleMemorySize;
@@ -93,7 +96,10 @@ namespace ASLHelper
         public IntPtr ScanRel(ProcessModuleWow64Safe module, SigScanTarget target)
         {
             if (module == null)
+            {
+                Debug.Warn("[Scan] Module could not be found!");
                 return IntPtr.Zero;
+            }
 
             var start = module.BaseAddress;
             var size = module.ModuleMemorySize;

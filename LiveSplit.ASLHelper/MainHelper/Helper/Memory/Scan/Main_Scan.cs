@@ -84,7 +84,10 @@ namespace ASLHelper
         public IntPtr Scan(ProcessModuleWow64Safe module, SigScanTarget target)
         {
             if (module == null)
+            {
+                Debug.Warn("[Scan] Module could not be found!");
                 return IntPtr.Zero;
+            }
 
             var start = module.BaseAddress;
             var size = module.ModuleMemorySize;
