@@ -1,0 +1,22 @@
+﻿state("LiveSplit") {}
+
+startup
+{
+	vars.Log = (Action<object>)(output => print("[Unity Helper Test] " + output));
+
+	#region Helper Setup
+	var bytes = File.ReadAllBytes(@"Components\LiveSplit.ASLHelper.bin");
+	var type = Assembly.Load(bytes).GetType("ASLHelper.Unity");
+	vars.Helper = Activator.CreateInstance(type, timer, settings, this);
+	#endregion
+}
+
+init
+{
+	vars.Log(vars.Helper.Game.ProcessName);
+}
+
+shutdown
+{
+	vars.Helper.Dispose();
+}
