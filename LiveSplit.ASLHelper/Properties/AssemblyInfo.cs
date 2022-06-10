@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("LiveSplit.ASLHelper")]
 [assembly: AssemblyDescription("A helper library for LiveSplit's Auto-Splitting Language.")]

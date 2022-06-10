@@ -1,117 +1,109 @@
 ﻿using ASLHelper.Extensions;
 using ASLHelper.MainHelper;
-using LiveSplit.ComponentUtil;
 using LiveSplit.Model;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Forms;
 
-namespace ASLHelper
+namespace ASLHelper;
+
+public partial class Main : IDisposable
 {
-    public partial class Main : IDisposable
+    public Main(LiveSplitState state, object settings, object compiledScript)
     {
-        public Main(LiveSplitState state, object settings, object compiledScript)
+        Data.s_State = state;
+        Data.s_Layout = state.Layout;
+        Data.s_Components = state.Layout.Components;
+        Data.s_LayoutComponents = state.Layout.LayoutComponents;
+
+        Timer = new(state);
+        Texts = new();
+
+        if (settings != null)
+            Settings = new(settings);
+
+        _form = state.Form;
+        _script =
+            state.Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
+            .FirstOrDefault(c =>
+                c.ComponentName == "Scriptable Auto Splitter"
+                && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
+                   .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
+            )?.Script;
+
+        Data.s_Helper = this;
+
+        Debug.Log("Created ASL helper.");
+    }
+
+    public Main(LiveSplitState state, object compiledScript)
+        : this(state, null, compiledScript) { }
+
+    #region Fields
+    private Process _game;
+    internal bool Is64Bit;
+    internal int PtrSize;
+
+    private readonly Form _form;
+    private readonly object _script;
+    #endregion
+
+    #region Properties
+    public Process Game
+    {
+        get
         {
-            Data.s_State = state;
-            Data.s_Layout = state.Layout;
-            Data.s_Components = state.Layout.Components;
-            Data.s_LayoutComponents = state.Layout.LayoutComponents;
-
-            Timer = new TimerHelper(state);
-            Texts = new TextComponentHelper();
-
-            if (settings != null)
-                Settings = new SettingsHelper(settings);
-
-            _form = state.Form;
-            _script =
-                state.Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
-                .FirstOrDefault(c =>
-                    c.ComponentName == "Scriptable Auto Splitter"
-                    && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
-                       .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
-                )?.Script;
-
-            Data.s_Helper = this;
-
-            Debug.Log("Created ASL helper.");
-        }
-
-        public Main(LiveSplitState state, object compiledScript)
-            : this(state, null, compiledScript) { }
-
-        #region Fields
-        private Process _game;
-        internal bool Is64Bit;
-        internal int PtrSize;
-
-        private readonly Form _form;
-        private readonly object _script;
-        #endregion
-
-        #region Properties
-        public Process Game
-        {
-            get
+            if (_game == null)
             {
-                if (_game == null)
-                {
-                    _game = _script.GetFieldValue("_game");
-                    Is64Bit = _game.Is64Bit();
-                    PtrSize = Is64Bit ? 0x8 : 0x4;
-                }
-
-                return _game;
-            }
-            set
-            {
-                _game = value;
+                _game = _script.GetFieldValue("_game");
                 Is64Bit = _game.Is64Bit();
                 PtrSize = Is64Bit ? 0x8 : 0x4;
-
-                _script.SetFieldValue("_game", value);
             }
+
+            return _game;
         }
-
-        public TimerHelper Timer { get; }
-        public TextComponentHelper Texts { get; }
-        public SettingsHelper Settings { get; }
-        #endregion
-
-        protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
+        set
         {
-            module = null;
+            _game = value;
+            Is64Bit = _game.Is64Bit();
+            PtrSize = Is64Bit ? 0x8 : 0x4;
 
-            if (Game == null)
-                return false;
-
-            var modules = Game.ModulesWow64Safe();
-            if (modules == null || modules.Length == 0)
-                return false;
-
-            module = modules.FirstOrDefault(m => names.Any(n => n.Equals(m?.ModuleName ?? "", StringComparison.OrdinalIgnoreCase)));
-            return true;
+            _script.SetFieldValue("_game", value);
         }
+    }
 
-        public ProcessModuleWow64Safe GetModule(params string[] names)
-        {
-            if (names == null || names.Length == 0)
-                return null;
+    public TimerHelper Timer { get; }
+    public TextComponentHelper Texts { get; }
+    public SettingsHelper Settings { get; }
+    #endregion
 
-            return Game?.ModulesWow64Safe()?.FirstOrDefault(m => names.Any(n => n.Equals(m?.ModuleName ?? "", StringComparison.OrdinalIgnoreCase)));
-        }
+    protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
+    {
+        module = null;
 
-        public virtual void Dispose()
-        {
-            GC.SuppressFinalize(this);
+        if (Game == null)
+            return false;
 
-            var closing = Debug.TraceIncludes("TimerForm_FormClosing", "OpenLayoutFromFile", "LoadDefaultLayout");
-            if (!closing)
-                Texts.RemoveAll();
+        var modules = Game.ModulesWow64Safe();
+        if (modules == null || modules.Length == 0)
+            return false;
 
-            Data.Dispose();
-        }
+        module = modules.FirstOrDefault(m => names.Any(n => n.Equals(m?.ModuleName ?? "", StringComparison.OrdinalIgnoreCase)));
+        return true;
+    }
+
+    public ProcessModuleWow64Safe GetModule(params string[] names)
+    {
+        return names == null || names.Length == 0
+            ? null
+            : (Game?.ModulesWow64Safe()?.FirstOrDefault(m => names.Any(n => n.Equals(m?.ModuleName ?? "", StringComparison.OrdinalIgnoreCase))));
+    }
+
+    public virtual void Dispose()
+    {
+        GC.SuppressFinalize(this);
+
+        var closing = Debug.TraceIncludes("TimerForm_FormClosing", "OpenLayoutFromFile", "LoadDefaultLayout");
+        if (!closing)
+            Texts.RemoveAll();
+
+        Data.Dispose();
     }
 }

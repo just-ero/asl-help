@@ -1,72 +1,65 @@
-﻿using LiveSplit.ComponentUtil;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿namespace ASLHelper.UnityHelper;
 
-namespace ASLHelper.UnityHelper
+public abstract partial class MonoHelper
 {
-    public abstract partial class MonoHelper
+    protected class Xml
     {
-        protected class Xml
+        public Dictionary<string, Dictionary<string, int>> Structs { get; } = new();
+        public Dictionary<string, SigScanTarget> Signatures { get; } = new();
+
+        public Dictionary<string, int> this[string structName]
         {
-            public Dictionary<string, Dictionary<string, int>> Structs { get; } = new Dictionary<string, Dictionary<string, int>>();
-            public Dictionary<string, SigScanTarget> Signatures { get; } = new Dictionary<string, SigScanTarget>();
+            get => Structs[structName];
+        }
 
-            public Dictionary<string, int> this[string structName]
+        public Dictionary<string, Dictionary<string, string>> _structs
+        {
+            set
             {
-                get => Structs[structName];
-            }
-
-            public Dictionary<string, Dictionary<string, string>> _structs
-            {
-                set
+                foreach (var s in value)
                 {
-                    foreach (var s in value)
+                    var (structName, fields) = (s.Key, s.Value);
+
+                    Structs[structName] = new();
+
+                    foreach (var f in fields)
                     {
-                        var (structName, fields) = (s.Key, s.Value);
+                        var (fieldName, fieldOffset) = (f.Key, f.Value);
 
-                        Structs[structName] = new Dictionary<string, int>();
-
-                        foreach (var f in fields)
-                        {
-                            var (fieldName, fieldOffset) = (f.Key, f.Value);
-
-                            Structs[structName][fieldName] = Convert.ToInt32(fieldOffset, 16);
-                        }
+                        Structs[structName][fieldName] = Convert.ToInt32(fieldOffset, 16);
                     }
                 }
             }
+        }
 
-            public Dictionary<string, string> _signatures
+        public Dictionary<string, string> _signatures
+        {
+            set
             {
-                set
+                foreach (var sig in value)
                 {
-                    foreach (var sig in value)
-                    {
-                        var (name, target) = (sig.Key, sig.Value);
-                        var split = target.Split(',');
+                    var (name, target) = (sig.Key, sig.Value);
+                    var split = target.Split(',');
 
-                        Signatures[name] = new SigScanTarget(int.Parse(split[0]), split[1]);
-                    }
+                    Signatures[name] = new(int.Parse(split[0]), split[1]);
                 }
             }
+        }
 
-            public static Xml Load(string type, string version)
-            {
-                var resource = $"{type}_{version}_{(Data.s_Helper.Is64Bit ? "x64" : "x86")}";
+        public static Xml Load(string type, string version)
+        {
+            var resource = $"{type}_{version}_{(Data.s_Helper.Is64Bit ? "x64" : "x86")}";
 
-                Debug.Log($"  => Loading '{resource}'...");
+            Debug.Log($"  => Loading '{resource}'...");
 
-                var json = "";
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"LiveSplit.ASLHelper.UnityHelper.Structs.{resource}.json"))
-                using (var reader = new StreamReader(stream))
-                    json = reader.ReadToEnd();
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"LiveSplit.ASLHelper.UnityHelper.Structs.{resource}.json");
+            using var reader = new StreamReader(stream);
 
-                Debug.Log($"    => Success.");
+            var xml = reader.ReadToEnd();
 
-                return null;
-            }
+            Debug.Log($"    => Success.");
+
+            return null;
         }
     }
 }

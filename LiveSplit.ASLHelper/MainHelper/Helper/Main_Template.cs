@@ -1,7 +1,6 @@
-﻿namespace ASLHelper
-{
-    public partial class Main
-    {
+﻿namespace ASLHelper;
 
-    }
+public partial class Main
+{
+
 }

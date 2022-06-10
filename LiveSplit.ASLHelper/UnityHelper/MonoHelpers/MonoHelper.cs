@@ -1,8 +1,4 @@
 ﻿using ASLHelper.UnityHelper;
-using LiveSplit.ComponentUtil;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ASLHelper
 {
@@ -23,7 +19,7 @@ namespace ASLHelper
             #region Fields
             protected readonly Xml _engine;
             protected IntPtr _loadedImages;
-            protected readonly Dictionary<string, MonoImage> _imageCache = new Dictionary<string, MonoImage>();
+            protected readonly Dictionary<string, MonoImage> _imageCache = new();
             #endregion
 
             #region Abstract Methods
@@ -44,7 +40,7 @@ namespace ASLHelper
 
             protected MonoClass MakeClass(IntPtr klass)
             {
-                return new MonoClass
+                return new()
                 {
                     NameSpace = ClassNameSpace(klass),
                     Name = ClassName(klass),
@@ -78,7 +74,7 @@ namespace ASLHelper
 
             protected IntPtr ClassFromIndex(IntPtr table, int index)
             {
-                return ReadPtr(table + Data.s_Helper.PtrSize * index);
+                return ReadPtr(table + (Data.s_Helper.PtrSize * index));
             }
 
             protected string ClassName(IntPtr klass)
@@ -107,7 +103,7 @@ namespace ASLHelper
                 {
                     var attrs = FieldAttrs(field);
 
-                    fields.Add(new MonoField
+                    fields.Add(new()
                     {
                         Name = FieldName(field),
                         Offset = FieldOffset(field),
@@ -134,7 +130,7 @@ namespace ASLHelper
 
                 var fieldSize = _engine["MonoClassField"]["size"];
                 for (int i = 0; i < fieldCount; i++)
-                    yield return fields + fieldSize * i;
+                    yield return fields + (fieldSize * i);
             }
 
             protected string FieldName(IntPtr field)
@@ -159,16 +155,41 @@ namespace ASLHelper
             }
             #endregion
 
-
-
             #region Helpers
-            protected IntPtr ReadRel(IntPtr address) => address + 0x4 + Data.s_Helper.Read<int>(address);
-            protected IntPtr ReadPtr(IntPtr address) => Data.s_Helper.Read<IntPtr>(address);
-            protected int ReadI32(IntPtr address) => Data.s_Helper.Read<int>(address);
-            protected uint ReadU32(IntPtr address) => Data.s_Helper.Read<uint>(address);
-            protected ushort ReadU16(IntPtr address) => Data.s_Helper.Read<ushort>(address);
-            protected byte ReadI8(IntPtr address) => Data.s_Helper.Read<byte>(address);
-            protected string ReadStr(IntPtr address, int length) => Data.s_Helper.ReadString(length, ReadStringType.UTF8, address);
+            protected IntPtr ReadRel(IntPtr address)
+            {
+                return address + 0x4 + Data.s_Helper.Read<int>(address);
+            }
+
+            protected IntPtr ReadPtr(IntPtr address)
+            {
+                return Data.s_Helper.Read<IntPtr>(address);
+            }
+
+            protected int ReadI32(IntPtr address)
+            {
+                return Data.s_Helper.Read<int>(address);
+            }
+
+            protected uint ReadU32(IntPtr address)
+            {
+                return Data.s_Helper.Read<uint>(address);
+            }
+
+            protected ushort ReadU16(IntPtr address)
+            {
+                return Data.s_Helper.Read<ushort>(address);
+            }
+
+            protected byte ReadI8(IntPtr address)
+            {
+                return Data.s_Helper.Read<byte>(address);
+            }
+
+            protected string ReadStr(IntPtr address, int length)
+            {
+                return Data.s_Helper.ReadString(length, ReadStringType.UTF8, address);
+            }
             #endregion
         }
     }

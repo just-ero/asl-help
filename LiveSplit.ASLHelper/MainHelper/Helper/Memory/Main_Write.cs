@@ -1,13 +1,12 @@
-﻿namespace ASLHelper
+﻿namespace ASLHelper;
+
+public partial class Main
 {
-    public partial class Main
-    {
-        #region Write<T>
+    #region Write<T>
 
-        #endregion
+    #endregion
 
-        #region WriteSpan<T>
+    #region WriteSpan<T>
 
-        #endregion
-    }
+    #endregion
 }

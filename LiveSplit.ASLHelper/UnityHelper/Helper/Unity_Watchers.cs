@@ -1,9 +1,6 @@
-﻿using LiveSplit.ComponentUtil;
+﻿namespace ASLHelper;
 
-namespace ASLHelper
+public partial class Unity
 {
-    public partial class Unity
-    {
-        private readonly MemoryWatcherList _memWatchers = new MemoryWatcherList();
-    }
+    private readonly MemoryWatcherList _memWatchers = new();
 }

@@ -1,7 +1,6 @@
-﻿namespace ASLHelper
-{
-    public partial class Unity
-    {
+﻿namespace ASLHelper;
 
-    }
+public partial class Unity
+{
+
 }

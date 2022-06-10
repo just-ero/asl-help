@@ -1,7 +1,4 @@
 ﻿using ASLHelper.UnityHelper;
-using LiveSplit.ComponentUtil;
-using System;
-using System.Collections.Generic;
 
 namespace ASLHelper
 {
@@ -34,14 +31,25 @@ namespace ASLHelper
             public SceneHelper()
             {
                 SceneOffsets = Offsets;
-                Active = new Scene(SceneOffsets[2]);
+                Active = new(SceneOffsets[2]);
             }
 
             #region Properties
             public Scene Active { get; }
-            public List<Scene> Loading => UpdateList(SceneOffsets[1]);
-            public List<Scene> Loaded => UpdateList(SceneOffsets[3]);
-            public int Count => Data.s_Helper.Game.ReadValue<int>(Data.s_Helper.Deref(Data.s_SceneManager, SceneOffsets[0]), -1);
+            public List<Scene> Loading
+            {
+                get => UpdateList(SceneOffsets[1]);
+            }
+
+            public List<Scene> Loaded
+            {
+                get => UpdateList(SceneOffsets[3]);
+            }
+
+            public int Count
+            {
+                get => Data.s_Helper.Game.ReadValue<int>(Data.s_Helper.Deref(Data.s_SceneManager, SceneOffsets[0]), -1);
+            }
 
             internal static int[] SceneOffsets;
             public int[] Offsets

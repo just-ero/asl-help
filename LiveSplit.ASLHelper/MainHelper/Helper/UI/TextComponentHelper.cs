@@ -1,58 +1,56 @@
 ﻿using LiveSplit.UI.Components;
-using System.Collections.Generic;
 
-namespace ASLHelper
+namespace ASLHelper;
+
+public class TextComponentHelper
 {
-    public class TextComponentHelper
+    private readonly Dictionary<string, TextComponent> _components = new();
+
+    public TextComponent this[string id]
     {
-        private readonly Dictionary<string, TextComponent> _components = new Dictionary<string, TextComponent>();
-
-        public TextComponent this[string id]
+        get
         {
-            get
+            TextComponent tc;
+
+            if (Data.FindLayoutComponent("TextComponent", id, out _) is ILayoutComponent lc)
             {
-                TextComponent tc;
-
-                if (Data.FindLayoutComponent("TextComponent", id, out _) is ILayoutComponent lc)
-                {
-                    if (_components.TryGetValue(id, out tc))
-                        return tc;
-
-                    tc = new TextComponent(id, lc);
-                    _components[id] = tc;
+                if (_components.TryGetValue(id, out tc))
                     return tc;
-                }
 
-                tc = new TextComponent(id);
+                tc = new(id, lc);
                 _components[id] = tc;
-
                 return tc;
             }
-            set
-            {
-                if (value == null)
-                    Remove(id);
-            }
-        }
 
-        public void Remove(string id)
+            tc = new(id);
+            _components[id] = tc;
+
+            return tc;
+        }
+        set
         {
-            if (!_components.TryGetValue(id, out var component))
-                return;
-
-            Data.s_LayoutComponents.Remove(component.LayoutComponent);
-            _components.Remove(id);
+            if (value == null)
+                Remove(id);
         }
+    }
 
-        public void RemoveAll()
+    public void Remove(string id)
+    {
+        if (!_components.TryGetValue(id, out var component))
+            return;
+
+        _ = Data.s_LayoutComponents.Remove(component.LayoutComponent);
+        _ = _components.Remove(id);
+    }
+
+    public void RemoveAll()
+    {
+        foreach (var entry in _components)
         {
-            foreach (var entry in _components)
-            {
-                if (Data.FindLayoutComponent(entry.Key) is ILayoutComponent component)
-                    Data.s_LayoutComponents.Remove(component);
-            }
-
-            _components.Clear();
+            if (Data.FindLayoutComponent(entry.Key) is ILayoutComponent component)
+                _ = Data.s_LayoutComponents.Remove(component);
         }
+
+        _components.Clear();
     }
 }
