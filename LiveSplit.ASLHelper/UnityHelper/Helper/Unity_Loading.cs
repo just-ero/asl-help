@@ -5,13 +5,9 @@ namespace ASLHelper;
 
 public partial class Unity
 {
-    #region Consts
     private const string MONO_V1 = "mono.dll";
     private const string MONO_V2 = "mono-2.0-bdwgc.dll";
     private const string IL2CPP = "GameAssembly.dll";
-    #endregion
-
-    #region Properties
     public HashSet<string> Exceptions = new()
     {
         "RuntimeBinderException",
@@ -21,7 +17,6 @@ public partial class Unity
 
     public bool Loaded { get; private set; }
     public Func<MonoHelper, bool> TryOnLoad { get; set; }
-    #endregion
 
     private async Task<ProcessModuleWow64Safe> GetMonoModule()
     {

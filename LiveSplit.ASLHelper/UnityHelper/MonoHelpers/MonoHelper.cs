@@ -16,13 +16,10 @@ namespace ASLHelper
                 _engine = Xml.Load(type, version);
             }
 
-            #region Fields
             protected readonly Xml _engine;
             protected IntPtr _loadedImages;
             protected readonly Dictionary<string, MonoImage> _imageCache = new();
-            #endregion
 
-            #region Abstract Methods
             protected abstract MonoClass GetClass(MonoImage image, uint classToken, int depth = 0);
             protected abstract MonoClass GetClass(MonoImage image, string className, int depth = 0);
             protected abstract IntPtr ScanForImages();
@@ -30,9 +27,7 @@ namespace ASLHelper
             protected abstract IEnumerable<IntPtr> Classes(MonoImage image);
             protected abstract int ClassFieldCount(IntPtr klass);
             protected abstract IntPtr GetStaticAddress(IntPtr klass);
-            #endregion
 
-            #region Methods
             public void ClearImages()
             {
                 _imageCache.Clear();
@@ -49,7 +44,6 @@ namespace ASLHelper
                     Fields = GetAllFields(klass)
                 };
             }
-            #endregion
 
             #region Classes
             public MonoClass GetClass(string imageName, uint classToken, int depth = 0)
