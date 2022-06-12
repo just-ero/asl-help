@@ -6,7 +6,7 @@ public partial class Main
 {
     public void AlertRealTime(string gameName = null)
     {
-        if (Data.s_State.CurrentTimingMethod == TimingMethod.RealTime)
+        if (State.CurrentTimingMethod == TimingMethod.RealTime)
             return;
 
         var mbox = MessageBox.Show(_form,
@@ -15,12 +15,12 @@ public partial class Main
             MessageBoxButtons.YesNo);
 
         if (mbox == DialogResult.Yes)
-            Data.s_State.CurrentTimingMethod = TimingMethod.RealTime;
+            State.CurrentTimingMethod = TimingMethod.RealTime;
     }
 
     public void AlertGameTime(string gameName = null)
     {
-        if (Data.s_State.CurrentTimingMethod == TimingMethod.GameTime)
+        if (State.CurrentTimingMethod == TimingMethod.GameTime)
             return;
 
         var mbox = MessageBox.Show(_form,
@@ -29,12 +29,12 @@ public partial class Main
             MessageBoxButtons.YesNo);
 
         if (mbox == DialogResult.Yes)
-            Data.s_State.CurrentTimingMethod = TimingMethod.GameTime;
+            State.CurrentTimingMethod = TimingMethod.GameTime;
     }
 
     public void AlertLoadless(string gameName = null)
     {
-        if (Data.s_State.CurrentTimingMethod == TimingMethod.GameTime)
+        if (State.CurrentTimingMethod == TimingMethod.GameTime)
             return;
 
         var mbox = MessageBox.Show(_form,
@@ -43,6 +43,6 @@ public partial class Main
             MessageBoxButtons.YesNo);
 
         if (mbox == DialogResult.Yes)
-            Data.s_State.CurrentTimingMethod = TimingMethod.GameTime;
+            State.CurrentTimingMethod = TimingMethod.GameTime;
     }
 }

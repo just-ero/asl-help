@@ -1,5 +1,4 @@
 ﻿using ASLHelper.Extensions;
-using ASLHelper.MainHelper;
 using LiveSplit.Model;
 
 namespace ASLHelper;
@@ -8,14 +7,13 @@ public partial class Main : IDisposable
 {
     public Main(LiveSplitState state, object settings, object compiledScript)
     {
-        Data.s_State = state;
-        Data.s_Layout = state.Layout;
+        Instance = this;
 
-        Timer = new(state);
+        State = state;
+        Layout = state.Layout;
         UI = new();
-
-        if (settings != null)
-            Settings = new(settings);
+        Timer = new(state);
+        Settings = new(settings);
 
         _form = state.Form;
         _script =
@@ -26,8 +24,6 @@ public partial class Main : IDisposable
                    .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
             )?.Script;
 
-        Data.s_Helper = this;
-
         Debug.Log("Created ASL helper.");
     }
 
@@ -35,12 +31,6 @@ public partial class Main : IDisposable
         : this(state, null, compiledScript) { }
 
     private Process _game;
-    internal bool Is64Bit;
-    internal int PtrSize;
-
-    private readonly Form _form;
-    private readonly object _script;
-
     public Process Game
     {
         get
@@ -64,10 +54,6 @@ public partial class Main : IDisposable
         }
     }
 
-    public TimerHelper Timer { get; }
-    public SettingsHelper Settings { get; }
-    public UIHelper UI { get; }
-
     private protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
     {
         module = null;
@@ -85,9 +71,8 @@ public partial class Main : IDisposable
 
     public ProcessModuleWow64Safe GetModule(params string[] names)
     {
-        return names == null || names.Length == 0
-            ? null
-            : (Game?.ModulesWow64Safe()?.FirstOrDefault(m => names.Any(n => n.Equals(m?.ModuleName ?? "", StringComparison.OrdinalIgnoreCase))));
+        _ = TryGetModule(out var module, names);
+        return module;
     }
 
     public virtual void Dispose()
@@ -97,7 +82,5 @@ public partial class Main : IDisposable
         var closing = Debug.TraceIncludes("TimerForm_FormClosing", "OpenLayoutFromFile", "LoadDefaultLayout");
         if (!closing)
             UI.Text.RemoveAll();
-
-        Data.Dispose();
     }
 }

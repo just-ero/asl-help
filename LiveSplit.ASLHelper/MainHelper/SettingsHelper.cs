@@ -1,10 +1,10 @@
 ﻿namespace ASLHelper.MainHelper;
 
-public class SettingsHelper
+public class ASLSettingsHelper
 {
     private static readonly Func<string, bool, string, string, string, Tuple<string, bool, string, string, string>> SETTINGS_TUPLE = Tuple.Create;
 
-    internal SettingsHelper(object builder)
+    internal ASLSettingsHelper(object builder)
     {
         _builder = builder;
     }
@@ -54,6 +54,9 @@ public class SettingsHelper
 
     public void Create(IList<Tuple<string, bool, string, string, string>> settings, string defaultParent = null)
     {
+        if (_builder == null)
+            return;
+
         if (settings == null)
             throw new ArgumentNullException(nameof(settings), "The settings collection was null.");
 
@@ -169,6 +172,8 @@ public class SettingsHelper
                 }
             }
         }
+
+        Create(converted, defaultParent);
     }
 
     public void CreateCustom(dynamic[,] settings, params int[] positions)

@@ -3,14 +3,7 @@
 public class MemoryString : MemoryClass
 {
     public MemoryString(nint baseAddress, int staticFieldOffset, int[] offsets)
-        : base(baseAddress, staticFieldOffset, offsets)
-    {
-        Offsets = new[]
-        {
-            Data.s_Helper.Is64Bit ? 0x10 : 0x8,
-            Data.s_Helper.Is64Bit ? 0x14 : 0xC,
-        };
-    }
+        : base(baseAddress, staticFieldOffset, offsets) { }
 
     public int[] Offsets;
 
@@ -35,8 +28,7 @@ public class MemoryString : MemoryClass
 
         base.Old = Current;
 
-        var addr = Address;
-        if (addr == 0 || !process.ReadValue<int>(addr + Offsets[0], out var len))
+        if (!Unity.Instance.TryReadString(out var result, _baseAddress, _offsets))
         {
             if (FailAction == ReadFailAction.DontUpdate)
                 return false;
@@ -45,7 +37,7 @@ public class MemoryString : MemoryClass
         }
         else
         {
-            base.Current = len > 0 ? process.ReadString(addr + Offsets[1], ReadStringType.UTF16, len * 2) : "";
+            Current = result;
         }
 
         if (!InitialUpdate)

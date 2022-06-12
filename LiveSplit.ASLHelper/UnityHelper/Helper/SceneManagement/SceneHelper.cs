@@ -21,7 +21,7 @@ public class SceneHelper
 
     public int Count
     {
-        get => Data.s_Helper.Read<int>(Data.s_Helper.Deref(Data.s_SceneManager, SceneOffsets[0]), -1);
+        get => Unity.Instance.TryRead<int>(out var count, Data.s_SceneManager, SceneOffsets[0]) ? count : -1;
     }
 
     internal static int[] SceneOffsets;
@@ -29,7 +29,7 @@ public class SceneHelper
     {
         get
         {
-            return SceneOffsets ?? (Data.s_Helper.Is64Bit
+            return SceneOffsets ?? (Unity.Instance.Is64Bit
                    ? new[] { 0x18, 0x28, 0x48, 0x50, 0x10, 0x98 }
                    : new[] { 0x0C, 0x18, 0x28, 0x2C, 0x0C, 0x70 });
         }
@@ -56,7 +56,7 @@ public class SceneHelper
         var scenes = new List<Scene>();
         for (int i = 0; i < 64; i++)
         {
-            var scene = new Scene(offset, Data.s_Helper.PtrSize * i);
+            var scene = new Scene(offset, Unity.Instance.PtrSize * i);
             if (!scene.IsValid)
                 break;
 

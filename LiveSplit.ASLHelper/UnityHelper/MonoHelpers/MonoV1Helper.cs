@@ -28,7 +28,7 @@ public class MonoV1Helper : MonoHelper
 
     private protected override nint ScanForImages()
     {
-        return _helper.Scan(Data.s_MonoModule, _engine.Signatures["loaded_images_hashes"]);
+        return _helper.Scan(Unity.Instance.MonoModule, _engine.Signatures["loaded_images_hashes"]);
     }
 
     #region Images

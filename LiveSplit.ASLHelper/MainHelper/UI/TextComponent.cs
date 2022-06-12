@@ -8,7 +8,7 @@ public class TextComponent
 
     internal TextComponent(string id)
     {
-        var component = s_TextComponentFactory.Create(Data.s_State);
+        var component = s_TextComponentFactory.Create(Main.Instance.State);
 
         LayoutComponent = new("LiveSplit.Text.dll", component);
         ComponentSettings = (component as dynamic).Settings;

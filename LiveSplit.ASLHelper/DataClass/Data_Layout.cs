@@ -6,12 +6,12 @@ internal static partial class Data
 {
     public static IEnumerable<IComponent> s_Components
     {
-        get => s_State.Layout.Components;
+        get => Main.Instance.Layout.Components;
     }
 
     public static IList<ILayoutComponent> s_LayoutComponents
     {
-        get => s_State.Layout.LayoutComponents;
+        get => Main.Instance.Layout.LayoutComponents;
     }
 
     public static IComponent FindComponent(string typeName, string tag)
@@ -28,7 +28,7 @@ internal static partial class Data
     public static ILayoutComponent FindLayoutComponent(string typeName, string tag, out IComponent component)
     {
         component = null;
-        var lc = s_LayoutComponents.SingleOrDefault(lc => (lc.Component.GetSettingsControl(s_Layout.Mode).Tag as string) == tag);
+        var lc = s_LayoutComponents.SingleOrDefault(lc => (lc.Component.GetSettingsControl(Main.Instance.Layout.Mode).Tag as string) == tag);
 
         if (lc == null)
             return null;

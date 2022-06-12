@@ -109,13 +109,13 @@ public partial class Unity
 
     private MonoHelper MakeHelper()
     {
-        if (Data.s_MonoModule == null)
+        if (MonoModule == null)
             return null;
 
         Debug.Log("Creating Mono helper...");
 
         MonoHelper helper = null;
-        switch (Data.s_MonoModule.ModuleName)
+        switch (MonoModule.ModuleName)
         {
             case MONO_V1:
             {

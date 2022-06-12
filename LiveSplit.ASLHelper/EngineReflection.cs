@@ -23,7 +23,7 @@ internal class EngineReflection
     {
         var xml = new EngineReflection();
 
-        var resource = $"{type}_{version}_{(Data.s_Helper.Is64Bit ? "x64" : "x86")}";
+        var resource = $"{type}_{version}_{(Main.Instance.Is64Bit ? "x64" : "x86")}";
         var path = $"ASLHelper.{engine}Helper.Structs.{resource}.xml";
 
         Debug.Log($"  => Loading '{resource}'...");

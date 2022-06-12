@@ -22,7 +22,7 @@ public class Il2CppHelper : MonoHelper
     #region Images
     private protected override nint ScanForImages()
     {
-        return _helper.Scan(Data.s_MonoModule, _engine.Signatures["s_Assemblies"]);
+        return _helper.Scan(Unity.Instance.MonoModule, _engine.Signatures["s_Assemblies"]);
     }
 
     private protected nint GetLoadedImages()
@@ -96,7 +96,7 @@ public class Il2CppHelper : MonoHelper
         if (_loadedClasses != 0)
             return _loadedClasses;
 
-        _loadedClasses = ReadPtr(_helper.Scan(Data.s_MonoModule, _engine.Signatures["s_TypeInfoTable"]));
+        _loadedClasses = ReadPtr(_helper.Scan(Unity.Instance.MonoModule, _engine.Signatures["s_TypeInfoTable"]));
         if (_loadedClasses == 0)
         {
             var msg = "Cannot load classes! The signature could not be resolved!";

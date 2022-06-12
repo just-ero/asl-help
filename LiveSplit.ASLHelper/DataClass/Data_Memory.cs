@@ -19,7 +19,7 @@ internal static partial class Data
 
             var target = new SigScanTarget { OnFound = s_OnFound };
 
-            if (s_Helper.Is64Bit)
+            if (Unity.Instance.Is64Bit)
             {
                 target.AddSignature(3, "4C 8B 35 ???????? 33 F6 48 8B E9"); // 2021.2.11
                 target.AddSignature(3, "4C 8B 25 ???????? 33 F6 48 8B E9"); // 2017.2.0
@@ -31,7 +31,7 @@ internal static partial class Data
                 target.AddSignature(2, "8B 0D ???????? 53 8D 41"); // 2017.2.0
             }
 
-            var scan = s_Helper.Scan(s_UnityPlayer, target);
+            var scan = Unity.Instance.Scan(Unity.Instance.UnityPlayer, target);
             if (scan != 0)
             {
                 Debug.Log("  => Found at 0x" + scan.ToString("X") + ".");

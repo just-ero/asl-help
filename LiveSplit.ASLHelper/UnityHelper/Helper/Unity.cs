@@ -5,9 +5,16 @@ namespace ASLHelper;
 
 public partial class Unity : Main
 {
+    internal static new Unity Instance { get; private set; }
+
+    public ProcessModuleWow64Safe MonoModule;
+    public ProcessModuleWow64Safe UnityPlayer;
+
     public Unity(LiveSplitState state, object settings, object compiledScript)
         : base(state, settings, compiledScript)
     {
+        Instance = this;
+
         Debug.Log("  => Unity features will be available.");
     }
 
@@ -44,13 +51,13 @@ public partial class Unity : Main
 
             try
             {
-                Data.s_MonoModule = await GetMonoModule();
-                if (Data.s_MonoModule.ModuleName == IL2CPP || LoadSceneManager)
-                    Data.s_UnityPlayer = await GetUnityPlayer(unityPlayerRetries);
+                MonoModule = await GetMonoModule();
+                if (MonoModule.ModuleName == IL2CPP || LoadSceneManager)
+                    UnityPlayer = await GetUnityPlayer(unityPlayerRetries);
 
                 _helper = MakeHelper();
 
-                if (LoadSceneManager && Data.s_UnityPlayer != null)
+                if (LoadSceneManager && UnityPlayer != null)
                 {
                     if (Data.s_SceneManager == 0)
                     {

@@ -13,4 +13,9 @@ internal static class ReflectionExtensions
     {
         type.GetType().GetField(fieldName, flags).SetValue(type, value);
     }
+
+    public static T As<T>(this object obj) where T : class
+    {
+        return obj as T;
+    }
 }

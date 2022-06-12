@@ -11,19 +11,19 @@ public class Scene
 
     public bool IsValid
     {
-        get => Data.s_Helper.Read<nint>(Deref(0x0)) != 0;
+        get => Unity.Instance.Read<nint>(Deref(0x0)) != 0;
     }
 
     public nint Address
     {
-        get => Data.s_Helper.Read<nint>(Deref());
+        get => Unity.Instance.Read<nint>(Deref());
     }
 
     public string Name
     {
         get
         {
-            var path = Data.s_Helper.Game.ReadString(Deref(SceneHelper.SceneOffsets[4], 0x0), ReadStringType.UTF8, 256);
+            var path = Unity.Instance.ReadString(256, ReadStringType.UTF8, Deref(SceneHelper.SceneOffsets[4], 0x0));
 
             if (string.IsNullOrEmpty(path))
             {
@@ -42,12 +42,12 @@ public class Scene
 
     public int Index
     {
-        get => Data.s_Helper.Read<int>(Deref(SceneHelper.SceneOffsets[5]));
+        get => Unity.Instance.Read<int>(Deref(SceneHelper.SceneOffsets[5]));
     }
 
     private nint Deref(params int[] offsets)
     {
-        var deref = Data.s_Helper.Deref(Data.s_SceneManager, _offsets);
-        return Data.s_Helper.Deref(deref, offsets);
+        var deref = Unity.Instance.Deref(Data.s_SceneManager, _offsets);
+        return Unity.Instance.Deref(deref, offsets);
     }
 }

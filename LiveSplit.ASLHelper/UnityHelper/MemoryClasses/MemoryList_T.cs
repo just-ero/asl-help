@@ -3,16 +3,7 @@
 public class MemoryList<T> : MemoryClass where T : unmanaged
 {
     public MemoryList(nint baseAddress, int staticFieldOffset, int[] offsets)
-        : base(baseAddress, staticFieldOffset, offsets)
-    {
-        Offsets = new[]
-        {
-            Data.s_Helper.Is64Bit ? 0x18 : 0xC,
-            Data.s_Helper.Is64Bit ? 0x10 : 0x8,
-        };
-    }
-
-    public int[] Offsets;
+        : base(baseAddress, staticFieldOffset, offsets) { }
 
     public new List<T> Old
     {
@@ -35,12 +26,7 @@ public class MemoryList<T> : MemoryClass where T : unmanaged
 
         base.Old = Current;
 
-        var addr = Address;
-        var helper = Data.s_Helper;
-
-        if (addr == 0
-            || !helper.TryRead<int>(out var count, addr + Offsets[0]) || count > 512
-            || !helper.TryRead<nint>(out var items, addr + Offsets[1]))
+        if (!Unity.Instance.TryReadList<T>(out var values, _baseAddress, _offsets))
         {
             if (FailAction == ReadFailAction.DontUpdate)
                 return false;
@@ -49,18 +35,7 @@ public class MemoryList<T> : MemoryClass where T : unmanaged
         }
         else
         {
-            var buf = new T[count];
-            if (!helper.TryReadSpan<T>(buf, items))
-            {
-                if (FailAction == ReadFailAction.DontUpdate)
-                    return false;
-
-                base.Current = new List<T>();
-            }
-            else
-            {
-                Current = buf.ToList();
-            }
+            Current = values;
         }
 
         if (!InitialUpdate)

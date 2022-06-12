@@ -2,7 +2,7 @@
 
 public class MemoryArray<T> : MemoryClass where T : unmanaged
 {
-    public MemoryArray(nint baseAddress, int staticFieldOffset, int[] offsets)
+    internal MemoryArray(nint baseAddress, int staticFieldOffset, int[] offsets)
         : base(baseAddress, staticFieldOffset, offsets) { }
 
     public new T[] Old
@@ -26,11 +26,7 @@ public class MemoryArray<T> : MemoryClass where T : unmanaged
 
         base.Old = Current;
 
-        var addr = Address;
-        var helper = Data.s_Helper;
-
-        if (addr == 0
-            || !helper.TryRead<int>(out var len, addr + (helper.PtrSize * 3)) || len > 512)
+        if (!Unity.Instance.TryReadArray<T>(out var values, _baseAddress, _offsets))
         {
             if (FailAction == ReadFailAction.DontUpdate)
                 return false;
@@ -39,18 +35,7 @@ public class MemoryArray<T> : MemoryClass where T : unmanaged
         }
         else
         {
-            var buf = new T[len];
-            if (!helper.TryReadSpan(buf, addr + (helper.PtrSize * 4)))
-            {
-                if (FailAction == ReadFailAction.DontUpdate)
-                    return false;
-
-                base.Current = Array.Empty<T>();
-            }
-            else
-            {
-                Current = buf;
-            }
+            Current = values;
         }
 
         if (!InitialUpdate)
