@@ -37,13 +37,13 @@ public class TextComponent
 
     public string ID { get; internal set; }
 
-    public dynamic Text1
+    public dynamic Left
     {
         get => ComponentSettings.Text1;
         set => ComponentSettings.Text1 = value.ToString();
     }
 
-    public dynamic Text2
+    public dynamic Right
     {
         get => ComponentSettings.Text2;
         set => ComponentSettings.Text2 = value.ToString();
