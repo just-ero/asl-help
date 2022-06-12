@@ -111,56 +111,6 @@ public class Il2CppHelper : MonoHelper
         throw new NotImplementedException("Getting classes via their tokens is not supported for IL2CPP.");
     }
 
-    private protected override MonoClass GetClass(MonoImage image, string className, int depth = 0)
-    {
-        string classNameSpace = null;
-        var delimiter = className.LastIndexOf('.');
-        if (delimiter > -1)
-        {
-            classNameSpace = className.Substring(0, delimiter);
-            className = className.Substring(delimiter + 1);
-        }
-
-        Debug.Log("Searching for class '" + className + "'...");
-
-        foreach (var klass in Classes(image))
-        {
-            var klassName = ClassName(klass);
-            var klassNameSpace = ClassNameSpace(klass);
-
-            if (klassName == className && (classNameSpace == null || klassNameSpace == classNameSpace))
-            {
-                var fields = GetAllFields(klass);
-
-                var parent = klass;
-                for (int i = 0; i < depth; ++i)
-                {
-                    parent = ClassParent(parent);
-                    fields.AddRange(GetAllFields(parent));
-                }
-
-                var staticAddress = GetStaticAddress(parent);
-                Debug.Log("  => Found at 0x" + klass.ToString("X") + ".");
-                Debug.Log("  => Static field table at 0x" + staticAddress.ToString("X") + ".");
-
-                foreach (var field in fields.OrderBy(f => f.Offset).Where(f => !f.IsConst))
-                    Debug.Log(string.Format("    => 0x{0:X3}: {1,-6} {2}", field.Offset, field.IsStatic ? "static" : "", field.Name));
-
-                return new MonoClass
-                {
-                    NameSpace = klassNameSpace,
-                    Name = klassName,
-                    Address = klass,
-                    Static = staticAddress,
-                    Fields = fields
-                };
-            }
-        }
-
-        Debug.Log("  => Not found!");
-        return null;
-    }
-
     private protected override IEnumerable<nint> Classes(MonoImage image)
     {
         var table = GetLoadedClasses();

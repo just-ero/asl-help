@@ -14,7 +14,6 @@ public abstract partial class MonoHelper
     private protected readonly Dictionary<string, MonoImage> _imageCache = new();
 
     private protected abstract MonoClass GetClass(MonoImage image, uint classToken, int depth = 0);
-    private protected abstract MonoClass GetClass(MonoImage image, string className, int depth = 0);
     private protected abstract nint ScanForImages();
     private protected abstract MonoImage GetImage(string name);
     private protected abstract IEnumerable<nint> Classes(MonoImage image);
@@ -39,6 +38,61 @@ public abstract partial class MonoHelper
     }
 
     #region Classes
+    protected MonoClass CreateMonoClass(nint klass, int depth)
+    {
+        var name = ClassName(klass);
+        var nameSpace = ClassNameSpace(klass);
+        var fields = GetAllFields(klass);
+        var parent = klass;
+
+        for (int i = 0; i < depth; ++i)
+        {
+            parent = ClassParent(parent);
+            fields.AddRange(GetAllFields(parent));
+        }
+
+        var staticAddress = GetStaticAddress(parent);
+        Debug.Log("  => Found '" + name + "' at 0x" + klass.ToString("X") + ".");
+        Debug.Log("  => Static field table at 0x" + staticAddress.ToString("X") + ".");
+
+        foreach (var field in fields.OrderBy(f => f.Offset).Where(f => !f.IsConst))
+            Debug.Log(string.Format("    => 0x{0:X3}: {1,-6} {2}", field.Offset, field.IsStatic ? "static" : "", field.Name));
+
+        return new()
+        {
+            NameSpace = nameSpace,
+            Name = name,
+            Address = klass,
+            Static = staticAddress,
+            Fields = fields
+        };
+    }
+
+    private protected MonoClass GetClass(MonoImage image, string className, int depth = 0)
+    {
+        string classNameSpace = null;
+        var delimiter = className.LastIndexOf('.');
+        if (delimiter > -1)
+        {
+            classNameSpace = className.Substring(0, delimiter);
+            className = className.Substring(delimiter + 1);
+        }
+
+        Debug.Log("Searching for class '" + className + "'...");
+
+        foreach (var klass in Classes(image))
+        {
+            var name = ClassName(klass);
+            var nameSpace = ClassNameSpace(klass);
+
+            if (name == className && (classNameSpace == null || nameSpace == classNameSpace))
+                return CreateMonoClass(klass, depth);
+        }
+
+        Debug.Log("  => Not found!");
+        return null;
+    }
+
     public MonoClass GetClass(string imageName, uint classToken, int depth = 0)
     {
         return GetClass(GetImage(imageName), classToken, depth);
@@ -109,8 +163,6 @@ public abstract partial class MonoHelper
             Debug.Log("  => No fields.");
             yield break;
         }
-
-        Debug.Log("  => Searching for fields...");
 
         var fieldSize = _engine["MonoClassField"]["size"];
         for (int i = 0; i < fieldCount; i++)

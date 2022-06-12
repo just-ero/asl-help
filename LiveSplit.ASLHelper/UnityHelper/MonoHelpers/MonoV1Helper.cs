@@ -55,7 +55,7 @@ public class MonoV1Helper : MonoHelper
         Debug.Log("Searching for image '" + imageName + "'...");
 
         uint hash = 0;
-        foreach (var c in (imageName + '\x0').Substring(1))
+        foreach (var c in (imageName + '\0').Substring(1))
             hash = (hash << 5) - (hash + c);
 
         while (!_helper.CancelSource.IsCancellationRequested)
@@ -112,69 +112,11 @@ public class MonoV1Helper : MonoHelper
             if (ReadU32(klass + _engine["MonoClass"]["type_token"]) != classToken)
                 continue;
 
-            var parent = klass;
-            for (int i = 0; i < depth; ++i)
-                parent = ClassParent(parent);
-
-            var className = ClassName(klass);
-            var staticAddress = GetStaticAddress(parent);
-            Debug.Log("  => Found '" + className + "' at 0x" + klass.ToString("X") + ".");
-            Debug.Log("  => Static field table at 0x" + staticAddress.ToString("X") + ".");
-
-            return new MonoClass
-            {
-                NameSpace = ClassNameSpace(klass),
-                Name = className,
-                Address = klass,
-                Static = staticAddress,
-                Fields = GetAllFields(klass)
-            };
+            return CreateMonoClass(klass, depth);
         }
 
         Debug.Log("  => Not found!");
 
-        return null;
-    }
-
-    private protected override MonoClass GetClass(MonoImage image, string className, int depth = 0)
-    {
-        string classNameSpace = null;
-        var delimiter = className.LastIndexOf('.');
-        if (delimiter > -1)
-        {
-            classNameSpace = className.Substring(0, delimiter);
-            className = className.Substring(delimiter + 1);
-        }
-
-        Debug.Log("Searching for class '" + className + "'...");
-
-        foreach (var klass in Classes(image))
-        {
-            var klassName = ClassName(klass);
-            var klassNameSpace = ClassNameSpace(klass);
-
-            if (klassName == className && (classNameSpace == null || klassNameSpace == classNameSpace))
-            {
-                var parent = klass;
-                for (int i = 0; i < depth; ++i)
-                    parent = ClassParent(parent);
-
-                var staticAddress = GetStaticAddress(parent);
-                Debug.Log("  => Found at 0x" + klass.ToString("X") + ".");
-                Debug.Log("  => Static field table at 0x" + staticAddress.ToString("X") + ".");
-
-                return new MonoClass
-                {
-                    NameSpace = klassNameSpace,
-                    Name = klassName,
-                    Address = klass,
-                    Static = staticAddress,
-                    Fields = GetAllFields(klass)
-                };
-            }
-        }
-
-        Debug.Log("  => Not found!");
         return null;
     }
 
