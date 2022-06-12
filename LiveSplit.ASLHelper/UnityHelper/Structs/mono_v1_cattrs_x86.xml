@@ -22,14 +22,14 @@
 
     <MonoClass>
       <parent       offset="0x24"/>
-      <image        offset="0x2C"/>
-      <name         offset="0x30"/>
-      <name_space   offset="0x34"/>
-      <type_token   offset="0x38"/>
-      <field_count  offset="0x64"/>
-      <fields       offset="0x74"/>
-      <runtime_info offset="0xA4"/>
-      <next         offset="0xA8"/>
+      <image        offset="0x30"/>
+      <name         offset="0x34"/>
+      <name_space   offset="0x38"/>
+      <type_token   offset="0x3C"/>
+      <field_count  offset="0x68"/>
+      <fields       offset="0x78"/>
+      <runtime_info offset="0xA8"/>
+      <next         offset="0xAC"/>
     </MonoClass>
 
     <MonoGenericClass>

@@ -4,7 +4,7 @@ namespace ASLHelper.MainHelper;
 
 public class TimerHelper
 {
-    public TimerHelper(LiveSplitState state)
+    internal TimerHelper(LiveSplitState state)
     {
         _model = new TimerModel { CurrentState = state };
     }

@@ -3,16 +3,17 @@ using LiveSplit.UI;
 
 namespace ASLHelper;
 
+/// <summary>
+///     A static data-class, holding relevant information about the helper.
+/// </summary>
 internal static partial class Data
 {
     public static Main s_Helper;
     public static ILayout s_Layout;
     public static LiveSplitState s_State;
 
-    #region UnityHelper
     public static ProcessModuleWow64Safe s_MonoModule;
     public static ProcessModuleWow64Safe s_UnityPlayer;
-    #endregion
 
     public static void Dispose()
     {
@@ -24,6 +25,6 @@ internal static partial class Data
         // Unity
         s_MonoModule = null;
         s_UnityPlayer = null;
-        s_SceneManager = IntPtr.Zero;
+        s_SceneManager = 0;
     }
 }

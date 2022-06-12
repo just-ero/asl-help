@@ -21,7 +21,7 @@ public partial class Main
         return result;
     }
 
-    public T Read<T>(IntPtr baseAddress, params int[] offsets) where T : unmanaged
+    public T Read<T>(nint baseAddress, params int[] offsets) where T : unmanaged
     {
         _ = TryRead<T>(out var result, baseAddress, offsets);
         return result;
@@ -52,7 +52,7 @@ public partial class Main
         return TryRead<T>(out result, module.BaseAddress + baseOffset, offsets);
     }
 
-    public unsafe bool TryRead<T>(out T result, IntPtr baseAddress, params int[] offsets) where T : unmanaged
+    public unsafe bool TryRead<T>(out T result, nint baseAddress, params int[] offsets) where T : unmanaged
     {
         if (!TryDeref(out var deref, baseAddress, offsets))
         {
@@ -62,7 +62,7 @@ public partial class Main
 
         fixed (T* pResult = &result)
         {
-            return Read(&pResult, GetTypeSize<T>(), deref);
+            return Read(pResult, GetTypeSize<T>(), deref);
         }
     }
     #endregion

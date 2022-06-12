@@ -53,7 +53,7 @@ public partial class Unity
                 Debug.Log("  => Module list locked. Retrying in 1 second...");
             }
 
-            await Task.Delay(1000, _cancelSource.Token);
+            await Task.Delay(1000, CancelSource.Token);
         }
 
         return null;
@@ -101,7 +101,7 @@ public partial class Unity
                 Debug.Log("  => Module list locked. Retrying in 1 second...");
             }
 
-            await Task.Delay(1000, _cancelSource.Token);
+            await Task.Delay(1000, CancelSource.Token);
         }
 
         return null;
@@ -119,21 +119,31 @@ public partial class Unity
         {
             case MONO_V1:
             {
+                helper = new MonoV1Helper(this, "mono", "v1");
                 break;
             }
 
             case MONO_V2:
             {
+                helper = new MonoV2Helper(this, "mono", "v2");
                 break;
             }
 
             case IL2CPP:
             {
+                var ver = Game.MainModule.FileVersionInfo.FileMajorPart switch
+                {
+                    < 2019 => "base",
+                    2019 => "2019",
+                    > 2019 => "2020"
+                };
+
+                helper = new Il2CppHelper(this, "il2cpp", ver);
                 break;
             }
         }
 
-        Debug.Log("Created helper successfully.");
+        Debug.Log("  => Created helper successfully.");
         Debug.Log();
 
         return helper;
@@ -173,7 +183,7 @@ public partial class Unity
                     Debug.Log($"    => Retrying in {delay}ms...");
                     Debug.Log();
 
-                    await Task.Delay(delay, _cancelSource.Token);
+                    await Task.Delay(delay, CancelSource.Token);
                 }
             }
             catch (Exception ex)
@@ -187,7 +197,7 @@ public partial class Unity
 
                     _helper.ClearImages();
 
-                    await Task.Delay(delay, _cancelSource.Token);
+                    await Task.Delay(delay, CancelSource.Token);
                     continue;
                 }
 

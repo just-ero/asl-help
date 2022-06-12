@@ -2,24 +2,21 @@
 
 public class Scene
 {
-    public Scene(params int[] offsets)
+    internal Scene(params int[] offsets)
     {
         _offsets = offsets;
     }
 
-    #region Fields
     private readonly int[] _offsets;
-    #endregion
 
-    #region Properties
     public bool IsValid
     {
-        get => Data.s_Helper.Game.ReadPointer(Deref(0x0)) != IntPtr.Zero;
+        get => Data.s_Helper.Read<nint>(Deref(0x0)) != 0;
     }
 
-    public IntPtr Address
+    public nint Address
     {
-        get => Data.s_Helper.Game.ReadPointer(Deref());
+        get => Data.s_Helper.Read<nint>(Deref());
     }
 
     public string Name
@@ -45,11 +42,10 @@ public class Scene
 
     public int Index
     {
-        get => Data.s_Helper.Game.ReadValue<int>(Deref(SceneHelper.SceneOffsets[5]));
+        get => Data.s_Helper.Read<int>(Deref(SceneHelper.SceneOffsets[5]));
     }
-    #endregion
 
-    private IntPtr Deref(params int[] offsets)
+    private nint Deref(params int[] offsets)
     {
         var deref = Data.s_Helper.Deref(Data.s_SceneManager, _offsets);
         return Data.s_Helper.Deref(deref, offsets);

@@ -1,6 +1,6 @@
 <mono>
   <signatures>
-    <loaded_images_hashes offset="2" pattern="8B 35 ???????? 83 3D"/>
+    <loaded_images_hashes offset="9" pattern="85 F6 ???? FF 75 ?? FF 35"/>
   </signatures>
 
   <structs>
@@ -16,24 +16,31 @@
     </Slot>
 
     <MonoImage>
-      <class_cache_size  offset="0x2AC"/>
-      <class_cache_table offset="0x2B4"/>
+      <class_cache_size  offset="0x360"/>
+      <class_cache_table offset="0x368"/>
     </MonoImage>
 
     <MonoClass>
-      <parent       offset="0x24"/>
-      <image        offset="0x2C"/>
-      <name         offset="0x30"/>
-      <name_space   offset="0x34"/>
-      <type_token   offset="0x38"/>
-      <field_count  offset="0x64"/>
-      <fields       offset="0x74"/>
-      <runtime_info offset="0xA4"/>
+      <class_kind   offset="0x1E"/>
+      <parent       offset="0x20"/>
+      <image        offset="0x28"/>
+      <name         offset="0x2C"/>
+      <name_space   offset="0x30"/>
+      <type_token   offset="0x34"/>
+      <vtable_size  offset="0x38"/>
+      <fields       offset="0x60"/>
+      <runtime_info offset="0x84"/>
+      <field_count  offset="0xA4"/>
       <next         offset="0xA8"/>
     </MonoClass>
 
+    <MonoClassGenericInst>
+      <generic_class offset="0x94"/>
+    </MonoClassGenericInst>
+
     <MonoGenericClass>
-      <cached_class offset="0x10"/>
+      <container_class offset="0x00"/>
+      <cached_class    offset="0x10"/>
     </MonoGenericClass>
 
     <MonoClassField>
@@ -54,8 +61,8 @@
     </MonoClassRuntimeInfo>
 
     <MonoVTable>
-      <data                    offset="0x0C"/>
       <runtime_generic_context offset="0x24"/>
+      <vtable                  offset="0x28"/>
     </MonoVTable>
   </structs>
 </mono>

@@ -1,12 +1,12 @@
 ﻿using LiveSplit.UI.Components;
 
-namespace ASLHelper;
+namespace ASLHelper.MainHelper;
 
 public class TextComponent
 {
     public static IComponentFactory s_TextComponentFactory = ComponentManager.ComponentFactories["LiveSplit.Text.dll"];
 
-    public TextComponent(string id)
+    internal TextComponent(string id)
     {
         var component = s_TextComponentFactory.Create(Data.s_State);
 
@@ -19,25 +19,31 @@ public class TextComponent
         Data.s_LayoutComponents.Add(LayoutComponent);
     }
 
-    public TextComponent(string id, ILayoutComponent component)
+    internal TextComponent(string id, ILayoutComponent component)
     {
         LayoutComponent = (LayoutComponent)component;
         ComponentSettings = (component.Component as dynamic).Settings;
         ID = id;
     }
 
-    public readonly LayoutComponent LayoutComponent;
-    public readonly dynamic ComponentSettings;
+    internal TextComponent(ILayoutComponent component)
+    {
+        LayoutComponent = (LayoutComponent)component;
+        ComponentSettings = (component.Component as dynamic).Settings;
+    }
 
-    public string ID { get; private set; }
+    internal readonly LayoutComponent LayoutComponent;
+    internal readonly dynamic ComponentSettings;
 
-    public object Text1
+    public string ID { get; internal set; }
+
+    public dynamic Text1
     {
         get => ComponentSettings.Text1;
         set => ComponentSettings.Text1 = value.ToString();
     }
 
-    public object Text2
+    public dynamic Text2
     {
         get => ComponentSettings.Text2;
         set => ComponentSettings.Text2 = value.ToString();

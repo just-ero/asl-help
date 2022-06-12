@@ -3,7 +3,7 @@
 public partial class Main
 {
     #region String Pattern
-    public IntPtr ScanPages(int offset, params string[] pattern)
+    public nint ScanPages(int offset, params string[] pattern)
     {
         var target = new SigScanTarget(offset, pattern);
         return ScanPages(target);
@@ -11,7 +11,7 @@ public partial class Main
     #endregion
 
     #region SigScanTarget
-    public IntPtr ScanPages(SigScanTarget target, bool allPages = false)
+    public nint ScanPages(SigScanTarget target, bool allPages = false)
     {
         return ScanPagesAll(target, allPages).FirstOrDefault();
     }

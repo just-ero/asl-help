@@ -14,14 +14,34 @@ public partial class Unity : Main
     public Unity(LiveSplitState state, object compiledScript)
         : this(state, null, compiledScript) { }
 
-    #region Fields
-    private readonly CancellationTokenSource _cancelSource = new();
-    #endregion
+    private MonoHelper _helper;
+    internal CancellationTokenSource CancelSource = new();
+
+    private bool _loadSceneManager;
+    public bool LoadSceneManager
+    {
+        get => _loadSceneManager;
+        set
+        {
+            if (Game != null)
+            {
+                var msg = $"{nameof(LoadSceneManager)} must be set before entering the 'init {{}}' action.";
+                throw new InvalidOperationException(msg);
+            }
+
+            Debug.Log(value ? "  => Will try to load SceneManager." : "  => Will not load SceneManager.");
+            _loadSceneManager = value;
+        }
+    }
+
+    public SceneHelper Scenes { get; private set; }
 
     public void Load(uint timeout = 3000, uint unityPlayerRetries = 1)
     {
         _ = Task.Run(async () =>
         {
+            CancelSource = new();
+
             try
             {
                 Data.s_MonoModule = await GetMonoModule();
@@ -32,8 +52,7 @@ public partial class Unity : Main
 
                 if (LoadSceneManager && Data.s_UnityPlayer != null)
                 {
-
-                    if (Data.s_SceneManager == IntPtr.Zero)
+                    if (Data.s_SceneManager == 0)
                     {
                         Debug.Log("    => SceneManager will not be available!");
                     }
@@ -60,7 +79,7 @@ public partial class Unity : Main
 
     public override void Dispose()
     {
-        _cancelSource.Cancel();
+        CancelSource.Cancel();
 
         base.Dispose();
     }

@@ -3,7 +3,7 @@
 public partial class Main
 {
     #region String Pattern
-    public IEnumerable<IntPtr> ScanPagesAll(int offset, params string[] pattern)
+    public IEnumerable<nint> ScanPagesAll(int offset, params string[] pattern)
     {
         var target = new SigScanTarget(offset, pattern);
         return ScanPagesAll(target);
@@ -11,7 +11,7 @@ public partial class Main
     #endregion
 
     #region SigScanTarget
-    public IEnumerable<IntPtr> ScanPagesAll(SigScanTarget target, bool allPages = false)
+    public IEnumerable<nint> ScanPagesAll(SigScanTarget target, bool allPages = false)
     {
         if (Game == null)
         {

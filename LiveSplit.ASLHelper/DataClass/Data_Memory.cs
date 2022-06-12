@@ -7,21 +7,19 @@ internal static partial class Data
     public static readonly OnFoundCallback s_OnFound = (p, _, addr)
         => p.Is64Bit() ? addr + 0x4 + p.ReadValue<int>(addr) : p.ReadPointer(addr);
 
-    private static IntPtr g_runtimeSceneManager;
-    public static IntPtr s_SceneManager
+    private static nint g_runtimeSceneManager;
+    public static nint s_SceneManager
     {
         get
         {
-            if (g_runtimeSceneManager != IntPtr.Zero)
+            if (g_runtimeSceneManager != 0)
                 return g_runtimeSceneManager;
 
             Debug.Log("Looking for g_runtimeSceneManager...");
 
-            var helper = s_Helper as Unity;
-            var scanner = new SignatureScanner(helper.Game, s_UnityPlayer.BaseAddress, s_UnityPlayer.ModuleMemorySize);
             var target = new SigScanTarget { OnFound = s_OnFound };
 
-            if (helper.Is64Bit)
+            if (s_Helper.Is64Bit)
             {
                 target.AddSignature(3, "4C 8B 35 ???????? 33 F6 48 8B E9"); // 2021.2.11
                 target.AddSignature(3, "4C 8B 25 ???????? 33 F6 48 8B E9"); // 2017.2.0
@@ -33,8 +31,8 @@ internal static partial class Data
                 target.AddSignature(2, "8B 0D ???????? 53 8D 41"); // 2017.2.0
             }
 
-            var scan = scanner.Scan(target);
-            if (scan != IntPtr.Zero)
+            var scan = s_Helper.Scan(s_UnityPlayer, target);
+            if (scan != 0)
             {
                 Debug.Log("  => Found at 0x" + scan.ToString("X") + ".");
                 Debug.Log();

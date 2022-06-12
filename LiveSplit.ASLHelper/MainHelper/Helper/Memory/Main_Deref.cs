@@ -3,25 +3,25 @@
 public partial class Main
 {
     #region Deref
-    public IntPtr Deref(int baseOffset, params int[] offsets)
+    public nint Deref(int baseOffset, params int[] offsets)
     {
         _ = TryDeref(out var deref, Game?.MainModuleWow64Safe(), baseOffset, offsets);
         return deref;
     }
 
-    public IntPtr Deref(string moduleName, int baseOffset, params int[] offsets)
+    public nint Deref(string moduleName, int baseOffset, params int[] offsets)
     {
         _ = TryDeref(out var deref, GetModule(moduleName), baseOffset, offsets);
         return deref;
     }
 
-    public IntPtr Deref(ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
+    public nint Deref(ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
     {
         _ = TryDeref(out var deref, module, baseOffset, offsets);
         return deref;
     }
 
-    public IntPtr Deref(IntPtr baseAddress, params int[] offsets)
+    public nint Deref(nint baseAddress, params int[] offsets)
     {
         _ = TryDeref(out var deref, baseAddress, offsets);
         return deref;
@@ -29,17 +29,17 @@ public partial class Main
     #endregion
 
     #region TryDeref
-    public bool TryDeref(out IntPtr deref, int baseOffset, params int[] offsets)
+    public bool TryDeref(out nint deref, int baseOffset, params int[] offsets)
     {
         return TryDeref(out deref, Game?.MainModuleWow64Safe(), baseOffset, offsets);
     }
 
-    public bool TryDeref(out IntPtr deref, string moduleName, int baseOffset, params int[] offsets)
+    public bool TryDeref(out nint deref, string moduleName, int baseOffset, params int[] offsets)
     {
         return TryDeref(out deref, GetModule(moduleName), baseOffset, offsets);
     }
 
-    public bool TryDeref(out IntPtr deref, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
+    public bool TryDeref(out nint deref, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
     {
         if (module == null)
         {
@@ -52,9 +52,9 @@ public partial class Main
         return TryDeref(out deref, module.BaseAddress + baseOffset, offsets);
     }
 
-    public unsafe bool TryDeref(out IntPtr deref, IntPtr baseAddress, params int[] offsets)
+    public unsafe bool TryDeref(out nint deref, nint baseAddress, params int[] offsets)
     {
-        if (baseAddress == IntPtr.Zero)
+        if (baseAddress == 0)
         {
             deref = default;
             return false;
@@ -65,7 +65,7 @@ public partial class Main
         if (offsets.Length == 0)
             return true;
 
-        fixed (IntPtr* pDeref = &deref)
+        fixed (nint* pDeref = &deref)
         {
             for (int i = 0; i < offsets.Length; i++)
             {

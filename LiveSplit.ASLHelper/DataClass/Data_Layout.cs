@@ -2,13 +2,17 @@
 
 namespace ASLHelper;
 
-/// <summary>
-///     A static data-class, holding relevant information about the helper.
-/// </summary>
 internal static partial class Data
 {
-    public static IEnumerable<IComponent> s_Components;
-    public static IList<ILayoutComponent> s_LayoutComponents;
+    public static IEnumerable<IComponent> s_Components
+    {
+        get => s_State.Layout.Components;
+    }
+
+    public static IList<ILayoutComponent> s_LayoutComponents
+    {
+        get => s_State.Layout.LayoutComponents;
+    }
 
     public static IComponent FindComponent(string typeName, string tag)
     {
@@ -24,18 +28,27 @@ internal static partial class Data
     public static ILayoutComponent FindLayoutComponent(string typeName, string tag, out IComponent component)
     {
         component = null;
-        var layoutComponent = s_LayoutComponents.SingleOrDefault(lc => (lc.Component.GetSettingsControl(s_Layout.Mode).Tag as string) == tag);
+        var lc = s_LayoutComponents.SingleOrDefault(lc => (lc.Component.GetSettingsControl(s_Layout.Mode).Tag as string) == tag);
 
-        if (layoutComponent == null)
+        if (lc == null)
             return null;
 
         if (typeName == null)
-            return layoutComponent;
+            return lc;
 
-        if (layoutComponent?.Component.GetType().Name != typeName)
+        if (lc?.Component.GetType().Name != typeName)
             return null;
 
-        component = layoutComponent.Component;
-        return layoutComponent;
+        component = lc.Component;
+        return lc;
+    }
+
+    public static IEnumerable<ILayoutComponent> LayoutComponentsOfType(string type)
+    {
+        foreach (var lc in s_LayoutComponents)
+        {
+            if (lc.Component.GetType().Name == type)
+                yield return lc;
+        }
     }
 }

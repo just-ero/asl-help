@@ -2,10 +2,9 @@
 
 public class SettingsHelper
 {
-    private const string NULL_STRING = null;
     private static readonly Func<string, bool, string, string, string, Tuple<string, bool, string, string, string>> SETTINGS_TUPLE = Tuple.Create;
 
-    public SettingsHelper(object builder)
+    internal SettingsHelper(object builder)
     {
         _builder = builder;
     }
@@ -14,13 +13,13 @@ public class SettingsHelper
 
     public void Create(Dictionary<string, string> settings, bool defaultValue = true, string defaultParent = null)
     {
-        var converted = settings?.Select(kvp => SETTINGS_TUPLE(kvp.Key, defaultValue, kvp.Value, defaultParent, NULL_STRING)).ToArray();
+        var converted = settings?.Select(kvp => SETTINGS_TUPLE(kvp.Key, defaultValue, kvp.Value, defaultParent, null)).ToArray();
         Create(converted, defaultParent);
     }
 
     public void Create(Dictionary<string, bool> settings, string defaultParent = null)
     {
-        var converted = settings?.Select(kvp => SETTINGS_TUPLE(kvp.Key, kvp.Value, kvp.Key, defaultParent, NULL_STRING)).ToArray();
+        var converted = settings?.Select(kvp => SETTINGS_TUPLE(kvp.Key, kvp.Value, kvp.Key, defaultParent, null)).ToArray();
         Create(converted, defaultParent);
     }
 
@@ -31,25 +30,25 @@ public class SettingsHelper
 
     public void Create(IList<string> settings, bool defaultValue = true, string defaultParent = null)
     {
-        var converted = settings?.Select(s => SETTINGS_TUPLE(s, defaultValue, s, defaultParent, NULL_STRING)).ToArray();
+        var converted = settings?.Select(s => SETTINGS_TUPLE(s, defaultValue, s, defaultParent, null)).ToArray();
         Create(converted, defaultParent);
     }
 
     public void Create(IList<Tuple<string, string>> settings, bool defaultValue = true, string defaultParent = null)
     {
-        var converted = settings?.Select(t => SETTINGS_TUPLE(t.Item1, defaultValue, t.Item2, defaultParent, NULL_STRING)).ToArray();
+        var converted = settings?.Select(t => SETTINGS_TUPLE(t.Item1, defaultValue, t.Item2, defaultParent, null)).ToArray();
         Create(converted, defaultParent);
     }
 
     public void Create(IList<Tuple<string, bool, string>> settings, string defaultParent = null)
     {
-        var converted = settings?.Select(t => SETTINGS_TUPLE(t.Item1, t.Item2, t.Item1, t.Item3, NULL_STRING)).ToArray();
+        var converted = settings?.Select(t => SETTINGS_TUPLE(t.Item1, t.Item2, t.Item1, t.Item3, null)).ToArray();
         Create(converted, defaultParent);
     }
 
     public void Create(IList<Tuple<string, bool, string, string>> settings, string defaultParent = null)
     {
-        var converted = settings?.Select(t => SETTINGS_TUPLE(t.Item1, t.Item2, t.Item3, t.Item4, NULL_STRING)).ToArray();
+        var converted = settings?.Select(t => SETTINGS_TUPLE(t.Item1, t.Item2, t.Item3, t.Item4, null)).ToArray();
         Create(converted, defaultParent);
     }
 
@@ -83,28 +82,28 @@ public class SettingsHelper
             case 1:
             {
                 for (int i = 0; i < outerCount; i++)
-                    converted[i] = SETTINGS_TUPLE(settings[i, 0], defaultValue, settings[i, 0], defaultParent, NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(settings[i, 0], defaultValue, settings[i, 0], defaultParent, null);
 
                 break;
             }
             case 2:
             {
                 for (int i = 0; i < outerCount; i++)
-                    converted[i] = SETTINGS_TUPLE(settings[i, 0], defaultValue, settings[i, 1], defaultParent, NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(settings[i, 0], defaultValue, settings[i, 1], defaultParent, null);
 
                 break;
             }
             case 3:
             {
                 for (int i = 0; i < outerCount; i++)
-                    converted[i] = SETTINGS_TUPLE(settings[i, 0], settings[i, 1], settings[i, 0], settings[i, 2], NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(settings[i, 0], settings[i, 1], settings[i, 0], settings[i, 2], null);
 
                 break;
             }
             case 4:
             {
                 for (int i = 0; i < outerCount; i++)
-                    converted[i] = SETTINGS_TUPLE(settings[i, 0], settings[i, 1], settings[i, 2], settings[i, 3], NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(settings[i, 0], settings[i, 1], settings[i, 2], settings[i, 3], null);
 
                 break;
             }
@@ -140,22 +139,22 @@ public class SettingsHelper
             {
                 case 1:
                 {
-                    converted[i] = SETTINGS_TUPLE(setting[0], defaultValue, setting[0], defaultParent, NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(setting[0], defaultValue, setting[0], defaultParent, null);
                     break;
                 }
                 case 2:
                 {
-                    converted[i] = SETTINGS_TUPLE(setting[0], defaultValue, setting[1], defaultParent, NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(setting[0], defaultValue, setting[1], defaultParent, null);
                     break;
                 }
                 case 3:
                 {
-                    converted[i] = SETTINGS_TUPLE(setting[0], setting[1], setting[0], setting[2], NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(setting[0], setting[1], setting[0], setting[2], null);
                     break;
                 }
                 case 4:
                 {
-                    converted[i] = SETTINGS_TUPLE(setting[0], setting[1], setting[2], setting[3], NULL_STRING);
+                    converted[i] = SETTINGS_TUPLE(setting[0], setting[1], setting[2], setting[3], null);
                     break;
                 }
                 case 5:

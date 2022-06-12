@@ -10,11 +10,9 @@ public partial class Main : IDisposable
     {
         Data.s_State = state;
         Data.s_Layout = state.Layout;
-        Data.s_Components = state.Layout.Components;
-        Data.s_LayoutComponents = state.Layout.LayoutComponents;
 
         Timer = new(state);
-        Texts = new();
+        UI = new();
 
         if (settings != null)
             Settings = new(settings);
@@ -36,16 +34,13 @@ public partial class Main : IDisposable
     public Main(LiveSplitState state, object compiledScript)
         : this(state, null, compiledScript) { }
 
-    #region Fields
     private Process _game;
     internal bool Is64Bit;
     internal int PtrSize;
 
     private readonly Form _form;
     private readonly object _script;
-    #endregion
 
-    #region Properties
     public Process Game
     {
         get
@@ -70,11 +65,10 @@ public partial class Main : IDisposable
     }
 
     public TimerHelper Timer { get; }
-    public TextComponentHelper Texts { get; }
     public SettingsHelper Settings { get; }
-    #endregion
+    public UIHelper UI { get; }
 
-    protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
+    private protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
     {
         module = null;
 
@@ -102,7 +96,7 @@ public partial class Main : IDisposable
 
         var closing = Debug.TraceIncludes("TimerForm_FormClosing", "OpenLayoutFromFile", "LoadDefaultLayout");
         if (!closing)
-            Texts.RemoveAll();
+            UI.Text.RemoveAll();
 
         Data.Dispose();
     }

@@ -7,13 +7,30 @@ startup
 	#region Helper Setup
 	var bytes = File.ReadAllBytes(@"Components\LiveSplit.ASLHelper.bin");
 	var type = Assembly.Load(bytes).GetType("ASLHelper.Unity");
-	vars.Helper = Activator.CreateInstance(type, timer, settings, this);
+	vars.Helper = Activator.CreateInstance(type, timer, this);
 	#endregion
 }
 
 init
 {
-	vars.Log(vars.Helper.Game.ProcessName);
+	vars.Helper.TryOnLoad = (Func<dynamic, bool>)(helper =>
+	{
+		var myClass = helper.GetClass(/* assembly name */, /* class name */, /* optional: inheritance depth */);
+		return true;
+	});
+
+	vars.Helper.Load();
+}
+
+update
+{
+	if (!vars.Helper.Loaded)
+		return false;
+}
+
+exit
+{
+	vars.Helper.Dispose();
 }
 
 shutdown

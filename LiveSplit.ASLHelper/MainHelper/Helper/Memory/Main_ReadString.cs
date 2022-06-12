@@ -21,7 +21,7 @@ public partial class Main
         return result;
     }
 
-    public string ReadString(int length, ReadStringType stringType, IntPtr baseAddress, params int[] offsets)
+    public string ReadString(int length, ReadStringType stringType, nint baseAddress, params int[] offsets)
     {
         _ = TryReadString(out var result, length, stringType, baseAddress, offsets);
         return result;
@@ -52,7 +52,7 @@ public partial class Main
         return TryReadString(out result, length, stringType, module.BaseAddress + baseOffset, offsets);
     }
 
-    public bool TryReadString(out string result, int length, ReadStringType stringType, IntPtr baseAddress, params int[] offsets)
+    public bool TryReadString(out string result, int length, ReadStringType stringType, nint baseAddress, params int[] offsets)
     {
         if (!TryDeref(out var deref, baseAddress, offsets))
         {

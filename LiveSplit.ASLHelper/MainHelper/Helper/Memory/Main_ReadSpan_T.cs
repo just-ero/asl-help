@@ -24,7 +24,7 @@ public partial class Main
         return buffer;
     }
 
-    public T[] ReadSpan<T>(int length, IntPtr baseAddress, params int[] offsets) where T : unmanaged
+    public T[] ReadSpan<T>(int length, nint baseAddress, params int[] offsets) where T : unmanaged
     {
         T[] buffer = new T[length];
         _ = TryReadSpan<T>(buffer, baseAddress, offsets);
@@ -56,10 +56,10 @@ public partial class Main
         return TryReadSpan<T>(buffer, module.BaseAddress + baseOffset, offsets);
     }
 
-    public unsafe bool TryReadSpan<T>(T[] buffer, IntPtr baseAddress, params int[] offsets) where T : unmanaged
+    public unsafe bool TryReadSpan<T>(T[] buffer, nint baseAddress, params int[] offsets) where T : unmanaged
     {
         var deref = Deref(baseAddress, offsets);
-        if (deref == IntPtr.Zero)
+        if (deref == 0)
             return false;
 
         if (!Is64Bit && IsPointerType<T>())

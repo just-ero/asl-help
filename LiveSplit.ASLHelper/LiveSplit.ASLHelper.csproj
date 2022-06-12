@@ -63,7 +63,7 @@
     <Compile Include="MainHelper\Helper\Memory\Main_ReadSpan_T.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main_Read_T.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main_Deref.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Main_MemoryCore.cs" />
+    <Compile Include="MainHelper\Helper\Memory\NativeAPI.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanAll.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPagesRel.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPages.cs" />
@@ -74,8 +74,9 @@
     <Compile Include="MainHelper\Helper\QoL\Main_Alert.cs" />
     <Compile Include="MainHelper\Helper\QoL\Main_Reject.cs" />
     <Compile Include="MainHelper\Helper\QoL\Main_Versioning.cs" />
-    <Compile Include="MainHelper\Helper\UI\TextComponent.cs" />
-    <Compile Include="MainHelper\Helper\UI\TextComponentHelper.cs" />
+    <Compile Include="MainHelper\UI\TextComponent.cs" />
+    <Compile Include="MainHelper\UI\TextComponentHelper.cs" />
+    <Compile Include="MainHelper\UI\UIHelper.cs" />
     <Compile Include="MainHelper\SettingsHelper.cs" />
     <Compile Include="MainHelper\TimerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,18 +86,31 @@
     <Compile Include="UnityHelper\Helper\Unity_Loading.cs" />
     <Compile Include="UnityHelper\Helper\Unity_Template.cs" />
     <Compile Include="UnityHelper\Helper\Unity_Watchers.cs" />
+    <Compile Include="UnityHelper\MonoHelpers\Il2CppHelper.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoHelper.cs" />
-    <Compile Include="UnityHelper\MonoHelpers\MonoHelper_Xml.cs" />
+    <Compile Include="EngineReflection.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoObjects\MonoClass.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoObjects\MonoField.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoObjects\MonoFieldAttribute.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoObjects\MonoImage.cs" />
+    <Compile Include="UnityHelper\MonoHelpers\MonoV1Helper.cs" />
+    <Compile Include="UnityHelper\MonoHelpers\MonoV2Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EmuHelper\" />
     <Folder Include="UnityHelper\MemoryClasses\" />
-    <Folder Include="UnityHelper\Structs\" />
     <Folder Include="UnrealHelper\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UnityHelper\Structs\il2cpp_2019_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\il2cpp_2020_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\il2cpp_base_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v1_cattrs_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v1_cattrs_x86.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v1_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v1_x86.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v2_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v2_x86.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -1,6 +1,6 @@
 ﻿using LiveSplit.UI.Components;
 
-namespace ASLHelper;
+namespace ASLHelper.MainHelper;
 
 public class TextComponentHelper
 {
@@ -29,8 +29,14 @@ public class TextComponentHelper
         }
         set
         {
+            Remove(id);
+
             if (value == null)
-                Remove(id);
+                return;
+
+            value.ID = id;
+            value.ComponentSettings.Tag = id;
+            _components[id] = value;
         }
     }
 
