@@ -86,6 +86,10 @@
     <Compile Include="UnityHelper\Helper\Unity_Loading.cs" />
     <Compile Include="UnityHelper\Helper\Unity_Template.cs" />
     <Compile Include="UnityHelper\Helper\Unity_Watchers.cs" />
+    <Compile Include="UnityHelper\MemoryClasses\MemoryArray_T.cs" />
+    <Compile Include="UnityHelper\MemoryClasses\MemoryClass.cs" />
+    <Compile Include="UnityHelper\MemoryClasses\MemoryList_T.cs" />
+    <Compile Include="UnityHelper\MemoryClasses\MemoryString.cs" />
     <Compile Include="UnityHelper\MonoHelpers\Il2CppHelper.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoHelper.cs" />
     <Compile Include="EngineReflection.cs" />
@@ -98,7 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EmuHelper\" />
-    <Folder Include="UnityHelper\MemoryClasses\" />
     <Folder Include="UnrealHelper\" />
   </ItemGroup>
   <ItemGroup>

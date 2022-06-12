@@ -33,7 +33,6 @@ internal class EngineReflection
 
         var doc = XDocument.Parse(reader.ReadToEnd());
 
-
         var structs = doc.Element("mono").Element("structs").Elements();
         var sigs = doc.Element("mono").Element("signatures").Elements();
 
