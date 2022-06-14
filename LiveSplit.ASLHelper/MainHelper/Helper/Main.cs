@@ -30,14 +30,13 @@ public partial class Main : IDisposable
     public Main(LiveSplitState state, object compiledScript)
         : this(state, null, compiledScript) { }
 
-    private Process _game;
+    private protected Process _game;
     public Process Game
     {
         get
         {
-            if (_game == null)
+            if ((_game = _script.GetFieldValue("_game")) != null)
             {
-                _game = _script.GetFieldValue("_game");
                 Is64Bit = _game.Is64Bit();
                 PtrSize = Is64Bit ? 0x8 : 0x4;
             }
