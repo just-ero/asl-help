@@ -34,7 +34,7 @@ public partial class Main
 
     public nint ScanRel(ProcessModuleWow64Safe module, int offset, params string[] pattern)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Scan] Module could not be found!");
             return 0;
@@ -88,7 +88,7 @@ public partial class Main
 
     public nint ScanRel(ProcessModuleWow64Safe module, SigScanTarget target)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Scan] Module could not be found!");
             return 0;

@@ -31,7 +31,7 @@ public class TextComponentHelper
         {
             Remove(id);
 
-            if (value == null)
+            if (value is null)
                 return;
 
             value.ID = id;

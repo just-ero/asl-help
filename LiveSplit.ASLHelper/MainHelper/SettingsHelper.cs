@@ -54,19 +54,19 @@ public class ASLSettingsHelper
 
     public void Create(IList<Tuple<string, bool, string, string, string>> settings, string defaultParent = null)
     {
-        if (_builder == null)
+        if (_builder is null)
             return;
 
-        if (settings == null)
+        if (settings is null)
             throw new ArgumentNullException(nameof(settings), "The settings collection was null.");
 
         for (int i = 0; i < settings.Count; i++)
         {
             var setting = settings[i];
-            if (setting == null)
+            if (setting is null)
                 throw new ArgumentNullException("settings collection", $"The element at index {i} in the collection was null.");
 
-            if (setting.Item1 == null || setting.Item3 == null)
+            if (setting.Item1 is null || setting.Item3 is null)
                 throw new ArgumentNullException("settings collection", $"An item in the element at index {i} was null.");
 
             _builder.Add(setting.Item1, setting.Item2, setting.Item3, setting.Item4 ?? defaultParent);
@@ -135,7 +135,7 @@ public class ASLSettingsHelper
         for (int i = 0; i < count; i++)
         {
             var setting = settings[i];
-            if (setting == null)
+            if (setting is null)
                 throw new ArgumentNullException("settings collection", $"The element at index {i} in the collection was null.");
 
             switch (setting.Length)

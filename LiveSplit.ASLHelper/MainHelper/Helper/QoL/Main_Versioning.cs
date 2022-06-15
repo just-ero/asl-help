@@ -18,7 +18,7 @@ public partial class Main
 
     public int GetMemorySize(ProcessModuleWow64Safe module)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[GetHash] Module could not be found!");
             return 0;
@@ -119,7 +119,7 @@ public partial class Main
 
     private string GetHash(ProcessModuleWow64Safe module, HashAlgorithm algorithm)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[GetHash] Module could not be found!");
             return null;

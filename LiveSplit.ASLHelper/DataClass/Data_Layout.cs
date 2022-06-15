@@ -30,10 +30,10 @@ internal static partial class Data
         component = null;
         var lc = s_LayoutComponents.SingleOrDefault(lc => (lc.Component.GetSettingsControl(Main.Instance.Layout.Mode).Tag as string) == tag);
 
-        if (lc == null)
+        if (lc is null)
             return null;
 
-        if (typeName == null)
+        if (typeName is null)
             return lc;
 
         if (lc?.Component.GetType().Name != typeName)

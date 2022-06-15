@@ -32,7 +32,7 @@ public partial class Unity
                     break;
                 }
 
-                if (module != null)
+                if (module is not null)
                 {
                     Debug.Log("  => Found " + module.ModuleName + ".");
                     Debug.Log();
@@ -72,7 +72,7 @@ public partial class Unity
                     break;
                 }
 
-                if (module != null)
+                if (module is not null)
                 {
                     Debug.Log("  => Found.");
                     Debug.Log();
@@ -109,7 +109,7 @@ public partial class Unity
 
     private MonoHelper MakeHelper()
     {
-        if (MonoModule == null)
+        if (MonoModule is null)
             return null;
 
         Debug.Log("Creating Mono helper...");
@@ -151,7 +151,7 @@ public partial class Unity
 
     private async Task<bool> DoOnLoad(uint timeout)
     {
-        if (TryOnLoad == null || _helper == null)
+        if (TryOnLoad is null || _helper is null)
             return true;
 
         int delay = (int)timeout;
@@ -171,7 +171,7 @@ public partial class Unity
 
                     for (int i = _memWatchers.Count - 1; i >= 0; i--)
                     {
-                        if (_memWatchers[i].Name == null)
+                        if (_memWatchers[i].Name is null)
                             _memWatchers.RemoveAt(i);
                     }
 
@@ -189,7 +189,7 @@ public partial class Unity
             catch (Exception ex)
             {
                 var exType = ex.GetType().ToString();
-                if (Exceptions != null && Exceptions.Any(e => exType.EndsWith(e, StringComparison.OrdinalIgnoreCase)))
+                if (Exceptions is not null && Exceptions.Any(e => exType.EndsWith(e, StringComparison.OrdinalIgnoreCase)))
                 {
                     Debug.Log($"  => TryOnLoad not successful: {exType}:\n{ex.Message}");
                     Debug.Log($"    => Retrying in {delay}ms...");

@@ -41,7 +41,7 @@ public partial class Unity
 
     public bool TryReadString(out string result, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Read] Module could not be found!");
 

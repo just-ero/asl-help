@@ -41,7 +41,7 @@ public partial class Main
 
     public bool TryRead<T>(out T result, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Read] Module could not be found!");
 

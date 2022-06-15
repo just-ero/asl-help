@@ -41,7 +41,7 @@ public partial class Main
 
     public bool TryReadString(out string result, int length, ReadStringType stringType, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Read] Module could not be found!");
 

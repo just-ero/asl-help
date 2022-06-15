@@ -19,4 +19,6 @@ public partial class Main
     public UIHelper UI { get; }
     public TimerHelper Timer { get; }
     public ASLSettingsHelper Settings { get; }
+
+    public IOHelper IO { get; }
 }

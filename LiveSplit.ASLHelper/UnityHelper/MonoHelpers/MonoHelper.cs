@@ -85,7 +85,7 @@ public abstract partial class MonoHelper
             var name = ClassName(klass);
             var nameSpace = ClassNameSpace(klass);
 
-            if (name == className && (classNameSpace == null || nameSpace == classNameSpace))
+            if (name == className && (classNameSpace is null || nameSpace == classNameSpace))
                 return CreateMonoClass(klass, depth);
         }
 

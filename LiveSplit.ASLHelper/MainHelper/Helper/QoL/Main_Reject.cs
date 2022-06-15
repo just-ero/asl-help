@@ -16,13 +16,13 @@ public partial class Main
 
     public bool Reject(ProcessModuleWow64Safe module, params int[] moduleMemorySizes)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Reject] Module could not be found!");
             return false;
         }
 
-        if (moduleMemorySizes == null || moduleMemorySizes.Length == 0)
+        if (moduleMemorySizes is null || moduleMemorySizes.Length == 0)
         {
             Game = null;
             return true;

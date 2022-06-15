@@ -45,7 +45,7 @@ public partial class Main
 
     public bool TryReadSpan<T>(T[] buffer, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Read] Module could not be found!");
 

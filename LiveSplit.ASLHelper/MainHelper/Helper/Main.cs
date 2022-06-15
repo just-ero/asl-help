@@ -3,7 +3,7 @@ using LiveSplit.Model;
 
 namespace ASLHelper;
 
-public partial class Main : IDisposable
+public partial class Main
 {
     public Main(LiveSplitState state, object settings, object compiledScript)
     {
@@ -11,13 +11,15 @@ public partial class Main : IDisposable
 
         State = state;
         Layout = state.Layout;
+
         UI = new();
+        IO = new();
         Timer = new(state);
         Settings = new(settings);
 
         _form = state.Form;
         _script =
-            state.Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
+            Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
             .FirstOrDefault(c =>
                 c.ComponentName == "Scriptable Auto Splitter"
                 && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
@@ -27,7 +29,7 @@ public partial class Main : IDisposable
         Debug.Log("Created ASL helper.");
     }
 
-    public Main(LiveSplitState state, object compiledScript)
+    public Main(LiveSplitState state, object compiledScript, string gameName = null)
         : this(state, null, compiledScript) { }
 
     private protected Process _game;
@@ -35,7 +37,7 @@ public partial class Main : IDisposable
     {
         get
         {
-            if ((_game = _script.GetFieldValue("_game")) != null)
+            if (_game is null && (_game = _script.GetFieldValue("_game")) is not null)
             {
                 Is64Bit = _game.Is64Bit();
                 PtrSize = Is64Bit ? 0x8 : 0x4;
@@ -53,15 +55,22 @@ public partial class Main : IDisposable
         }
     }
 
+    private string _gameName;
+    public string GameName
+    {
+        get => _gameName ?? Game?.ProcessName ?? "Auto Splitter";
+        set => _gameName = value;
+    }
+
     private protected bool TryGetModule(out ProcessModuleWow64Safe module, params string[] names)
     {
         module = null;
 
-        if (Game == null)
+        if (Game is null)
             return false;
 
         var modules = Game.ModulesWow64Safe();
-        if (modules == null || modules.Length == 0)
+        if (modules is null || modules.Length == 0)
             return false;
 
         module = modules.FirstOrDefault(m => names.Any(n => n.Equals(m?.ModuleName ?? "", StringComparison.OrdinalIgnoreCase)));
@@ -76,10 +85,17 @@ public partial class Main : IDisposable
 
     public virtual void Dispose()
     {
+        Dispose(true);
+    }
+
+    public virtual void Dispose(bool removeTexts)
+    {
         GC.SuppressFinalize(this);
 
         var closing = Debug.TraceIncludes("TimerForm_FormClosing", "OpenLayoutFromFile", "LoadDefaultLayout");
-        if (!closing)
+        if (!closing && removeTexts)
             UI.Text.RemoveAll();
+
+        IO.Dispose();
     }
 }

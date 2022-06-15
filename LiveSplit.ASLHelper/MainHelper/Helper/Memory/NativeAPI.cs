@@ -32,7 +32,7 @@ public partial class Main
 
     private unsafe bool Read(void* buffer, int bufferLength, nint address)
     {
-        if (Game == null || Game.HasExited)
+        if (Game is null || Game.HasExited)
             return false;
 
         var len = (nuint)bufferLength;

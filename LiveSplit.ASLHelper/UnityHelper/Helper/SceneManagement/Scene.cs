@@ -47,7 +47,7 @@ public class Scene
 
     private nint Deref(params int[] offsets)
     {
-        var deref = Unity.Instance.Deref(Data.s_SceneManager, _offsets);
+        var deref = Unity.Instance.Deref(SceneHelper.SceneManager, _offsets);
         return Unity.Instance.Deref(deref, offsets);
     }
 }

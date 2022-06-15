@@ -32,7 +32,7 @@ public partial class Main
 
     public IEnumerable<nint> ScanAll(ProcessModuleWow64Safe module, int offset, params string[] pattern)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Scan] Module could not be found!");
             return Enumerable.Empty<nint>();
@@ -67,7 +67,7 @@ public partial class Main
 
     public IEnumerable<nint> ScanAll(nint startAddress, int size, int offset, params string[] pattern)
     {
-        if (Game == null)
+        if (Game is null)
         {
             Debug.Warn("[Scan] Game process was null!");
             return Enumerable.Empty<nint>();
@@ -98,7 +98,7 @@ public partial class Main
 
     public IEnumerable<nint> ScanAll(ProcessModuleWow64Safe module, SigScanTarget target)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Scan] Module could not be found!");
             return Enumerable.Empty<nint>();
@@ -120,7 +120,7 @@ public partial class Main
 
     public IEnumerable<nint> ScanAll(nint startAddress, int size, SigScanTarget target)
     {
-        if (Game == null)
+        if (Game is null)
         {
             Debug.Warn("[Scan] Game process was null!");
             return Enumerable.Empty<nint>();

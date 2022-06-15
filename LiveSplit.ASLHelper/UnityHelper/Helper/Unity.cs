@@ -30,7 +30,7 @@ public partial class Unity : Main
         get => _loadSceneManager;
         set
         {
-            if (Game != null)
+            if (Game is not null)
             {
                 var msg = $"{nameof(LoadSceneManager)} must be set before entering the 'init {{}}' action.";
                 throw new InvalidOperationException(msg);
@@ -57,9 +57,9 @@ public partial class Unity : Main
 
                 _helper = MakeHelper();
 
-                if (LoadSceneManager && UnityPlayer != null)
+                if (LoadSceneManager && UnityPlayer is not null)
                 {
-                    if (Data.s_SceneManager == 0)
+                    if (SceneHelper.SceneManager == 0)
                     {
                         Debug.Log("    => SceneManager will not be available!");
                     }
@@ -86,8 +86,12 @@ public partial class Unity : Main
 
     public override void Dispose()
     {
-        CancelSource.Cancel();
+        Dispose(true);
+    }
 
-        base.Dispose();
+    public override void Dispose(bool removeTexts)
+    {
+        CancelSource.Cancel();
+        base.Dispose(removeTexts);
     }
 }

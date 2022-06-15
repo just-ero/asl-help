@@ -13,7 +13,7 @@ public partial class Main
     #region SigScanTarget
     public IEnumerable<nint> ScanPagesAll(SigScanTarget target, bool allPages = false)
     {
-        if (Game == null)
+        if (Game is null)
         {
             Debug.Warn("[Scan] Game process was null!");
             yield break;

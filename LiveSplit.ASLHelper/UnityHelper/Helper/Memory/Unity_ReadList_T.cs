@@ -41,7 +41,7 @@ public partial class Unity
 
     public bool TryReadList<T>(out List<T> result, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Read] Module could not be found!");
 

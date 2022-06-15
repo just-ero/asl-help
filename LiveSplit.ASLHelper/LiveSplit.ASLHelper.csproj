@@ -74,6 +74,8 @@
     <Compile Include="MainHelper\Helper\QoL\Main_Alert.cs" />
     <Compile Include="MainHelper\Helper\QoL\Main_Reject.cs" />
     <Compile Include="MainHelper\Helper\QoL\Main_Versioning.cs" />
+    <Compile Include="MainHelper\IO\FileLogger.cs" />
+    <Compile Include="MainHelper\IO\IOHelper.cs" />
     <Compile Include="MainHelper\UI\TextComponent.cs" />
     <Compile Include="MainHelper\UI\TextComponentHelper.cs" />
     <Compile Include="MainHelper\UI\UIHelper.cs" />

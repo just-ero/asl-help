@@ -41,7 +41,7 @@ public partial class Main
 
     public bool TryDeref(out nint deref, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets)
     {
-        if (module == null)
+        if (module is null)
         {
             Debug.Warn("[Deref] Module could not be found!");
 
