@@ -7,8 +7,8 @@ public partial class Unity : Main
 {
     internal static new Unity Instance { get; private set; }
 
-    public ProcessModuleWow64Safe MonoModule;
-    public ProcessModuleWow64Safe UnityPlayer;
+    private MonoHelper _helper;
+    internal CancellationTokenSource CancelSource;
 
     public Unity(LiveSplitState state, object settings, object compiledScript)
         : base(state, settings, compiledScript)
@@ -21,8 +21,8 @@ public partial class Unity : Main
     public Unity(LiveSplitState state, object compiledScript)
         : this(state, null, compiledScript) { }
 
-    private MonoHelper _helper;
-    internal CancellationTokenSource CancelSource = new();
+    public ProcessModuleWow64Safe MonoModule { get; private set; }
+    public ProcessModuleWow64Safe UnityPlayer { get; private set; }
 
     private bool _loadSceneManager;
     public bool LoadSceneManager

@@ -93,9 +93,19 @@ public abstract partial class MonoHelper
         return null;
     }
 
+    public MonoClass GetClass(uint classToken, int depth = 0)
+    {
+        return GetClass("Assembly-CSharp", classToken, depth);
+    }
+
     public MonoClass GetClass(string imageName, uint classToken, int depth = 0)
     {
         return GetClass(GetImage(imageName), classToken, depth);
+    }
+
+    public MonoClass GetClass(string className, int depth = 0)
+    {
+        return GetClass("Assembly-CSharp", className, depth);
     }
 
     public MonoClass GetClass(string imageName, string className, int depth = 0)

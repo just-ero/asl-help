@@ -6,7 +6,7 @@ public partial class Unity
 {
     private readonly MemoryWatcherList _memWatchers = new();
 
-    public object this[string name]
+    public MemoryWatcher this[string name]
     {
         get
         {
@@ -14,6 +14,13 @@ public partial class Unity
                 return watcher;
 
             throw new InvalidOperationException($"The specified item '{name}' could not be found in the Helper!");
+        }
+        set
+        {
+            RemoveWatcher(name);
+
+            value.Name = name;
+            _memWatchers.Add(value);
         }
     }
 
@@ -25,19 +32,27 @@ public partial class Unity
             _memWatchers.RemoveAt(index);
     }
 
-    public void Update()
+    public bool Update()
     {
+        if (!Loaded)
+            return false;
+
         UpdateAll(Game);
+        return true;
     }
 
-    public void UpdateAll(Process game)
+    public bool UpdateAll(Process game)
     {
+        if (!Loaded)
+            return false;
+
         _memWatchers.UpdateAll(game);
+        return true;
     }
 
-    public MemoryWatcher<T> Make<T>(IntPtr staticFieldTable, int staticFieldOffset, params int[] offsets) where T : unmanaged
+    public MemoryWatcher<T> Add<T>(nint staticFieldTable, int staticFieldOffset, params int[] offsets) where T : unmanaged
     {
-        if (staticFieldTable == IntPtr.Zero)
+        if (staticFieldTable == 0)
             throw new NullReferenceException("Static field table address was null!");
 
         var watcher = new MemoryWatcher<T>(new DeepPointer(staticFieldTable + staticFieldOffset, offsets));
@@ -46,9 +61,9 @@ public partial class Unity
         return watcher;
     }
 
-    public StringWatcher MakeString(int length, IntPtr staticFieldTable, int staticFieldOffset, params int[] offsets)
+    public StringWatcher AddString(int length, nint staticFieldTable, int staticFieldOffset, params int[] offsets)
     {
-        if (staticFieldTable == IntPtr.Zero)
+        if (staticFieldTable == 0)
             throw new NullReferenceException("Static field table address was null!");
 
         var watcher = new StringWatcher(new DeepPointer(staticFieldTable + staticFieldOffset, offsets), ReadStringType.UTF16, length * 2);
@@ -57,9 +72,9 @@ public partial class Unity
         return watcher;
     }
 
-    public MemoryString MakeString(IntPtr staticFieldTable, int staticFieldOffset, params int[] offsets)
+    public MemoryString AddString(nint staticFieldTable, int staticFieldOffset, params int[] offsets)
     {
-        if (staticFieldTable == IntPtr.Zero)
+        if (staticFieldTable == 0)
             throw new NullReferenceException("Static field table address was null!");
 
         var str = new MemoryString(staticFieldTable, staticFieldOffset, offsets);
@@ -68,9 +83,9 @@ public partial class Unity
         return str;
     }
 
-    public MemoryList<T> MakeList<T>(IntPtr staticFieldTable, int staticFieldOffset, params int[] offsets) where T : unmanaged
+    public MemoryList<T> AddList<T>(nint staticFieldTable, int staticFieldOffset, params int[] offsets) where T : unmanaged
     {
-        if (staticFieldTable == IntPtr.Zero)
+        if (staticFieldTable == 0)
             throw new NullReferenceException("Static field table address was null!");
 
         var list = new MemoryList<T>(staticFieldTable, staticFieldOffset, offsets);
@@ -79,9 +94,9 @@ public partial class Unity
         return list;
     }
 
-    public MemoryArray<T> MakeArray<T>(IntPtr staticFieldTable, int staticFieldOffset, params int[] offsets) where T : unmanaged
+    public MemoryArray<T> AddArray<T>(nint staticFieldTable, int staticFieldOffset, params int[] offsets) where T : unmanaged
     {
-        if (staticFieldTable == IntPtr.Zero)
+        if (staticFieldTable == 0)
             throw new NullReferenceException("Static field table address was null!");
 
         var list = new MemoryArray<T>(staticFieldTable, staticFieldOffset, offsets);

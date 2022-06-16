@@ -16,7 +16,7 @@ public class IOHelper
     {
         if (Main.Instance.Game is not null)
         {
-            Debug.Warn("[IO] A new file logger may not be started outside of the startup {} block!");
+            Debug.Warn("[IO] A new file logger may not be started outside of the 'startup {}' action!");
             return;
         }
 

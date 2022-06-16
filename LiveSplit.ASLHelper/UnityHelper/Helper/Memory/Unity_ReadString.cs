@@ -54,7 +54,13 @@ public partial class Unity
 
     public bool TryReadString(out string result, nint baseAddress, params int[] offsets)
     {
-        if (!TryDeref(out var deref, baseAddress, offsets))
+        if (!TryRead<nint>(out var read, baseAddress))
+        {
+            result = null;
+            return false;
+        }
+
+        if (!TryDeref(out var deref, read, offsets))
         {
             result = null;
             return false;

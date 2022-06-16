@@ -5,8 +5,6 @@ public class MemoryString : MemoryClass
     public MemoryString(nint baseAddress, int staticFieldOffset, int[] offsets)
         : base(baseAddress, staticFieldOffset, offsets) { }
 
-    public int[] Offsets;
-
     public new string Old
     {
         get => (string)base.Old;

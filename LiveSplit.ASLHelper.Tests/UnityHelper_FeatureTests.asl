@@ -1,4 +1,4 @@
-﻿state("LiveSplit") {}
+﻿state("TUNIC") {}
 
 startup
 {
@@ -15,7 +15,9 @@ init
 {
 	vars.Helper.TryOnLoad = (Func<dynamic, bool>)(mono =>
 	{
-		var myClass = mono.GetClass(/* assembly name */, /* class name */, /* optional: inheritance depth */);
+		var srd = mono.GetClass("SpeedrunData");
+		vars.Helper["event"] = srd.MakeString("LastEvent");
+
 		return true;
 	});
 
@@ -24,8 +26,10 @@ init
 
 update
 {
-	if (!vars.Helper.Loaded)
+	if (!vars.Helper.Update())
 		return false;
+
+	vars.Helper.IO.Log(vars.Helper["event"].Current);
 }
 
 exit
