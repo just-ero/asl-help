@@ -13,9 +13,9 @@ startup
 
 init
 {
-	vars.Helper.TryOnLoad = (Func<dynamic, bool>)(helper =>
+	vars.Helper.TryOnLoad = (Func<dynamic, bool>)(mono =>
 	{
-		var myClass = helper.GetClass(/* assembly name */, /* class name */, /* optional: inheritance depth */);
+		var myClass = mono.GetClass(/* assembly name */, /* class name */, /* optional: inheritance depth */);
 		return true;
 	});
 
