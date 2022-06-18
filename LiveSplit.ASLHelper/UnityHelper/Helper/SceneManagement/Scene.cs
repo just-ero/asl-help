@@ -25,11 +25,6 @@ public class Scene
         {
             var path = Unity.Instance.ReadString(256, ReadStringType.UTF8, Deref(SceneHelper.SceneOffsets[4], 0x0));
 
-            if (string.IsNullOrEmpty(path))
-            {
-                return "";
-            }
-
             return Path.GetFileNameWithoutExtension(path);
         }
     }
