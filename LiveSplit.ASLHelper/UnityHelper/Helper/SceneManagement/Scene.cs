@@ -30,13 +30,7 @@ public class Scene
                 return "";
             }
 
-            int folder = path.LastIndexOf('/'), exension = path.LastIndexOf(".unity");
-            if (exension != -1)
-            {
-                path = path.Remove(exension);
-            }
-
-            return path.Substring(folder + 1);
+            return Path.GetFileNameWithoutExtension(path);
         }
     }
 
