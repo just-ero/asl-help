@@ -31,7 +31,7 @@ public class Scene
             }
 
             int folder = path.LastIndexOf('/'), exension = path.LastIndexOf(".unity");
-            if (exension == -1)
+            if (exension != -1)
             {
                 path = path.Remove(exension);
             }
