@@ -37,7 +37,9 @@ public partial class Main
     {
         get
         {
-            if (_game is null && (_game = _script.GetFieldValue("_game")) is not null)
+            _game?.Refresh();
+
+            if ((_game is null || _game.HasExited) && (_game = _script.GetFieldValue("_game")) is not null)
             {
                 Is64Bit = _game.Is64Bit();
                 PtrSize = Is64Bit ? 0x8 : 0x4;

@@ -91,7 +91,16 @@ public partial class Unity : Main
 
     public override void Dispose(bool removeTexts)
     {
+        Loaded = false;
         CancelSource.Cancel();
+
+        Scenes = null;
+        SceneHelper.SceneManager = 0;
+
+        MonoModule = null;
+        UnityPlayer = null;
+        _helper = null;
+
         base.Dispose(removeTexts);
     }
 }
