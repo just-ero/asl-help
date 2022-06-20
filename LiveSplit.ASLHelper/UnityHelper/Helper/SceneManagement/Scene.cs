@@ -23,9 +23,14 @@ public class Scene
     {
         get
         {
-            var path = Unity.Instance.ReadString(256, ReadStringType.UTF8, Deref(SceneHelper.SceneOffsets[4], 0x0));
-
-            return Path.GetFileNameWithoutExtension(path);
+            if (Unity.Instance.TryReadString(out var path, 256, ReadStringType.UTF8, Deref(SceneHelper.SceneOffsets[4], 0x0)))
+            {
+                return Path.GetFileNameWithoutExtension(path);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-﻿state("TUNIC") {}
+﻿state("Goosebumps_DeadOfNight") {}
 
 startup
 {
@@ -8,6 +8,7 @@ startup
 	var bytes = File.ReadAllBytes(@"Components\LiveSplit.ASLHelper.bin");
 	var type = Assembly.Load(bytes).GetType("ASLHelper.Unity");
 	vars.Helper = Activator.CreateInstance(type, timer, this);
+	vars.Helper.GameName = "Goosebumps_DeadOfNight";
 	#endregion
 }
 
@@ -15,8 +16,8 @@ init
 {
 	vars.Helper.TryOnLoad = (Func<dynamic, bool>)(mono =>
 	{
-		var srd = mono.GetClass("SpeedrunData");
-		vars.Helper["event"] = srd.MakeString("LastEvent");
+		var srd = mono.GetClass("Progression");
+		vars.Helper["event"] = srd.Make<int>("night");
 
 		return true;
 	});
