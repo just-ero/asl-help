@@ -41,4 +41,16 @@ public partial class Main
         return ReadProcessMemory(Game.Handle, address, buffer, len, &bytesRead) != 0
                && bytesRead == len;
     }
+
+    private unsafe bool Write(void* data, int dataLength, nint address)
+    {
+        if (Game is null || Game.HasExited)
+            return false;
+
+        var len = (nuint)dataLength;
+
+        nuint bytesWritten;
+        return WriteProcessMemory(Game.Handle, address, data, len, &bytesWritten) != 0
+               && bytesWritten == len;
+    }
 }

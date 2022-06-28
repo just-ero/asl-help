@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,29 +51,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataClass\Data_Memory.cs" />
-    <Compile Include="DataClass\Data_Layout.cs" />
+    <Compile Include="DataClass\Data.Memory.cs" />
+    <Compile Include="DataClass\Data.Layout.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="MainHelper\Helper\Main.cs" />
-    <Compile Include="MainHelper\Helper\Main_Data.cs" />
-    <Compile Include="MainHelper\Helper\Main_Template.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Main_ReadString.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Main_ReadSpan_T.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Main_Read_T.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Main_Deref.cs" />
+    <Compile Include="MainHelper\Helper\Main.Data.cs" />
+    <Compile Include="MainHelper\Helper\Main.Template.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main.Memory.ReadString.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main.Memory.ReadSpan_T.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main.Memory.Read_T.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main.Memory.Deref.cs" />
     <Compile Include="MainHelper\Helper\Memory\NativeAPI.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanAll.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPagesRel.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPages.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanRel.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main_ScanPagesAll.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main_Scan.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Main_Write.cs" />
-    <Compile Include="MainHelper\Helper\QoL\Main_Alert.cs" />
-    <Compile Include="MainHelper\Helper\QoL\Main_Reject.cs" />
-    <Compile Include="MainHelper\Helper\QoL\Main_Versioning.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanAll.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanPagesRel.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanPages.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanRel.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanPagesAll.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main,Scan.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Main.Memory.Write.cs" />
+    <Compile Include="MainHelper\Helper\QoL\Main.Alert.cs" />
+    <Compile Include="MainHelper\Helper\QoL\Main.Reject.cs" />
+    <Compile Include="MainHelper\Helper\QoL\Main.Versioning.cs" />
     <Compile Include="MainHelper\IO\FileLogger.cs" />
     <Compile Include="MainHelper\IO\IOHelper.cs" />
     <Compile Include="MainHelper\UI\TextComponent.cs" />
@@ -82,15 +82,15 @@
     <Compile Include="MainHelper\SettingsHelper.cs" />
     <Compile Include="MainHelper\TimerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnityHelper\Helper\Memory\Unity_ReadList_T.cs" />
-    <Compile Include="UnityHelper\Helper\Memory\Unity_ReadArray_T.cs" />
-    <Compile Include="UnityHelper\Helper\Memory\Unity_ReadString.cs" />
+    <Compile Include="UnityHelper\Helper\Memory\Unity.Memory.ReadList_T.cs" />
+    <Compile Include="UnityHelper\Helper\Memory\Unity.Memory.ReadArray_T.cs" />
+    <Compile Include="UnityHelper\Helper\Memory\Unity.Memory.ReadString.cs" />
     <Compile Include="UnityHelper\Helper\SceneManagement\Scene.cs" />
     <Compile Include="UnityHelper\Helper\SceneManagement\SceneHelper.cs" />
     <Compile Include="UnityHelper\Helper\Unity.cs" />
-    <Compile Include="UnityHelper\Helper\Unity_Loading.cs" />
-    <Compile Include="UnityHelper\Helper\Unity_Template.cs" />
-    <Compile Include="UnityHelper\Helper\Unity_Watchers.cs" />
+    <Compile Include="UnityHelper\Helper\Unity.Loading.cs" />
+    <Compile Include="UnityHelper\Helper\Unity.Template.cs" />
+    <Compile Include="UnityHelper\Helper\Unity.Watchers.cs" />
     <Compile Include="UnityHelper\MemoryClasses\MemoryArray_T.cs" />
     <Compile Include="UnityHelper\MemoryClasses\MemoryClass.cs" />
     <Compile Include="UnityHelper\MemoryClasses\MemoryList_T.cs" />
