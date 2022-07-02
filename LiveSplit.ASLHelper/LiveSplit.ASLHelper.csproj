@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +58,7 @@
     <Compile Include="GlobalUsings.cs" />
     <Compile Include="MainHelper\Helper\Main.cs" />
     <Compile Include="MainHelper\Helper\Main.Data.cs" />
-    <Compile Include="MainHelper\Helper\Main.Template.cs" />
+    <Compile Include="MainHelper\Helper\Main.Watchers.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main.Memory.ReadString.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main.Memory.ReadSpan_T.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main.Memory.Read_T.cs" />
@@ -82,6 +82,10 @@
     <Compile Include="MainHelper\SettingsHelper.cs" />
     <Compile Include="MainHelper\TimerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadWriteWatchers\ReadWriteWatcher_T.cs" />
+    <Compile Include="ReadWriteWatchers\ReadWriteWatcher.cs" />
+    <Compile Include="ReadWriteWatchers\Unity.ListWatcher_T.cs" />
+    <Compile Include="ReadWriteWatchers\Unity.ArrayWatcher_T.cs" />
     <Compile Include="UnityHelper\Helper\Memory\Unity.Memory.ReadList_T.cs" />
     <Compile Include="UnityHelper\Helper\Memory\Unity.Memory.ReadArray_T.cs" />
     <Compile Include="UnityHelper\Helper\Memory\Unity.Memory.ReadString.cs" />
@@ -91,10 +95,7 @@
     <Compile Include="UnityHelper\Helper\Unity.Loading.cs" />
     <Compile Include="UnityHelper\Helper\Unity.Template.cs" />
     <Compile Include="UnityHelper\Helper\Unity.Watchers.cs" />
-    <Compile Include="UnityHelper\MemoryClasses\MemoryArray_T.cs" />
-    <Compile Include="UnityHelper\MemoryClasses\MemoryClass.cs" />
-    <Compile Include="UnityHelper\MemoryClasses\MemoryList_T.cs" />
-    <Compile Include="UnityHelper\MemoryClasses\MemoryString.cs" />
+    <Compile Include="ReadWriteWatchers\Unity.StringWatcher.cs" />
     <Compile Include="UnityHelper\MonoHelpers\Il2CppHelper.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoHelper.cs" />
     <Compile Include="EngineReflection.cs" />

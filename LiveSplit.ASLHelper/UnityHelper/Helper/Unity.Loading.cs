@@ -158,7 +158,7 @@ public partial class Unity
 
         while (true)
         {
-            _memWatchers.Clear();
+            _watchers.Clear();
 
             Debug.Log("Executing TryOnLoad...");
 
@@ -169,10 +169,10 @@ public partial class Unity
                     Debug.Log("  => TryOnLoad successful.");
                     Debug.Log();
 
-                    for (int i = _memWatchers.Count - 1; i >= 0; i--)
+                    for (int i = _watchers.Count - 1; i >= 0; i--)
                     {
-                        if (_memWatchers[i].Name is null)
-                            _memWatchers.RemoveAt(i);
+                        if (_watchers[i].Name is null)
+                            _watchers.RemoveAt(i);
                     }
 
                     return true;

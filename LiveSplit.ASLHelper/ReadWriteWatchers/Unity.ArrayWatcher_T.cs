@@ -1,15 +1,9 @@
 ﻿namespace ASLHelper.UnityHelper;
 
-public class MemoryArray<T> : MemoryClass where T : unmanaged
+public class ArrayWatcher<T> : ReadWriteWatcher where T : unmanaged
 {
-    internal MemoryArray(nint baseAddress, int staticFieldOffset, int[] offsets)
+    public ArrayWatcher(nint baseAddress, int staticFieldOffset, int[] offsets)
         : base(baseAddress, staticFieldOffset, offsets) { }
-
-    public new T[] Old
-    {
-        get => (T[])(base.Old ?? Array.Empty<T>());
-        set => base.Old = value;
-    }
 
     public new T[] Current
     {
@@ -17,15 +11,19 @@ public class MemoryArray<T> : MemoryClass where T : unmanaged
         set => base.Current = value;
     }
 
-    public override bool Update(Process process)
+    public new T[] Old
     {
-        Changed = false;
+        get => (T[])(base.Old ?? Array.Empty<T>());
+        set => base.Old = value;
+    }
 
-        if (!Enabled || !CheckInterval())
-            return false;
+    public bool Write(T[] values)
+    {
+        throw new NotImplementedException();
+    }
 
-        base.Old = Current;
-
+    private protected override bool Update_Internal()
+    {
         if (!Unity.Instance.TryReadArray<T>(out var values, _baseAddress, _offsets))
         {
             if (FailAction == ReadFailAction.DontUpdate)
@@ -38,19 +36,7 @@ public class MemoryArray<T> : MemoryClass where T : unmanaged
             Current = values;
         }
 
-        if (!InitialUpdate)
-        {
-            InitialUpdate = true;
-            return false;
-        }
-
-        if (!Current.Equals(Old))
-        {
-            Changed = true;
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     public override void Reset()

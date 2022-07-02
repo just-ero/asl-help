@@ -37,17 +37,17 @@ public partial class Main
     #endregion
 
     #region WriteSpan<T>
-    public bool WriteSpan<T>(T[] values, int baseOffset, params int[] offsets) where T : unmanaged
+    public bool WriteSpan<T>(IList<T> values, int baseOffset, params int[] offsets) where T : unmanaged
     {
         return WriteSpan<T>(values, Game?.MainModuleWow64Safe(), baseOffset, offsets);
     }
 
-    public bool WriteSpan<T>(T[] values, string moduleName, int baseOffset, params int[] offsets) where T : unmanaged
+    public bool WriteSpan<T>(IList<T> values, string moduleName, int baseOffset, params int[] offsets) where T : unmanaged
     {
         return WriteSpan<T>(values, GetModule(moduleName), baseOffset, offsets);
     }
 
-    public bool WriteSpan<T>(T[] values, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
+    public bool WriteSpan<T>(IList<T> values, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
     {
         if (module is null)
         {
@@ -59,14 +59,19 @@ public partial class Main
         return WriteSpan<T>(values, module.BaseAddress + baseOffset, offsets);
     }
 
-    public unsafe bool WriteSpan<T>(T[] values, nint baseAddress, params int[] offsets) where T : unmanaged
+    public unsafe bool WriteSpan<T>(IList<T> values, nint baseAddress, params int[] offsets) where T : unmanaged
     {
         if (!TryDeref(out var deref, baseAddress, offsets))
         {
             return false;
         }
 
-        fixed (T* pValues = values)
+        if (values is not T[] arr)
+        {
+            arr = values.ToArray();
+        }
+
+        fixed (T* pValues = arr)
         {
             return Write(pValues, GetTypeSize<T>(), deref);
         }

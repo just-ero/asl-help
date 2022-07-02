@@ -1,8 +1,8 @@
 ﻿namespace ASLHelper.UnityHelper;
 
-public class MemoryList<T> : MemoryClass where T : unmanaged
+public class ListWatcher<T> : ReadWriteWatcher where T : unmanaged
 {
-    public MemoryList(nint baseAddress, int staticFieldOffset, int[] offsets)
+    public ListWatcher(nint baseAddress, int staticFieldOffset, int[] offsets)
         : base(baseAddress, staticFieldOffset, offsets) { }
 
     public new List<T> Old
@@ -17,46 +17,32 @@ public class MemoryList<T> : MemoryClass where T : unmanaged
         set => base.Current = value;
     }
 
-    public override bool Update(Process process)
+    public bool Write(List<T> values)
     {
-        Changed = false;
+        throw new NotImplementedException();
+    }
 
-        if (!Enabled || !CheckInterval())
-            return false;
-
-        base.Old = Current;
-
+    private protected override bool Update_Internal()
+    {
         if (!Unity.Instance.TryReadList<T>(out var values, _baseAddress, _offsets))
         {
             if (FailAction == ReadFailAction.DontUpdate)
                 return false;
 
-            base.Current = new List<T>();
+            base.Current = new();
         }
         else
         {
             Current = values;
         }
 
-        if (!InitialUpdate)
-        {
-            InitialUpdate = true;
-            return false;
-        }
-
-        if (!Current.Equals(Old))
-        {
-            Changed = true;
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     public override void Reset()
     {
-        base.Old = new List<T>();
-        base.Current = new List<T>();
+        base.Old = new();
+        base.Current = new();
         InitialUpdate = false;
     }
 }

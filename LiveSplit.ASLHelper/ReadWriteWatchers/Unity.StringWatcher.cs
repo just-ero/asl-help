@@ -1,8 +1,8 @@
 ﻿namespace ASLHelper.UnityHelper;
 
-public class MemoryString : MemoryClass
+public class StringWatcher : ReadWriteWatcher
 {
-    public MemoryString(nint baseAddress, int staticFieldOffset, int[] offsets)
+    public StringWatcher(nint baseAddress, int staticFieldOffset, int[] offsets)
         : base(baseAddress, staticFieldOffset, offsets) { }
 
     public new string Old
@@ -17,15 +17,13 @@ public class MemoryString : MemoryClass
         set => base.Current = value;
     }
 
-    public override bool Update(Process process)
+    public bool Write(string value)
     {
-        Changed = false;
+        throw new NotImplementedException();
+    }
 
-        if (!Enabled || !CheckInterval())
-            return false;
-
-        base.Old = Current;
-
+    private protected override bool Update_Internal()
+    {
         if (!Unity.Instance.TryReadString(out var result, _baseAddress, _offsets))
         {
             if (FailAction == ReadFailAction.DontUpdate)
@@ -38,19 +36,7 @@ public class MemoryString : MemoryClass
             Current = result;
         }
 
-        if (!InitialUpdate)
-        {
-            InitialUpdate = true;
-            return false;
-        }
-
-        if (!Current.Equals(Old))
-        {
-            Changed = true;
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     public override void Reset()

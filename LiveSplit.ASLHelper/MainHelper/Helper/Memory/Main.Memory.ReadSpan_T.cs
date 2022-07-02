@@ -3,47 +3,47 @@
 public partial class Main
 {
     #region ReadSpan<T>
-    public T[] ReadSpan<T>(int length, int baseOffset, params int[] offsets) where T : unmanaged
+    public IList<T> ReadSpan<T>(int length, int baseOffset, params int[] offsets) where T : unmanaged
     {
-        T[] buffer = new T[length];
+        IList<T> buffer = new T[length];
         _ = TryReadSpan<T>(buffer, Game?.MainModuleWow64Safe(), baseOffset, offsets);
         return buffer;
     }
 
-    public T[] ReadSpan<T>(int length, string moduleName, int baseOffset, params int[] offsets) where T : unmanaged
+    public IList<T> ReadSpan<T>(int length, string moduleName, int baseOffset, params int[] offsets) where T : unmanaged
     {
-        T[] buffer = new T[length];
+        IList<T> buffer = new T[length];
         _ = TryReadSpan<T>(buffer, GetModule(moduleName), baseOffset, offsets);
         return buffer;
     }
 
-    public T[] ReadSpan<T>(int length, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
+    public IList<T> ReadSpan<T>(int length, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
     {
-        T[] buffer = new T[length];
+        IList<T> buffer = new T[length];
         _ = TryReadSpan<T>(buffer, module, baseOffset, offsets);
         return buffer;
     }
 
-    public T[] ReadSpan<T>(int length, nint baseAddress, params int[] offsets) where T : unmanaged
+    public IList<T> ReadSpan<T>(int length, nint baseAddress, params int[] offsets) where T : unmanaged
     {
-        T[] buffer = new T[length];
+        IList<T> buffer = new T[length];
         _ = TryReadSpan<T>(buffer, baseAddress, offsets);
         return buffer;
     }
     #endregion
 
     #region TryReadSpan<T>
-    public bool TryReadSpan<T>(T[] buffer, int baseOffset, params int[] offsets) where T : unmanaged
+    public bool TryReadSpan<T>(IList<T> buffer, int baseOffset, params int[] offsets) where T : unmanaged
     {
         return TryReadSpan<T>(buffer, Game?.MainModuleWow64Safe(), baseOffset, offsets);
     }
 
-    public bool TryReadSpan<T>(T[] buffer, string moduleName, int baseOffset, params int[] offsets) where T : unmanaged
+    public bool TryReadSpan<T>(IList<T> buffer, string moduleName, int baseOffset, params int[] offsets) where T : unmanaged
     {
         return TryReadSpan<T>(buffer, GetModule(moduleName), baseOffset, offsets);
     }
 
-    public bool TryReadSpan<T>(T[] buffer, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
+    public bool TryReadSpan<T>(IList<T> buffer, ProcessModuleWow64Safe module, int baseOffset, params int[] offsets) where T : unmanaged
     {
         if (module is null)
         {
@@ -56,7 +56,7 @@ public partial class Main
         return TryReadSpan<T>(buffer, module.BaseAddress + baseOffset, offsets);
     }
 
-    public unsafe bool TryReadSpan<T>(T[] buffer, nint baseAddress, params int[] offsets) where T : unmanaged
+    public unsafe bool TryReadSpan<T>(IList<T> buffer, nint baseAddress, params int[] offsets) where T : unmanaged
     {
         var deref = Deref(baseAddress, offsets);
         if (deref == 0)
@@ -64,7 +64,7 @@ public partial class Main
 
         if (!Is64Bit && IsPointerType<T>())
         {
-            var buf32 = new uint[buffer.Length];
+            var buf32 = new uint[buffer.Count];
             if (!TryReadSpan<uint>(buf32, deref))
                 return false;
 
@@ -79,7 +79,12 @@ public partial class Main
             return true;
         }
 
-        fixed (T* pBuffer = buffer)
+        if (buffer is not T[] arr)
+        {
+            arr = buffer.ToArray();
+        }
+
+        fixed (T* pBuffer = arr)
         {
             return Read(pBuffer, GetTypeSize<T>(), deref);
         }
