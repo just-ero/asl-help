@@ -4,9 +4,9 @@ internal class FileLogger
 {
     public FileLogger(string path)
     {
+        Writer = new(path, true);
         _path = path;
         _lines = File.ReadAllLines(path).Length;
-        Writer = new(path, true);
     }
 
     private int _lines;
