@@ -149,7 +149,9 @@ public abstract partial class MonoHelper
     #region Fields
     private protected List<MonoField> GetAllFields(nint klass)
     {
+        var isStruct = ClassName(ClassParent(klass)) == "ValueType";
         var fields = new List<MonoField>();
+
         foreach (var field in Fields(klass))
         {
             var attrs = FieldAttrs(field);
@@ -157,7 +159,7 @@ public abstract partial class MonoHelper
             fields.Add(new()
             {
                 Name = FieldName(field),
-                Offset = FieldOffset(field),
+                Offset = FieldOffset(field) - (isStruct ? Unity.Instance.PtrSize * 2 : 0),
                 IsConst = attrs.HasFlag(MonoFieldAttribute.MONO_FIELD_ATTR_LITERAL),
                 IsStatic = attrs.HasFlag(MonoFieldAttribute.MONO_FIELD_ATTR_STATIC)
             });

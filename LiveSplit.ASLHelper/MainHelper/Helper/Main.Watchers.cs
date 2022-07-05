@@ -4,7 +4,7 @@ public partial class Main
 {
     private protected readonly MemoryWatcherList _watchers = new();
 
-    public dynamic this[string name]
+    public MemoryWatcher this[string name]
     {
         get
         {
