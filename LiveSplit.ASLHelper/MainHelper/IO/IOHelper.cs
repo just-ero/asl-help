@@ -26,5 +26,6 @@ public class IOHelper
     public void Dispose()
     {
         _fileLogger?.Writer.Close();
+        _fileLogger?.Writer.Dispose();
     }
 }
