@@ -9,6 +9,8 @@ public partial class Main
         if (State.CurrentTimingMethod == TimingMethod.RealTime)
             return;
 
+        gameName ??= _gameName;
+
         var mbox = MessageBox.Show(_form,
             $"{gameName ?? "This game"} uses real time for its timing.\nWould you like to switch to it?",
             $"LiveSplit | {gameName ?? "Auto Splitter"}",
@@ -23,6 +25,8 @@ public partial class Main
         if (State.CurrentTimingMethod == TimingMethod.GameTime)
             return;
 
+        gameName ??= _gameName;
+
         var mbox = MessageBox.Show(_form,
             $"{gameName ?? "This game"} uses in-game time.\nWould you like to switch to it?",
             $"LiveSplit | {gameName ?? "Auto Splitter"}",
@@ -36,6 +40,8 @@ public partial class Main
     {
         if (State.CurrentTimingMethod == TimingMethod.GameTime)
             return;
+
+        gameName ??= _gameName;
 
         var mbox = MessageBox.Show(_form,
             $"Removing loads from {gameName ?? "this game"} requires comparing against Game Time.\nWould you like to switch to it?",
