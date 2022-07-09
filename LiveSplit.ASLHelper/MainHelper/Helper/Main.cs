@@ -24,7 +24,7 @@ public partial class Main
         Debug.Log("L24"); var scr = cmps3.FirstOrDefault(c =>
         {
             if (c is null) return false;
-            Debug.Log("L27"); var sas = c.ComponentName == "Scriptable Auto Splitter";
+            Debug.Log($"L27 | {c.ComponentName}"); var sas = c.ComponentName == "Scriptable Auto Splitter";
             if (!sas) return false;
             Debug.Log("L29"); var cso = c.Script as object;
             Debug.Log("L30"); var _m = cso.GetFieldValue("_methods");
