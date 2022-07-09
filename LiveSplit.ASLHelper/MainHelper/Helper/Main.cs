@@ -18,34 +18,14 @@ public partial class Main
 
         _form = state.Form;
 
-        Debug.Log("L21"); var cmps = Layout.Components;
-        Debug.Log("L22"); var cmps2 = cmps.Append(state.Run.AutoSplitter?.Component);
-        Debug.Log("L23"); var cmps3 = cmps2.Cast<dynamic>();
-        Debug.Log("L24"); var scr = cmps3.FirstOrDefault(c =>
-        {
-            if (c is null) return false;
-            Debug.Log($"L27 | {c.ComponentName}"); var sas = c.ComponentName == "Scriptable Auto Splitter";
-            if (!sas) return false;
-            Debug.Log("L29"); var cso = c.Script as object;
-            Debug.Log("L30"); var _m = cso.GetFieldValue("_methods");
-            Debug.Log("L31"); var ieo = _m as IEnumerable<object>;
-            Debug.Log("L32"); var f = ieo.FirstOrDefault();
-            if (f is null) return false;
-            Debug.Log("L34"); var cc = f.GetFieldValue("_compiled_code");
-            Debug.Log("L35"); var cs = cc.Equals(compiledScript);
-            return cs;
-        });
-        Debug.Log("L38"); _script = scr?.Script;
-        Debug.Log("L39");
-
-        //_script =
-        //    Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
-        //    .FirstOrDefault(c =>
-        //        c is not null
-        //        && c.ComponentName == "Scriptable Auto Splitter"
-        //        && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
-        //           .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
-        //    )?.Script;
+        _script =
+            Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
+            .FirstOrDefault(c =>
+                c is object cAsObj && cAsObj.HasProperty("ComponentName")
+                && c.ComponentName == "Scriptable Auto Splitter"
+                && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
+                   .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
+            )?.Script;
 
         Instance = this;
 
