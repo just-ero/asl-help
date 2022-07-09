@@ -35,7 +35,8 @@ public partial class Main
             Debug.Log("L35"); var cs = cc.Equals(compiledScript);
             return cs;
         });
-        Debug.Log("L38"); _script = scr?.Scipt;
+        Debug.Log("L38"); _script = scr?.Script;
+        Debug.Log("L39");
 
         //_script =
         //    Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
