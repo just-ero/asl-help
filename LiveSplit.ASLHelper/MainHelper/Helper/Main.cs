@@ -7,16 +7,33 @@ public partial class Main
 {
     public Main(LiveSplitState state, object settings, object compiledScript, string gameName = null)
     {
+        Debug.Log("Setting GameName.");
         GameName = gameName;
+
+        Debug.Log("Setting State.");
         State = state;
+
+        Debug.Log("Setting Layout.");
         Layout = state.Layout;
 
+
+        Debug.Log("Setting UI.");
         UI = new();
+
+        Debug.Log("Setting IO.");
         IO = new();
+
+        Debug.Log("Setting Timer.");
         Timer = new(state);
+
+        Debug.Log("Setting Settings.");
         Settings = new(settings);
 
+
+        Debug.Log("Setting _form.");
         _form = state.Form;
+
+        Debug.Log("Setting _script.");
         _script =
             Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
             .FirstOrDefault(c =>
@@ -25,6 +42,8 @@ public partial class Main
                    .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
             )?.Script;
 
+
+        Debug.Log("Setting Instance.");
         Instance = this;
 
         Debug.Log("Created ASL helper.");
