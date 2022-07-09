@@ -73,7 +73,7 @@ public partial class Main
 
         fixed (T* pValues = arr)
         {
-            return Write(pValues, GetTypeSize<T>(), deref);
+            return Write(pValues, GetTypeSize<T>() * arr.Length, deref);
         }
     }
     #endregion

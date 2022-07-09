@@ -86,7 +86,7 @@ public partial class Main
 
         fixed (T* pBuffer = arr)
         {
-            return Read(pBuffer, GetTypeSize<T>(), deref);
+            return Read(pBuffer, GetTypeSize<T>() * arr.Length, deref);
         }
     }
     #endregion
