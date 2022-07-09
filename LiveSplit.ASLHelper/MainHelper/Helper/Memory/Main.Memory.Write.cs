@@ -66,22 +66,17 @@ public partial class Main
             return false;
         }
 
-        if (values is not T[] arr)
-        {
-            arr = values.ToArray();
-        }
-
         if (!Is64Bit && IsPointerType<T>())
         {
-            var ptrs = arr.Cast<uint>().ToArray();
-
-            fixed (uint* pValues = ptrs)
-            {
-                return Write(pValues, GetTypeSize<T>() * arr.Length, deref);
-            }
+            return WriteSpan<uint>(values.Cast<uint>().ToArray(), deref);
         }
         else
         {
+            if (values is not T[] arr)
+            {
+                arr = values.ToArray();
+            }
+
             fixed (T* pValues = arr)
             {
                 return Write(pValues, GetTypeSize<T>() * arr.Length, deref);
