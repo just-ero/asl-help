@@ -64,12 +64,12 @@
     <Compile Include="MainHelper\Helper\Memory\Main.Memory.Read_T.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main.Memory.Deref.cs" />
     <Compile Include="MainHelper\Helper\Memory\NativeAPI.cs" />
+    <Compile Include="MainHelper\Helper\Memory\Scan\Main.Scan.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanAll.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanPagesRel.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanPages.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanRel.cs" />
     <Compile Include="MainHelper\Helper\Memory\Scan\Main.ScanPagesAll.cs" />
-    <Compile Include="MainHelper\Helper\Memory\Scan\Main,Scan.cs" />
     <Compile Include="MainHelper\Helper\Memory\Main.Memory.Write.cs" />
     <Compile Include="MainHelper\Helper\QoL\Main.Alert.cs" />
     <Compile Include="MainHelper\Helper\QoL\Main.Reject.cs" />

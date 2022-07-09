@@ -1,7 +1,7 @@
 <mono>
   <signatures>
-    <loaded_images_hashes offset="7" pattern="48 8B F9 48 0F 45 1D"/>
     <loaded_images_hashes offset="7" pattern="48 83 EC 20 48 8B 1D ???????? 85 D2"/>
+    <loaded_images_hashes offset="7" pattern="48 8B F9 48 0F 45 1D"/>
   </signatures>
 
   <structs>
