@@ -7,43 +7,45 @@ public partial class Main
 {
     public Main(LiveSplitState state, object settings, object compiledScript, string gameName = null)
     {
-        Debug.Log("Setting GameName.");
         GameName = gameName;
-
-        Debug.Log("Setting State.");
         State = state;
-
-        Debug.Log("Setting Layout.");
         Layout = state.Layout;
 
-
-        Debug.Log("Setting UI.");
         UI = new();
-
-        Debug.Log("Setting IO.");
         IO = new();
-
-        Debug.Log("Setting Timer.");
         Timer = new(state);
-
-        Debug.Log("Setting Settings.");
         Settings = new(settings);
 
-
-        Debug.Log("Setting _form.");
         _form = state.Form;
 
-        Debug.Log("Setting _script.");
-        _script =
-            Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
-            .FirstOrDefault(c =>
-                c.ComponentName == "Scriptable Auto Splitter"
-                && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
-                   .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
-            )?.Script;
+        Debug.Log("L21"); var cmps = Layout.Components;
+        Debug.Log("L22"); var cmps2 = cmps.Append(state.Run.AutoSplitter?.Component);
+        Debug.Log("L23"); var cmps3 = cmps2.Cast<dynamic>();
+        Debug.Log("L24"); var scr = cmps3.FirstOrDefault(c =>
+        {
+            if (c is null) return false;
+            Debug.Log("L27"); var sas = c.ComponentName == "Scriptable Auto Splitter";
+            if (!sas) return false;
+            Debug.Log("L29"); var cso = c.Script as object;
+            Debug.Log("L30"); var _m = cso.GetFieldValue("_methods");
+            Debug.Log("L31"); var ieo = _m as IEnumerable<object>;
+            Debug.Log("L32"); var f = ieo.FirstOrDefault();
+            if (f is null) return false;
+            Debug.Log("L34"); var cc = f.GetFieldValue("_compiled_code");
+            Debug.Log("L35"); var cs = cc.Equals(compiledScript);
+            return cs;
+        });
+        Debug.Log("L38"); _script = scr?.Scipt;
 
+        //_script =
+        //    Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
+        //    .FirstOrDefault(c =>
+        //        c is not null
+        //        && c.ComponentName == "Scriptable Auto Splitter"
+        //        && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
+        //           .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
+        //    )?.Script;
 
-        Debug.Log("Setting Instance.");
         Instance = this;
 
         Debug.Log("Created ASL helper.");
