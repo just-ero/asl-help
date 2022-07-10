@@ -20,7 +20,7 @@ public partial class Main
         _script =
             Layout.Components.Append(state.Run.AutoSplitter?.Component).Cast<dynamic>()
             .FirstOrDefault(c =>
-                c is object cAsObj && cAsObj.HasProperty("ComponentName")
+                c is not null && ((object)c).HasProperty("ComponentName")
                 && c.ComponentName == "Scriptable Auto Splitter"
                 && ((c.Script as object).GetFieldValue("_methods") as IEnumerable<object>)
                    .FirstOrDefault()?.GetFieldValue("_compiled_code").Equals(compiledScript)
