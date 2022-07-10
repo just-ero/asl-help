@@ -5,9 +5,8 @@ namespace ASLHelper;
 
 public partial class Main
 {
-    public Main(LiveSplitState state, object settings, object compiledScript, string gameName = null)
+    public Main(LiveSplitState state, object settings, object compiledScript)
     {
-        GameName = gameName;
         State = state;
         Layout = state.Layout;
 
@@ -32,8 +31,8 @@ public partial class Main
         Debug.Log("Created ASL helper.");
     }
 
-    public Main(LiveSplitState state, object compiledScript, string gameName = null)
-        : this(state, null, compiledScript, gameName) { }
+    public Main(LiveSplitState state, object compiledScript)
+        : this(state, null, compiledScript) { }
 
     private protected Process _game;
     public Process Game
