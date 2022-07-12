@@ -68,13 +68,14 @@ public partial class Main
             if (!TryReadSpan<uint>(buf32, deref))
                 return false;
 
+        fixed (uint* pBuf = buf32)
+        {
             for (int i = 0; i < buf32.Length; i++)
             {
-                fixed (uint* pBuf = &buf32[i])
-                {
-                    buffer[i] = *(T*)pBuf;
-                }
+                uint val = pBuf[i];
+                buffer[i] = *(T*)(&val);
             }
+        }
 
             return true;
         }
