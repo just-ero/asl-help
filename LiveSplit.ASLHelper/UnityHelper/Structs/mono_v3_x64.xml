@@ -1,0 +1,68 @@
+<mono>
+  <signatures>
+    <global_loaded_images offset="3" pattern="48 8B 35 ???????? 33 FF 8D 5F"/>
+  </signatures>
+
+  <structs>
+    <GHashTable>
+      <table      offset="0x10"/>
+      <table_size offset="0x18"/>
+    </GHashTable>
+
+    <Slot>
+      <key   offset="0x00"/>
+      <value offset="0x08"/>
+      <next  offset="0x10"/>
+    </Slot>
+
+    <MonoImage>
+      <class_cache_size  offset="0x4E8"/>
+      <class_cache_table offset="0x4F0"/>
+    </MonoImage>
+
+    <MonoClass>
+      <class_kind   offset="0x01B"/>
+      <parent       offset="0x030"/>
+      <image        offset="0x040"/>
+      <name         offset="0x048"/>
+      <name_space   offset="0x050"/>
+      <type_token   offset="0x058"/>
+      <vtable_size  offset="0x05C"/>
+      <fields       offset="0x098"/>
+      <runtime_info offset="0x0D0"/>
+      <field_count  offset="0x100"/>
+      <next         offset="0x108"/>
+    </MonoClass>
+
+    <MonoClassGenericInst>
+      <generic_class offset="0xF0"/>
+    </MonoClassGenericInst>
+
+    <MonoGenericClass>
+      <container_class offset="0x00"/>
+      <cached_class    offset="0x18"/>
+    </MonoGenericClass>
+
+    <MonoClassField>
+      <type   offset="0x00"/>
+      <name   offset="0x08"/>
+      <offset offset="0x18"/>
+      <size   offset="0x20"/>
+    </MonoClassField>
+
+    <MonoType>
+      <attrs       offset="0x08"/>
+      <static_attr offset="0x10"/>
+      <const_attr  offset="0x40"/>
+    </MonoType>
+
+    <MonoClassRuntimeInfo>
+      <domain_vtables offset="0x8"/>
+    </MonoClassRuntimeInfo>
+
+    <MonoVTable>
+      <runtime_generic_context offset="0x38"/>
+      <vtable                  offset="0x48"/>
+    </MonoVTable>
+  </structs>
+</mono>

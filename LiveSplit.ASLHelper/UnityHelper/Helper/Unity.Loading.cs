@@ -1,5 +1,6 @@
 ﻿using ASLHelper.UnityHelper;
 using System.ComponentModel;
+using System.Runtime.ConstrainedExecution;
 
 namespace ASLHelper;
 
@@ -114,34 +115,23 @@ public partial class Unity
 
         Debug.Log("Creating Mono helper...");
 
-        MonoHelper helper = null;
-        switch (MonoModule.ModuleName)
+        var fvi = Game.MainModule.FileVersionInfo;
+        MonoHelper helper = MonoModule.ModuleName switch
         {
-            case MONO_V1:
+            MONO_V1 => new MonoV1Helper(this, "mono", "v1"),
+            MONO_V2 => (fvi.FileMajorPart, fvi.FileMinorPart) switch
             {
-                helper = new MonoV1Helper(this, "mono", "v1");
-                break;
-            }
-
-            case MONO_V2:
+                (2021, >= 2) or ( > 2021, _) => new MonoV3Helper(this, "mono", "v3"),
+                _ => new MonoV2Helper(this, "mono", "v2")
+            },
+            IL2CPP => new Il2CppHelper(this, "il2cpp", fvi.FileMajorPart switch
             {
-                helper = new MonoV2Helper(this, "mono", "v2");
-                break;
-            }
-
-            case IL2CPP:
-            {
-                var ver = Game.MainModule.FileVersionInfo.FileMajorPart switch
-                {
-                    < 2019 => "base",
-                    2019 => "2019",
-                    > 2019 => "2020"
-                };
-
-                helper = new Il2CppHelper(this, "il2cpp", ver);
-                break;
-            }
-        }
+                < 2019 => "base",
+                2019 => "2019",
+                > 2019 => "2020"
+            }),
+            _ => null
+        };
 
         Debug.Log("  => Created helper successfully.");
         Debug.Log();

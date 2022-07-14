@@ -93,7 +93,6 @@
     <Compile Include="UnityHelper\Helper\SceneManagement\SceneHelper.cs" />
     <Compile Include="UnityHelper\Helper\Unity.cs" />
     <Compile Include="UnityHelper\Helper\Unity.Loading.cs" />
-    <Compile Include="UnityHelper\Helper\Unity.Template.cs" />
     <Compile Include="UnityHelper\Helper\Unity.Watchers.cs" />
     <Compile Include="ReadWriteWatchers\Unity.StringWatcher.cs" />
     <Compile Include="UnityHelper\MonoHelpers\Il2CppHelper.cs" />
@@ -104,6 +103,7 @@
     <Compile Include="UnityHelper\MonoHelpers\MonoObjects\MonoFieldAttribute.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoObjects\MonoImage.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoV1Helper.cs" />
+    <Compile Include="UnityHelper\MonoHelpers\MonoV3Helper.cs" />
     <Compile Include="UnityHelper\MonoHelpers\MonoV2Helper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +120,9 @@
     <EmbeddedResource Include="UnityHelper\Structs\mono_v1_x86.xml" />
     <EmbeddedResource Include="UnityHelper\Structs\mono_v2_x64.xml" />
     <EmbeddedResource Include="UnityHelper\Structs\mono_v2_x86.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v3_x64.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
