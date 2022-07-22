@@ -120,9 +120,8 @@
     <EmbeddedResource Include="UnityHelper\Structs\mono_v1_x86.xml" />
     <EmbeddedResource Include="UnityHelper\Structs\mono_v2_x64.xml" />
     <EmbeddedResource Include="UnityHelper\Structs\mono_v2_x86.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="UnityHelper\Structs\mono_v3_x64.xml" />
+    <EmbeddedResource Include="UnityHelper\Structs\mono_v3_x86.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

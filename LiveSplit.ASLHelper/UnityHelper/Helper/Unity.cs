@@ -51,11 +51,13 @@ public partial class Unity : Main
 
             try
             {
+
                 MonoModule = await GetMonoModule();
                 if (MonoModule.ModuleName == IL2CPP || LoadSceneManager)
                     UnityPlayer = await GetUnityPlayer(unityPlayerRetries);
 
-                _helper = MakeHelper();
+                if (TryOnLoad is not null)
+                    _helper = MakeHelper();
 
                 if (LoadSceneManager && UnityPlayer is not null)
                 {
@@ -71,11 +73,12 @@ public partial class Unity : Main
 
                 _ = await DoOnLoad(timeout);
 
-                Loaded = true;
                 Debug.Log("Mono loading complete!");
+                Loaded = true;
             }
             catch (TaskCanceledException) { }
             catch (OperationCanceledException) { }
+            catch (FileNotFoundException) { }
             catch (Exception ex)
             {
                 Debug.Throw(ex);

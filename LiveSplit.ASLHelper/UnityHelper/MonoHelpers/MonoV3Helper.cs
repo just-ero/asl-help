@@ -7,8 +7,6 @@ public class MonoV3Helper : MonoV2Helper
 
     private protected override nint ScanForImages()
     {
-
-        Debug.Log("here");
-        return _helper.ScanRel(Unity.Instance.MonoModule, _engine.Signatures["global_loaded_images"]) + 0x10;
+        return _helper.ScanRel(Unity.Instance.MonoModule, _engine.Signatures["global_loaded_images"]) + (_helper.PtrSize * 2);
     }
 }

@@ -26,9 +26,15 @@ internal class EngineReflection
         var resource = $"{type}_{version}_{(Main.Instance.Is64Bit ? "x64" : "x86")}";
         var path = $"ASLHelper.{engine}Helper.Structs.{resource}.xml";
 
-        Debug.Log($"  => Loading '{resource}'...");
+        Debug.Log($"  => Trying to load '{resource}'...");
 
         using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
+        if (stream is null)
+        {
+            Debug.Log("    => Resource does not exist!");
+            throw new FileNotFoundException();
+        }
+
         using var reader = new StreamReader(stream);
 
         var doc = XDocument.Parse(reader.ReadToEnd());
