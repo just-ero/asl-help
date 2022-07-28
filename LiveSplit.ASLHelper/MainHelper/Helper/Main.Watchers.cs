@@ -4,6 +4,14 @@ public partial class Main
 {
     private protected readonly MemoryWatcherList _watchers = new();
 
+    public void MapWatchersToCurrent(dynamic current)
+    {
+        foreach (var watcher in _watchers)
+        {
+            (current as IDictionary<string, dynamic>)[watcher.Name] = watcher.Current;
+        }
+    }
+
     public MemoryWatcher this[string name]
     {
         get
