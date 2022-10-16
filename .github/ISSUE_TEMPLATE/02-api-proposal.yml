@@ -1,0 +1,59 @@
+name: API Proposal
+description: Propose a change or addition to asl-help's public features.
+title: "[API Proposal]: "
+labels: ["api suggestion"]
+assignees:
+  - just-ero
+body:
+  - type: markdown
+    attributes:
+      value: |
+        API proposals are very welcome! Please understand that not all proposals will be considered.
+        This template will help gather the information we need to start the review process.
+  - type: textarea
+    attributes:
+      label: Background and Motivation
+      description: Please describe the purpose and idea behind the new API, as well as the value it will bring to users.
+      placeholder: Describe the purpose.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: API Proposal
+      description: |
+        Please provide the specific public API signature(s) you are proposing.
+        We ask that you stay as close to the current API and coding style as possible.
+      placeholder: API declarations (exclude method bodies).
+      value: |
+        namespace AslHelp.SomeNamespace;
+
+        public class SomeClass
+        {
+          public void SomeMethod();
+        }
+      render: csharp
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: API Usage
+      description: |
+        Please provide code examples that highlight how the proposed API additions are meant to be used. This will help suggest whether the API has the right shape to be functional, performant and usable.
+      placeholder: API usage.
+      value: |
+        init
+        {
+          vars.Helper.SomeMethod();
+        }
+      render: csharp
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks
+      description: |
+        Please mention any risks that to your knowledge the API proposal might entail, such as breaking changes, performance regressions, etc.
+      placeholder: Any potential risks?
+    validations:
+      required: false
