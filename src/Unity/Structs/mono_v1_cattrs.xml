@@ -1,0 +1,96 @@
+<Root>
+  <Inherit Engine="Unity" Major="mono" Minor="v1" />
+
+  <Struct Name="MonoClass">
+    <Field Name="element_class" Type="MonoClass*" />
+    <Field Name="cast_class" Type="MonoClass*" />
+    <Field Name="supertypes" Type="MonoClass**" />
+    <Field Name="idepth" Type="ushort" />
+    <Field Name="rank" Type="byte" />
+    <Field Name="instance_size" Type="int" />
+
+    <Field Name="inited" Type="uint:1" />
+    <Field Name="init_pending" Type="uint:1" />
+    <Field Name="size_inited" Type="uint:1" />
+    <Field Name="valuetype" Type="uint:1" />
+    <Field Name="enumtype" Type="uint:1" />
+    <Field Name="blittable" Type="uint:1" />
+    <Field Name="unicode" Type="uint:1" />
+    <Field Name="wastypebuilder" Type="uint:1" />
+
+    <Field Name="min_align" Type="byte" />
+
+    <Field Name="packing_size" Type="uint:4" />
+    <Field Name="ghcimpl" Type="uint:1" />
+    <Field Name="has_finalize" Type="uint:1" />
+    <Field Name="marshalbyref" Type="uint:1" />
+    <Field Name="contextbound" Type="uint:1" />
+
+    <Field Name="delegate" Type="uint:1" />
+    <Field Name="gc_descr_inited" Type="uint:1" />
+    <Field Name="has_cctor" Type="uint:1" />
+    <Field Name="has_references" Type="uint:1" />
+    <Field Name="has_static_refs" Type="uint:1" />
+    <Field Name="no_special_static_fields" Type="uint:1" />
+    <Field Name="is_com_object" Type="uint:1" />
+    <Field Name="nested_classes_inited" Type="uint:1" />
+
+    <Field Name="interfaces_inited" Type="uint:1" />
+    <Field Name="simd_type" Type="uint:1" />
+    <Field Name="is_generic" Type="uint:1" />
+    <Field Name="is_inflated" Type="uint:1" />
+
+    <Field Name="exception_type" Type="byte" />
+
+    <Field Name="parent" Type="MonoClass*" />
+    <Field Name="nested_in" Type="MonoClass*" />
+    <Field Name="cattrs" Type="MonoCustomAttrInfo*" />
+    <Field Name="image" Type="MonoImage*" />
+    <Field Name="name" Type="char*" />
+    <Field Name="name_space" Type="char*" />
+    <Field Name="type_token" Type="uint" />
+    <Field Name="vtable_size" Type="int" />
+
+    <Field Name="interface_count" Type="ushort" />
+    <Field Name="interface_id" Type="ushort" />
+    <Field Name="max_interface_id" Type="ushort" />
+    <Field Name="interface_offsets_count" Type="ushort" />
+    <Field Name="interfaces_packed" Type="MonoClass**" />
+    <Field Name="interface_offsets_packed" Type="ushort*" />
+    <Field Name="interface_bitmap" Type="byte*" />
+    <Field Name="interfaces" Type="MonoClass**" />
+
+    <Field Name="sizes" Type="int" />
+    <Field Name="flags" Type="uint" />
+    <Field Name="field.first" Type="uint" />
+    <Field Name="field.count" Type="uint" />
+    <Field Name="method.first" Type="uint" />
+    <Field Name="method.count" Type="uint" />
+    <Field Name="marshal_info" Type="MonoMarshalType*" />
+
+    <Field Name="fields" Type="MonoClassField*" />
+    <Field Name="methods" Type="MonoMethod**" />
+    <Field Name="this_arg" Type="MonoType" />
+    <Field Name="byval_arg" Type="MonoType" />
+    <Field Name="generic_class" Type="MonoGenericClass*" />
+    <Field Name="generic_container" Type="MonoGenericContainer*" />
+
+    <Field Name="reflection_info" Type="void*" />
+    <Field Name="gc_descr" Type="void*" />
+
+    <Field Name="runtime_info" Type="MonoClassRuntimeInfo*" />
+    <Field Name="next_class_cache" Type="MonoClass*" />
+    <Field Name="vtable" Type="MonoMethod**" />
+    <Field Name="ext" Type="MonoClassExt*" />
+    <Field Name="user_data" Type="void*" />
+  </Struct>
+
+  <Struct Name="TestStruct">
+    <Field Name="TestField" Type="void*" />
+  </Struct>
+
+  <Struct Name="TestStruct2">
+    <Field Name="Super" Type="TestStruct" />
+    <Field Name="TestField2" Type="void*" />
+  </Struct>
+</Root>

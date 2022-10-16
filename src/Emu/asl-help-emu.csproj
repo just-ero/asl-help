@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <OutputPath>..\Merger\bin</OutputPath>
+
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <RootNamespace>AslHelp.Emu</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Collections" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Diagnostics" />
+    <Using Include="System.IO" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Threading.Tasks" />
+
+    <Using Include="AslHelp.Extensions" />
+
+    <Using Include="AslHelp.IO.Debug" Alias="Debug" />
+    <Using Include="AslHelp.MemUtils.Models.DebugSymbol" Alias="DebugSymbol" />
+    <Using Include="AslHelp.MemUtils.Models.MemoryPage" Alias="MemoryPage" />
+    <Using Include="AslHelp.MemUtils.Models.Module" Alias="Module" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Basic\asl-help.csproj" />
+
+    <Reference Include="asl-help-core" HintPath="..\..\ref\asl-help-core.dll" Private="False" />
+    <Reference Include="LiveSplit.Core" HintPath="..\..\ref\LiveSplit.Core.dll" Private="False" />
+  </ItemGroup>
+
+</Project>

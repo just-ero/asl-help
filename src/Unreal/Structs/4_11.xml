@@ -1,0 +1,50 @@
+<Structs>
+  <Inherit Engine="Unreal" Major="4" Minor="10" />
+
+  <Struct Name="FName">
+    <!-- FName technically becomes a union of an { int, int } struct and a long. -->
+    <!-- This can cause pretty huge alignment issues. Not sure how to detect and fix this. -->
+    <Field Name="Index" Type="long" />
+  </Struct>
+
+  <Struct Name="FUObjectItem">
+    <Field Name="Object" Type="UObjectBase*" />
+    <Field Name="ClusterAndFlags" Type="int" />
+    <Field Name="SerialNumber" Type="int" />
+  </Struct>
+
+  <Struct Name="FFixedUObjectArray">
+    <Field Name="Objects" Type="FUObjectItem*" />
+    <Field Name="MaxElements" Type="int" />
+    <Field Name="NumElements" Type="int" />
+  </Struct>
+  <Struct Name="FUObjectArray">
+    <Field Name="ObjFirstGCIndex" Type="int" />
+    <Field Name="ObjLastNonGCIndex" Type="int" />
+    <Field Name="MaxObjectsNotConsideredByGC" Type="int" />
+    <Field Name="OpenForDisregardForGC" Type="bool" />
+    <Field Name="ObjObjects" Type="FFixedUObjectArray" />
+  </Struct>
+  <Struct Name="UObject">
+    <!-- UObject : UObjectBaseUtility : UObjectBase -->
+    <Field Name="VTable" Type="void*" />
+    <Field Name="ObjectFlags" Type="byte" /> <!-- EObjectFlags -->
+    <Field Name="InternalIndex" Type="int" />
+    <Field Name="Class" Type="UClass*" />
+    <Field Name="Name" Type="FName" />
+    <Field Name="Outer" Type="UObject*" />
+  </Struct>
+
+  <Struct Name="UStruct" Super="UField">
+    <Field Name="SuperStruct" Type="UStruct*" />
+    <Field Name="Children" Type="UField*" />
+    <Field Name="PropertiesSize" Type="int" />
+    <Field Name="MinAlignment" Type="int" />
+    <Field Name="Script" Type="TArray&lt;byte&gt;" />
+    <Field Name="PropertyLink" Type="UProperty*" />
+    <Field Name="RefLink" Type="UProperty*" />
+    <Field Name="DestructorLink" Type="UProperty*" />
+    <Field Name="PostConstructLink" Type="UProperty*" />
+    <Field Name="ScriptObjectReferences" Type="TArray&lt;UObject*&gt;" />
+  </Struct>
+</Structs>

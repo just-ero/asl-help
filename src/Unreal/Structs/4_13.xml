@@ -1,0 +1,10 @@
+<Structs>
+  <Inherit Engine="Unreal" Major="4" Minor="12" />
+
+  <Struct Name="FUObjectItem">
+    <Field Name="Object" Type="UObjectBase*" />
+    <Field Name="Flags" Type="int" />
+    <Field Name="ClusterIndex" Type="int" />
+    <Field Name="SerialNumber" Type="int" />
+  </Struct>
+</Structs>

@@ -1,0 +1,17 @@
+<Structs>
+  <Inherit Engine="Unreal" Major="4" Minor="13" />
+
+  <Struct Name="UProperty" Super="UField">
+    <Field Name="ArrayDim" Type="int" />
+    <Field Name="ElementSize" Type="int" />
+    <Field Name="PropertyFlags" Type="ulong" />
+    <Field Name="RepIndex" Type="ushort" />
+    <Field Name="RepNotifyFunc" Type="FName" />
+    <Field Name="Offset_Internal" Type="int" />
+    <Field Name="BlueprintReplicationCondition" Type="int" /> <!-- ELifetimeCondition -->
+    <Field Name="PropertyLinkNext" Type="UProperty*" />
+    <Field Name="NextRef" Type="UProperty*" />
+    <Field Name="DestructorLinkNext" Type="UProperty*" />
+    <Field Name="PostConstructLinkNext" Type="UProperty*" />
+  </Struct>
+</Structs>

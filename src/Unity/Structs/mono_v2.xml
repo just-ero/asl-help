@@ -1,0 +1,255 @@
+<Structs>
+  <Inherit Engine="Unity" Major="mono" Minor="v1" />
+
+  <Struct Name="MonoAssemblyName">
+    <Field Name="name" Type="char*" />
+    <Field Name="culture" Type="char*" />
+
+    <Field Name="hash_value" Type="char*" />
+    <Field Name="public_key" Type="byte*" />
+    <Field Name="public_key_token" Type="byte[17]" />
+    <Field Name="hash_alg" Type="uint" />
+    <Field Name="hash_len" Type="uint" />
+    <Field Name="flags" Type="uint" />
+
+    <Field Name="major" Type="ushort" />
+    <Field Name="minor" Type="ushort" />
+    <Field Name="build" Type="ushort" />
+    <Field Name="revision" Type="ushort" />
+    <Field Name="arch" Type="ushort" />
+  </Struct>
+
+  <Struct Name="MonoImage">
+    <Field Name="ref_count" Type="int" />
+    <Field Name="raw_data_handle" Type="void*" />
+    <Field Name="raw_data" Type="byte*" />
+    <Field Name="raw_data_len" Type="uint" />
+
+    <Field Name="raw_buffer_used" Type="byte:1" />
+    <Field Name="raw_data_allocated" Type="byte:1" />
+    <Field Name="fileio_used" Type="byte:1" />
+    <Field Name="dynamic" Type="byte:1" />
+    <Field Name="ref_only" Type="byte:1" />
+    <Field Name="uncompressed_metadata" Type="byte:1" />
+    <Field Name="metadata_only" Type="byte:1" />
+    <Field Name="load_from_context" Type="byte:1" />
+
+    <Field Name="checked_module_cctor" Type="byte:1" />
+    <Field Name="has_module_cctor" Type="byte:1" />
+    <Field Name="idx_string_wide" Type="byte:1" />
+    <Field Name="idx_guid_wide" Type="byte:1" />
+    <Field Name="idx_blob_wide" Type="byte:1" />
+    <Field Name="core_clr_platform_code" Type="byte:1" />
+
+    <Field Name="name" Type="char*" />
+    <Field Name="assembly_name" Type="char*" />
+    <Field Name="module_name" Type="char*" />
+    <Field Name="version" Type="char*" />
+    <Field Name="md_version_major" Type="short" />
+    <Field Name="md_version_minor" Type="short" />
+    <Field Name="guid" Type="char*" />
+    <Field Name="image_info" Type="MonoCLIImageInfo*" />
+
+    <Field Name="mempool" Type="MonoMemPool*" />
+    <Field Name="raw_metadata" Type="byte*" />
+
+    <Field Name="heap_strings" Type="MonoStreamHeader" />
+    <Field Name="heap_us" Type="MonoStreamHeader" />
+    <Field Name="heap_blob" Type="MonoStreamHeader" />
+    <Field Name="heap_guid" Type="MonoStreamHeader" />
+    <Field Name="heap_tables" Type="MonoStreamHeader" />
+    <Field Name="heap_pdb" Type="MonoStreamHeader" />
+
+    <Field Name="tables_base" Type="byte*" />
+    <Field Name="referenced_tables" Type="ulong" />
+    <Field Name="referenced_table_rows" Type="int*" />
+    <Field Name="tables" Type="MonoTableInfo[56]" />
+
+    <Field Name="references" Type="MonoAssembly**" />
+    <Field Name="nreferences" Type="int" />
+    <Field Name="modules" Type="MonoImage**" />
+    <Field Name="module_count" Type="uint" />
+    <Field Name="modules_loaded" Type="bool*" />
+
+    <Field Name="files" Type="MonoImage**" />
+    <Field Name="file_count" Type="uint" />
+    <Field Name="aot_module" Type="MonoAotModule*" />
+    <Field Name="aotid" Type="byte[16]" />
+    <Field Name="assembly" Type="MonoAssembly*" />
+
+    <Field Name="method_cache" Type="GHashTable*" />
+    <Field Name="class_cache" Type="MonoInternalHashTable" />
+  </Struct>
+
+  <Struct Name="MonoVTable">
+    <Field Name="klass" Type="MonoClass*" />
+    <Field Name="gc_descr" Type="MonoGCDescriptor" />
+    <Field Name="domain" Type="MonoDomain*" />
+    <Field Name="type" Type="void*" />
+    <Field Name="interface_bitmap" Type="byte*" />
+    <Field Name="max_interface_id" Type="ushort" />
+    <Field Name="rank" Type="byte" />
+    <Field Name="initialized" Type="byte" />
+    <Field Name="remote" Type="uint:1" />
+    <Field Name="init_failed" Type="uint:1" />
+    <Field Name="has_static_fields" Type="uint:1" />
+    <Field Name="gc_bits" Type="uint:4" />
+    <Field Name="imt_collisions_bitmap" Type="uint" />
+    <Field Name="runtime_generic_context" Type="MonoRuntimeGenericContext*" />
+    <Field Name="vtable" Type="void*[1]" />
+  </Struct>
+  <Struct Name="MonoClass">
+    <Field Name="element_class" Type="MonoClass*" />
+    <Field Name="cast_class" Type="MonoClass*" />
+    <Field Name="supertypes" Type="MonoClass**" />
+    <Field Name="idepth" Type="ushort" />
+    <Field Name="rank" Type="byte" />
+    <Field Name="instance_size" Type="int" />
+
+    <Field Name="inited" Type="uint:1" />
+    <Field Name="size_inited" Type="uint:1" />
+    <Field Name="valuetype" Type="uint:1" />
+    <Field Name="enumtype" Type="uint:1" />
+    <Field Name="blittable" Type="uint:1" />
+    <Field Name="unicode" Type="uint:1" />
+    <Field Name="wastypebuilder" Type="uint:1" />
+    <Field Name="is_array_special_interface" Type="uint:1" />
+
+    <Field Name="min_align" Type="byte" />
+
+    <Field Name="packing_size" Type="uint:4" />
+    <Field Name="ghcimpl" Type="uint:1" />
+    <Field Name="has_finalize" Type="uint:1" />
+    <Field Name="marshalbyref" Type="uint:1" />
+    <Field Name="contextbound" Type="uint:1" />
+
+    <Field Name="delegate" Type="uint:1" />
+    <Field Name="gc_descr_inited" Type="uint:1" />
+    <Field Name="has_cctor" Type="uint:1" />
+    <Field Name="has_references" Type="uint:1" />
+    <Field Name="has_static_refs" Type="uint:1" />
+    <Field Name="no_special_static_fields" Type="uint:1" />
+    <Field Name="is_com_object" Type="uint:1" />
+    <Field Name="nested_classes_inited" Type="uint:1" />
+
+    <Field Name="class_kind" Type="uint:3" />
+    <Field Name="interfaces_inited" Type="uint:1" />
+    <Field Name="simd_type" Type="uint:1" />
+    <Field Name="has_finalize_inited" Type="uint:1" />
+    <Field Name="fields_inited" Type="uint:1" />
+    <Field Name="has_failure" Type="uint:1" />
+
+    <Field Name="has_weak_fields" Type="uint:1" />
+
+    <Field Name="parent" Type="MonoClass*" />
+    <Field Name="nested_in" Type="MonoClass*" />
+    <Field Name="image" Type="MonoImage*" />
+    <Field Name="name" Type="char*" />
+    <Field Name="name_space" Type="char*" />
+    <Field Name="type_token" Type="uint" />
+    <Field Name="vtable_size" Type="int" />
+
+    <Field Name="interface_count" Type="ushort" />
+    <Field Name="interface_id" Type="uint" />
+    <Field Name="max_interface_id" Type="uint" />
+    <Field Name="interface_offsets_count" Type="ushort" />
+    <Field Name="interfaces_packed" Type="MonoClass**" />
+    <Field Name="interface_offsets_packed" Type="ushort*" />
+    <Field Name="interface_bitmap" Type="byte*" />
+    <Field Name="interfaces" Type="MonoClass**" />
+
+    <Field Name="sizes" Type="int" />
+
+    <Field Name="fields" Type="MonoClassField*" />
+    <Field Name="methods" Type="MonoMethod**" />
+    <Field Name="this_arg" Type="MonoType" />
+    <Field Name="byval_arg" Type="MonoType" />
+    <Field Name="gc_descr" Type="MonoGCDescriptor" />
+
+    <Field Name="runtime_info" Type="MonoClassRuntimeInfo*" />
+    <Field Name="vtable" Type="MonoMethod**" />
+    <Field Name="infrequent_data" Type="MonoPropertyBag" />
+    <Field Name="user_data" Type="void*" />
+  </Struct>
+  <Struct Name="MonoClassDef">
+    <Field Name="klass" Type="MonoClass" />
+    <Field Name="flags" Type="uint" />
+    <Field Name="first_method_idx" Type="uint" />
+    <Field Name="first_field_idx" Type="uint" />
+    <Field Name="method_count" Type="uint" />
+    <Field Name="field_count" Type="uint" />
+    <Field Name="next_class_cache" Type="MonoClass*" />
+  </Struct>
+  <Struct Name="MonoClassGtd">
+    <Field Name="klass" Type="MonoClassDef" />
+    <Field Name="generic_container" Type="MonoGenericContainer*" />
+    <Field Name="canonical_inst" Type="MonoType" />
+  </Struct>
+  <Struct Name="MonoGenericClass">
+    <Field Name="container_class" Type="MonoClass*" />
+    <Field Name="context" Type="MonoGenericContext" />
+    <Field Name="is_dynamic" Type="uint:1" />
+    <Field Name="is_tb_open" Type="uint:1" />
+    <Field Name="need_sync" Type="uint:1" />
+    <Field Name="cached_class" Type="MonoClass*" />
+    <Field Name="owner" Type="MonoImageSet*" />
+  </Struct>
+  <Struct Name="MonoGenericContainer">
+    <Field Name="context" Type="MonoGenericContext" />
+    <Field Name="parent" Type="MonoGenericContainer*" />
+    <Field Name="owner" Type="void*" />
+    <Field Name="type_argc" Type="int:29" />
+    <Field Name="is_method" Type="int:1" />
+    <Field Name="is_anonymous" Type="int:1" />
+    <Field Name="is_small_param" Type="int:1" />
+    <Field Name="type_params" Type="MonoGenericParamFull*" />
+  </Struct>
+  <Struct Name="MonoClassGenericInst">
+    <Field Name="klass" Type="MonoClass" />
+    <Field Name="generic_class" Type="MonoGenericClass*" />
+  </Struct>
+  <Struct Name="MonoGenericParam">
+    <Field Name="owner" Type="MonoGenericContainer*" />
+    <Field Name="num" Type="ushort" />
+    <Field Name="gshared_constraint" Type="MonoType*" />
+  </Struct>
+
+  <Struct Name="MonoMethod">
+    <Field Name="flags" Type="ushort" />
+    <Field Name="iflags" Type="ushort" />
+    <Field Name="token" Type="uint" />
+    <Field Name="klass" Type="MonoClass*" />
+
+    <Field Name="signature" Type="MonoMethodSignature*" />
+    <Field Name="name" Type="char*" />
+
+    <Field Name="inline_info" Type="uint:1" />
+    <Field Name="inline_failure" Type="uint:1" />
+    <Field Name="wrapper_type" Type="uint:5" />
+    <Field Name="string_ctor" Type="uint:1" />
+
+    <Field Name="save_lmf" Type="uint:1" />
+    <Field Name="dynamic" Type="uint:1" />
+    <Field Name="sre_method" Type="uint:1" />
+    <Field Name="is_generic" Type="uint:1" />
+    <Field Name="is_inflated" Type="uint:1" />
+    <Field Name="skip_visibility" Type="uint:1" />
+    <Field Name="verification_success" Type="uint:1" />
+    <Field Name="slot" Type="int:1" />
+  </Struct>
+  <Struct Name="MonoMethodSignature">
+    <Field Name="ret" Type="MonoType*" />
+    <Field Name="param_count" Type="ushort" />
+    <Field Name="sentinelpos" Type="short" />
+
+    <Field Name="generic_param_count" Type="uint:16" />
+    <Field Name="call_convention" Type="uint:6" />
+    <Field Name="hasthis" Type="uint:1" />
+    <Field Name="explicit_this" Type="uint:1" />
+    <Field Name="pinvoke" Type="uint:1" />
+    <Field Name="is_inflated" Type="uint:1" />
+    <Field Name="has_type_parameters" Type="uint:1" />
+
+    <Field Name="params" Type="MonoType*[1]" />
+  </Struct>
+</Structs>

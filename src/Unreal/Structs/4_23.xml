@@ -1,0 +1,30 @@
+<Structs>
+  <Inherit Engine="Unreal" Major="4" Minor="22" />
+
+  <Struct Name="FNameEntryAllocator">
+    <Field Name="Lock" Type="FRWLock" />
+    <Field Name="CurrentBlock" Type="uint" />
+    <Field Name="CurrentByteCursor" Type="uint" />
+    <Field Name="Blocks" Type="byte*" />
+  </Struct>
+  <Struct Name="FNamePool">
+    <Field Name="Entries" Type="FNameEntryAllocator" />
+  </Struct>
+
+  <Struct Name="FNameEntryHeader">
+    <Field Name="bIsWide" Type="ushort:1" />
+    <Field Name="LowercaseProbeHash" Type="ushort:5" />
+    <Field Name="Len" Type="ushort:10" />
+  </Struct>
+  <Struct Name="FNameEntry">
+    <Field Name="Header" Type="FNameEntryHeader" />
+    <Field Name="Name" Type="string" />
+  </Struct>
+  <Struct Name="FNameEntryId">
+    <Field Name="Value" Type="uint" />
+  </Struct>
+  <Struct Name="FName">
+    <Field Name="ComparisonIndex" Type="FNameEntryId" />
+    <Field Name="Number" Type="int" />
+  </Struct>
+</Structs>

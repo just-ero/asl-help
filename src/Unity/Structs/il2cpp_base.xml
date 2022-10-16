@@ -1,0 +1,163 @@
+<!-- Basically none of these structs' names are accurate. -->
+<!-- We're preserving the Mono names to cut down on duplicate code. -->
+
+<Structs>
+  <Struct Name="MonoAssemblyName">
+    <Field Name="name" Type="char*" />
+    <Field Name="culture" Type="char*" />
+
+    <Field Name="public_key" Type="byte*" />
+    <Field Name="hash_alg" Type="uint" />
+    <Field Name="hash_len" Type="int" />
+    <Field Name="flags" Type="uint" />
+
+    <Field Name="major" Type="int" />
+    <Field Name="minor" Type="int" />
+    <Field Name="build" Type="int" />
+    <Field Name="revision" Type="int" />
+
+    <Field Name="public_key_token" Type="byte[8]" />
+  </Struct>
+  <Struct Name="MonoAssembly">
+    <Field Name="image" Type="MonoImage*" />
+    <Field Name="token" Type="uint" />
+    <Field Name="referencedAssemblyStart" Type="int" />
+    <Field Name="referencedAssemblyCount" Type="int" />
+    <Field Name="aname" Type="MonoAssemblyName" />
+  </Struct>
+
+  <Struct Name="MonoImage">
+    <Field Name="name" Type="char*" />
+    <Field Name="nameNoExt" Type="char*" />
+    <Field Name="assembly" Type="MonoAssembly*" />
+
+    <Field Name="typeStart" Type="int" />
+    <Field Name="typeCount" Type="uint" />
+    <Field Name="exportedTypeStart" Type="int" />
+    <Field Name="exportedTypeCount" Type="uint" />
+    <Field Name="customAttributeStart" Type="int" />
+    <Field Name="customAttributeCount" Type="uint" />
+
+    <Field Name="entryPointIndex" Type="int" />
+    <Field Name="nameToClassHashTable" Type="void*" />
+    <Field Name="token" Type="uint" />
+    <Field Name="dynamic" Type="byte" />
+  </Struct>
+
+  <Struct Name="MonoType">
+    <Field Name="data" Type="void*" />
+    <Field Name="attrs" Type="uint:16" />
+    <Field Name="type" Type="uint:8" />
+    <Field Name="num_mods" Type="uint:6" />
+    <Field Name="byref" Type="uint:1" />
+    <Field Name="pinned" Type="uint:1" />
+  </Struct>
+
+  <Struct Name="MonoClass">
+    <Field Name="image" Type="MonoImage*" />
+    <Field Name="gc_desc" Type="void*" />
+    <Field Name="name" Type="char*" />
+    <Field Name="name_space" Type="char*" />
+    <Field Name="byval_arg" Type="MonoType" />
+    <Field Name="this_arg" Type="MonoType" />
+
+    <Field Name="element_class" Type="MonoClass*" />
+    <Field Name="castClass" Type="MonoClass*" />
+    <Field Name="declaringType" Type="MonoClass*" />
+    <Field Name="parent" Type="MonoClass*" />
+    <Field Name="generic_class" Type="MonoGenericClass*" />
+    <Field Name="typeDefinition" Type="void*" />
+    <Field Name="interopData" Type="void*" />
+    <Field Name="klass" Type="MonoClass*" />
+
+    <Field Name="fields" Type="MonoClassField*" />
+    <Field Name="events" Type="EventInfo*" />
+    <Field Name="properties" Type="PropertyInfo*" />
+    <Field Name="methods" Type="MethodInfo**" />
+    <Field Name="nestedTypes" Type="MonoClass**" />
+    <Field Name="implementedInterfaces" Type="MonoClass**" />
+    <Field Name="interfaceOffsets" Type="void*" />
+
+    <Field Name="static_fields" Type="void*" />
+
+    <Field Name="rgctx_data" Type="void*" />
+    <Field Name="typeHierarchy" Type="MonoClass**" />
+    <Field Name="initializationExceptionGCHandle" Type="uint" />
+    <Field Name="cctor_started" Type="uint" />
+    <Field Name="cctor_finished" Type="uint" />
+    <Field Name="cctor_thread" Type="ulong" />
+    <Field Name="genericContainerIndex" Type="int" />
+
+    <Field Name="instance_size" Type="uint" />
+    <Field Name="actualSize" Type="uint" />
+    <Field Name="element_size" Type="uint" />
+    <Field Name="native_size" Type="int" />
+    <Field Name="static_fields_size" Type="uint" />
+    <Field Name="thread_static_fields_size" Type="uint" />
+    <Field Name="thread_static_fields_offset" Type="int" />
+
+    <Field Name="flags" Type="uint" />
+    <Field Name="token" Type="uint" />
+
+    <Field Name="method_count" Type="ushort" />
+    <Field Name="property_count" Type="ushort" />
+    <Field Name="field_count" Type="ushort" />
+    <Field Name="event_count" Type="ushort" />
+    <Field Name="nested_type_count" Type="ushort" />
+    <Field Name="vtable_count" Type="ushort" />
+    <Field Name="interfaces_count" Type="ushort" />
+    <Field Name="interface_offsets_count" Type="ushort" />
+
+    <Field Name="typeHierarchyDepth" Type="byte" />
+    <Field Name="genericRecursionDepth" Type="byte" />
+    <Field Name="rank" Type="byte" />
+    <Field Name="minimumAlignment" Type="byte" />
+    <Field Name="naturalAligment" Type="byte" />
+    <Field Name="packingSize" Type="byte" />
+
+    <Field Name="initialized_and_no_error" Type="byte:1" />
+    <Field Name="valuetype" Type="byte:1" />
+    <Field Name="initialized" Type="byte:1" />
+    <Field Name="enumtype" Type="byte:1" />
+    <Field Name="is_generic" Type="byte:1" />
+    <Field Name="has_references" Type="byte:1" />
+    <Field Name="init_pending" Type="byte:1" />
+    <Field Name="size_inited" Type="byte:1" />
+
+    <Field Name="has_finalize" Type="byte:1" />
+    <Field Name="has_cctor" Type="byte:1" />
+    <Field Name="is_blittable" Type="byte:1" />
+    <Field Name="is_import_or_windows_runtime" Type="byte:1" />
+    <Field Name="is_vtable_initialized" Type="byte:1" />
+    <Field Name="has_initialization_error" Type="byte:1" />
+  </Struct>
+  <Struct Name="MonoGenericContext">
+    <Field Name="class_inst" Type="MonoGenericInst*" />
+    <Field Name="method_inst" Type="MonoGenericInst*" />
+  </Struct>
+  <Struct Name="MonoGenericClass">
+    <Field Name="typeDefinitionIndex" Type="int" />
+    <Field Name="context" Type="MonoGenericContext" />
+    <Field Name="cached_class" Type="MonoClass*" />
+  </Struct>
+  <Struct Name="MonoGenericInst">
+    <Field Name="type_argc" Type="uint" />
+    <Field Name="type_argv" Type="MonoType**" />
+  </Struct>
+  <Struct Name="MonoArrayType">
+    <Field Name="etype" Type="MonoType*" />
+    <Field Name="rank" Type="byte" />
+    <Field Name="numsizes" Type="byte" />
+    <Field Name="numlobounds" Type="byte" />
+    <Field Name="sizes" Type="int*" />
+    <Field Name="lobounds" Type="int*" />
+  </Struct>
+
+  <Struct Name="MonoClassField">
+    <Field Name="name" Type="char*" />
+    <Field Name="type" Type="MonoType*" />
+    <Field Name="parent" Type="MonoClass*" />
+    <Field Name="offset" Type="int" />
+    <Field Name="token" Type="uint" />
+  </Struct>
+</Structs>

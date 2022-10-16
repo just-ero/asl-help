@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net481</TargetFramework>
+    <OutputPath>..\Merger\bin</OutputPath>
+
+    <LangVersion>preview</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <RootNamespace>AslHelp.Unreal</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Collections" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Diagnostics" />
+    <Using Include="System.IO" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Threading.Tasks" />
+
+    <Using Include="AslHelp.Extensions" />
+
+    <Using Include="AslHelp.IO.Debug" Alias="Debug" />
+    <Using Include="AslHelp.MemUtils.Models.DebugSymbol" Alias="DebugSymbol" />
+    <Using Include="AslHelp.MemUtils.Models.MemoryPage" Alias="MemoryPage" />
+    <Using Include="AslHelp.MemUtils.Models.Module" Alias="Module" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Structs\4_0.xml" />
+    <EmbeddedResource Include="Structs\4_1.xml" />
+    <EmbeddedResource Include="Structs\4_2.xml" />
+    <EmbeddedResource Include="Structs\4_3.xml" />
+    <EmbeddedResource Include="Structs\4_4.xml" />
+    <EmbeddedResource Include="Structs\4_5.xml" />
+    <EmbeddedResource Include="Structs\4_6.xml" />
+    <EmbeddedResource Include="Structs\4_7.xml" />
+    <EmbeddedResource Include="Structs\4_8.xml" />
+    <EmbeddedResource Include="Structs\4_9.xml" />
+    <EmbeddedResource Include="Structs\4_10.xml" />
+    <EmbeddedResource Include="Structs\4_11.xml" />
+    <EmbeddedResource Include="Structs\4_12.xml" />
+    <EmbeddedResource Include="Structs\4_13.xml" />
+    <EmbeddedResource Include="Structs\4_14.xml" />
+    <EmbeddedResource Include="Structs\4_15.xml" />
+    <EmbeddedResource Include="Structs\4_16.xml" />
+    <EmbeddedResource Include="Structs\4_17.xml" />
+    <EmbeddedResource Include="Structs\4_18.xml" />
+    <EmbeddedResource Include="Structs\4_19.xml" />
+    <EmbeddedResource Include="Structs\4_20.xml" />
+    <EmbeddedResource Include="Structs\4_21.xml" />
+    <EmbeddedResource Include="Structs\4_22.xml" />
+    <EmbeddedResource Include="Structs\4_23.xml" />
+    <EmbeddedResource Include="Structs\4_24.xml" />
+    <EmbeddedResource Include="Structs\4_25.xml" />
+    <EmbeddedResource Include="Structs\4_26.xml" />
+    <EmbeddedResource Include="Structs\4_27.xml" />
+    <EmbeddedResource Include="Structs\5_0.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Basic\asl-help.csproj" />
+
+    <Reference Include="asl-help-core" HintPath="..\..\ref\asl-help-core.dll" Private="False" />
+    <Reference Include="LiveSplit.Core" HintPath="..\..\ref\LiveSplit.Core.dll" Private="False" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+<Structs>
+  <Inherit Engine="Unreal" Major="4" Minor="0" />
+
+  <Struct Name="FUObjectArray">
+    <Field Name="ObjFirstGCIndex" Type="int" />
+    <Field Name="ObjLastNonGCIndex" Type="int" />
+    <Field Name="OpenForDisregardForGC" Type="int" />
+    <Field Name="ObjObjects" Type="TStaticIndirectArrayThreadSafeRead&lt;UObjectBase*&gt;" />
+  </Struct>
+</Structs>
