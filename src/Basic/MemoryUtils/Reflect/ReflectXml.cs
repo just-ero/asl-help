@@ -34,7 +34,7 @@ internal class ReflectXml
         }
 
         ReflectXml refXml = CreateFromInherited(root.Element("Inherit"));
-        refXml.AddStructs(engine is "Unreal", root.Elements("Struct"));
+        refXml.AddStructs(engine == "Unreal", root.Elements("Struct"));
 
         return refXml;
     }

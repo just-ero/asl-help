@@ -11,7 +11,7 @@ public interface IExceptionStage<TResult, TException>
     where TException : Exception
 {
     IExceptionStage<TResult, TException> WithFailureMessage(string message);
-    IExceptionStage<TResult, TException> WithFailureMessage(Func<TException, string> message);
+    IExceptionStage<TResult, TException> WithFailureMessage(Func<Exception, string> message);
 
     ICatchStage<TResult> RetryOnFailure();
     ICatchStage<TResult> BreakOnFailure();

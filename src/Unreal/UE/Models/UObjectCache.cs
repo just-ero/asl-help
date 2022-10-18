@@ -19,7 +19,16 @@ public class UObjectCache : CachedEnumerable<string, UObject>
 
     protected override string GetKey(UObject uObject)
     {
-        return uObject.Outer + "." + uObject;
+        string obj = uObject.ToString();
+
+        if (uObject.Outer?.ToString() is string outer && outer != "")
+        {
+            return outer + "." + obj;
+        }
+        else
+        {
+            return obj;
+        }
     }
 
     protected override void OnSearch(string name)
@@ -43,5 +52,10 @@ public class UObjectCache : CachedEnumerable<string, UObject>
         Debug.Info($"  => Found at 0x{uObject.Address.ToString("X")}.");
 
         // uObject.DebugAllFields();
+    }
+
+    protected override void OnNotFound(string name)
+    {
+        Debug.Info("  => Not found!");
     }
 }

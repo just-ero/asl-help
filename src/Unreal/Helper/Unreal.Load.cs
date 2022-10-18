@@ -22,8 +22,8 @@ public partial class Unreal
             (4, < 8) => new UE4_0Manager(UEVersion.Major, UEVersion.Minor),
             (4, < 11) => new UE4_8Manager(UEVersion.Major, UEVersion.Minor),
             (4, < 20) => new UE4_11Manager(UEVersion.Major, UEVersion.Minor),
-            (4, < 22) => new UE4_20Manager(UEVersion.Major, UEVersion.Minor),
-            (4, < 23) => new UE4_23Manager(UEVersion.Major, UEVersion.Minor),
+            (4, < 23) => new UE4_20Manager(UEVersion.Major, UEVersion.Minor),
+            (4, < 25) => new UE4_23Manager(UEVersion.Major, UEVersion.Minor),
             (4, _) or (5, _) => new UE4_25Manager(UEVersion.Major, UEVersion.Minor),
             _ => throw new NotSupportedException($"Unreal Engine version {UEVersion.Major}.{UEVersion.Minor} is not supported yet.")
         };

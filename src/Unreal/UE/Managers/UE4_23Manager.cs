@@ -29,32 +29,27 @@ internal partial class UE4_23Manager : UE4_20Manager
                     break;
                 }
 
-                yield return new((chunkId << 16) | offset);
+                yield return new((chunkId << 16) | offset, FNameName(cursor));
 
-                cursor += 2 + length;
-
-                if ((cursor & 1) != 0)
-                {
-                    cursor += 1;
-                }
+                cursor += 2 + length + (cursor & 1);
 
                 offset = getOffset(cursor);
             }
 
             chunkId++;
-            chunk = fNamePool + (ptrSize * chunkId);
+            chunk = ReadPtr(fNamePool + (ptrSize * chunkId));
         }
 
         int getOffset(nint cursor)
         {
-            return (int)(cursor - (long)chunk) >> 1;
+            return (int)((long)cursor - (long)chunk) >> 1;
         }
     }
 
     internal override nint FNameNameEntry(int fNameIndex)
     {
         nint entry = ReadPtr(FNamePool + (_game.PtrSize * (fNameIndex >> 16)));
-        return (entry + (fNameIndex & ushort.MaxValue)) << 1;
+        return entry + ((fNameIndex & ushort.MaxValue) << 1);
     }
 
     internal override int FNameIndex(nint fName)
@@ -67,7 +62,7 @@ internal partial class UE4_23Manager : UE4_20Manager
         int length = FNameLength(fName, out bool isWide);
         ReadStringType type = isWide ? ReadStringType.UTF16 : ReadStringType.UTF8;
 
-        return _game.ReadString(length, type, fName + _engine["FNameEntry"]["Name"]) ?? "";
+        return _game.ReadString(length, type, fName + _engine["FNameEntry"]["Name"]);
     }
 
     internal virtual int FNameLength(nint fName, out bool isWide)

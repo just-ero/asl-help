@@ -62,7 +62,7 @@ public class MonoImage : CachedEnumerable<string, MonoClass>
         monoClass.DebugAllFields();
     }
 
-    protected override void OnNotFound(string key)
+    protected override void OnNotFound(string name)
     {
         Debug.Info("  => Not found!");
     }
