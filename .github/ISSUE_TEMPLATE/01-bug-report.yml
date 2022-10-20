@@ -1,0 +1,71 @@
+name: Bug Report
+description: Something in asl-help is not working as expected.
+title: "[Bug]: "
+labels: ["bug", "untriaged"]
+assignees:
+  - just-ero
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bug reports are very welcome! Please see the [contribution guidelines](https://github.com/just-ero/asl-help/blob/main/CONTRIBUTING.md#writing-a-good-bug-report) for more information on writing a good bug report.
+        This template will help gather the information needed to start the review process.
+  - type: dropdown
+    attributes:
+      label: What helper class does this issue occur on?
+      multiple: false
+      options:
+        - Basic
+        - Emu
+        - Unity
+        - Unreal
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: Please share a clear and concise description of the problem.
+      placeholder: Describe your issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: |
+        Please include the smallest possible code snippet to reproduce the problem if possible.
+      placeholder: Reproduction steps (minimal).
+      value: |
+        startup
+        {
+          Assembly.Load(File.ReadAllBytes("Components/asl-help")).CreateInstance("Basic");
+        }
+
+        // ...
+      render: csharp
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Error Messages
+      description: Please provide the exact error or failure messages that indicate the problem. Do not provide screenshots.
+      placeholder: Error messages.
+      render: "plain text"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Regression?
+      description: |
+        Did this work in a previous iteration of asl-help (or its predecessors)?
+        If you can, please point to a version in which this feature was functional to help narrow down the problem.
+      placeholder: Leave this field blank if you aren't sure.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Potential Causes and Fixes
+      description: |
+        Do you already know what could be causing this? Any and all hints could be valuable. Please provide us with what you know.
+      placeholder: Potential fixes.
+    validations:
+      required: false

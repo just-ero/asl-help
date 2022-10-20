@@ -87,7 +87,7 @@
     <Field Name="domain" Type="MonoDomain*" />
     <Field Name="type" Type="void*" />
     <Field Name="interface_bitmap" Type="byte*" />
-    <Field Name="max_interface_id" Type="ushort" />
+    <Field Name="max_interface_id" Type="uint" />
     <Field Name="rank" Type="byte" />
     <Field Name="initialized" Type="byte" />
     <Field Name="remote" Type="uint:1" />

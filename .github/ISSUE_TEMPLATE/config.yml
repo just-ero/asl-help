@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: There is a problem with a script which is not caused by asl-help.
+    url: https://github.com/just-ero/asl-help#third-party-notice
+    about: We do not cover such problems. Please contact the creator of the script instead.
+  - name: Auto splitters created by Ero.
+    url: https://github.com/just-ero/asl
+    about: Please open issues related to auto splitters created by Ero in just-ero/asl.
