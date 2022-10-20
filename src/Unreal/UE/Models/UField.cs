@@ -32,6 +32,8 @@ public class UField
             }
 
             (_class, string name, bool gotInner) = Unreal.Manager.UFieldTypeInfo(address);
+            Debug.Info(address.ToString("X"));
+            Debug.Info(name);
 
             // FIXME: Can we cache here?
 

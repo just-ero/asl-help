@@ -51,7 +51,7 @@ public class UObjectCache : CachedEnumerable<string, UObject>
     {
         Debug.Info($"  => Found at 0x{uObject.Address.ToString("X")}.");
 
-        // uObject.DebugAllFields();
+        uObject.DebugAllFields();
     }
 
     protected override void OnNotFound(string name)

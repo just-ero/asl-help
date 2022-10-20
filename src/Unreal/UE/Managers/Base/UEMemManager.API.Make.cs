@@ -77,7 +77,7 @@ public abstract partial class UEMemManager
 
             if (baseAddress == 0)
             {
-                throw new InvalidAddressException($"Base address was 0.");
+                throw new InvalidAddressException("Base address was 0.");
             }
         }
 
@@ -102,12 +102,13 @@ public abstract partial class UEMemManager
             if (!baseObject.TryGetValue(fieldName, out UField next))
             {
                 string msg =
-                    $"Field '{fieldName}' was not present in '{baseObject.FName.Name}'. " +
+                    $"Field '{fieldName}' was not present in '{baseObject}'. " +
                     $"Ensure correct spelling. Names are case sensitive.";
 
                 throw new NotFoundException(msg);
             }
 
+            Debug.Info(next.Offset.ToString("X"));
             offsets[i] = next.Offset;
             baseObject = next.Class;
         }

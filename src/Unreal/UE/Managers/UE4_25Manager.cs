@@ -9,7 +9,7 @@ internal partial class UE4_25Manager : UE4_23Manager
 
     internal override IEnumerable<nint> EnumerateUFields(nint uObject)
     {
-        int nextOffset = _engine["FField"]["Next"];
+        int nextOffset = _engine["UProperty"]["PropertyLinkNext"];
         int superPropSize = UObjectPropertiesSize(UObjectSuper(uObject));
         int thisPropSize = superPropSize + UObjectPropertiesSize(uObject);
 

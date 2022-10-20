@@ -18,26 +18,6 @@
     <Field Name="UnresolvedScriptProperties" Type="FUnresolvedScriptPropertiesArray*" />
   </Struct>
 
-  <Struct Name="FFieldClass">
-    <Field Name="Name" Type="FName" />
-    <Field Name="Id" Type="ulong" />
-    <Field Name="CastFlags" Type="ulong" />
-    <Field Name="ClassFlags" Type="EClassFlags" />
-    <Field Name="SuperClass" Type="FFieldClass*" />
-  </Struct>
-  <Struct Name="FFieldVariant">
-    <Field Name="Container" Type="void*" />
-    <Field Name="bIsUObject" Type="bool" />
-  </Struct>
-  <Struct Name="FField">
-    <Field Name="VTable" Type="void*" />
-    <Field Name="Class" Type="FFieldClass*" />
-    <Field Name="Owner" Type="FFieldVariant" />
-    <Field Name="Next" Type="FField*" />
-    <Field Name="Name" Type="FName" />
-    <Field Name="Flags" Type="int" />
-  </Struct>
-
   <Struct Name="UProperty" Super="FField">
     <Field Name="ArrayDim" Type="int" />
     <Field Name="ElementSize" Type="int" />
@@ -50,5 +30,25 @@
     <Field Name="NextRef" Type="UProperty*" />
     <Field Name="DestructorLinkNext" Type="UProperty*" />
     <Field Name="PostConstructLinkNext" Type="UProperty*" />
+  </Struct>
+
+  <Struct Name="FFieldClass">
+    <Field Name="Name" Type="FName" />
+    <Field Name="Id" Type="ulong" />
+    <Field Name="CastFlags" Type="ulong" />
+    <Field Name="ClassFlags" Type="EClassFlags" />
+    <Field Name="SuperClass" Type="FFieldClass*" />
+  </Struct>
+  <Struct Name="FField">
+    <Field Name="VTable" Type="void*" />
+    <Field Name="Class" Type="FFieldClass*" />
+    <Field Name="Owner" Type="FFieldVariant" />
+    <Field Name="Next" Type="FField*" />
+    <Field Name="Name" Type="FName" />
+    <Field Name="Flags" Type="int" />
+  </Struct>
+  <Struct Name="FFieldVariant">
+    <Field Name="Container" Type="void*" />
+    <Field Name="bIsUObject" Type="bool" />
   </Struct>
 </Structs>
