@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asl-help-unity", "src\Unity\asl-help-unity.csproj", "{2B99D46A-C169-4CD4-B038-D94BF0C206EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asl-help-unreal", "src\Unreal\asl-help-unreal.csproj", "{E2D48B57-8F66-4094-8B62-8B87F2C51F9E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "asl-help-merger", "src\Merger\asl-help-merger.csproj", "{0FDC8E3F-F509-403B-A863-48D8D3F5696A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF939B79-8521-43CD-81E1-E0CF9CFCD497}"
@@ -26,10 +24,6 @@ Global
 		{2B99D46A-C169-4CD4-B038-D94BF0C206EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B99D46A-C169-4CD4-B038-D94BF0C206EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B99D46A-C169-4CD4-B038-D94BF0C206EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2D48B57-8F66-4094-8B62-8B87F2C51F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2D48B57-8F66-4094-8B62-8B87F2C51F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2D48B57-8F66-4094-8B62-8B87F2C51F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2D48B57-8F66-4094-8B62-8B87F2C51F9E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FDC8E3F-F509-403B-A863-48D8D3F5696A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FDC8E3F-F509-403B-A863-48D8D3F5696A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FDC8E3F-F509-403B-A863-48D8D3F5696A}.Release|Any CPU.ActiveCfg = Release|Any CPU

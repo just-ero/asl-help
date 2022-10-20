@@ -8,14 +8,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Basic\asl-help.csproj" />
     <ProjectReference Include="..\Unity\asl-help-unity.csproj" />
-    <ProjectReference Include="..\Unreal\asl-help-unreal.csproj" />
 
     <Reference Include="asl-help-core" HintPath="..\..\ref\asl-help-core.dll" />
     <Reference Include="LiveSplit.Core" HintPath="..\..\ref\LiveSplit.Core.dll" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="set out=$(TargetDir)&#xD;&#xA;set /p lsdir=&lt;..\..\.lsdir&#xD;&#xA;&#xD;&#xA;ilmerge /ndebug /out:%25out%25\asl-help-final.dll ^&#xD;&#xA;    %25out%25\asl-help.dll ^&#xD;&#xA;    %25out%25\asl-help-unity.dll ^&#xD;&#xA;    %25out%25\asl-help-unreal.dll ^&#xD;&#xA;    %25out%25\asl-help-core.dll&#xD;&#xA;&#xD;&#xA;copy %25out%25\asl-help-final.dll ..\..\lib\asl-help&#xD;&#xA;&#xD;&#xA;if exist %25lsdir%25\Components\ (&#xD;&#xA;    copy %25out%25\asl-help-final.dll %25lsdir%25\Components\asl-help&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;del %25out%25\asl-help-core.dll&#xD;&#xA;del %25out%25\asl-help-final.dll&#xD;&#xA;del %25out%25\LiveSplit.Core.dll" />
+    <Exec Command="set out=$(TargetDir)&#xD;&#xA;set /p lsdir=&lt;..\..\.lsdir&#xD;&#xA;&#xD;&#xA;ilmerge /ndebug /out:%25out%25\asl-help-final.dll ^&#xD;&#xA;    %25out%25\asl-help.dll ^&#xD;&#xA;    %25out%25\asl-help-unity.dll ^&#xD;&#xA;    %25out%25\asl-help-core.dll&#xD;&#xA;&#xD;&#xA;copy %25out%25\asl-help-final.dll ..\..\lib\asl-help&#xD;&#xA;&#xD;&#xA;if exist %25lsdir%25\Components\ (&#xD;&#xA;    copy %25out%25\asl-help-final.dll %25lsdir%25\Components\asl-help&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;del %25out%25\asl-help-core.dll&#xD;&#xA;del %25out%25\asl-help-final.dll&#xD;&#xA;del %25out%25\LiveSplit.Core.dll" />
   </Target>
 
 </Project>
