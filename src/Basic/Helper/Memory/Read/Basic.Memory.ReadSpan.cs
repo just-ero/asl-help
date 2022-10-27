@@ -24,7 +24,7 @@ public partial class Basic
             return Array.Empty<T>();
         }
 
-        return ReadSpan<T>(length, module, baseOffset, offsets);
+        return ReadSpan<T>(length, module.Base + baseOffset, offsets);
     }
 
     public T[] ReadSpan<T>(int length, nint baseAddress, params int[] offsets) where T : unmanaged
@@ -95,6 +95,7 @@ public partial class Basic
 
     internal unsafe bool TryReadSpan_Internal<T>(Span<T> buffer, nint baseAddress, params int[] offsets) where T : unmanaged
     {
+        Debug.Info("a");
         if (!TryDeref(out nint deref, baseAddress, offsets))
         {
             return false;
