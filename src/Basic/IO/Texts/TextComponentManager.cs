@@ -16,7 +16,7 @@ public class TextComponentManager
 
             if (timer.Layout.TryFindLayoutComponent("TextComponent", id, out _) is ILayoutComponent lc)
             {
-                if (_components.TryGetValue(id, out td))
+                if (_components.TryGetValue(id, out td) && td is not null)
                 {
                     return td;
                 }
