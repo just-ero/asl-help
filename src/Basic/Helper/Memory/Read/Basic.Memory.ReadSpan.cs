@@ -95,7 +95,6 @@ public partial class Basic
 
     internal unsafe bool TryReadSpan_Internal<T>(Span<T> buffer, nint baseAddress, params int[] offsets) where T : unmanaged
     {
-        Debug.Info("a");
         if (!TryDeref(out nint deref, baseAddress, offsets))
         {
             return false;
