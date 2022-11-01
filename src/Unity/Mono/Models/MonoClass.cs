@@ -3,7 +3,7 @@ using AslHelp.MemUtils.Exceptions;
 
 namespace AslHelp.Mono.Models;
 
-public class MonoClass : CachedEnumerable<string, MonoField>
+public partial class MonoClass : CachedEnumerable<string, MonoField>
 {
     internal MonoClass(nint address)
     {
