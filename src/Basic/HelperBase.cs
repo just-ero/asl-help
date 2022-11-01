@@ -145,10 +145,13 @@ public abstract class HelperBase<TManager> : Basic
                 return true;
             })
             .Catch<RuntimeBinderException>()
+                .WithFailureMessage(ex => $"  => {ex.Message}")
                 .RetryOnFailure()
             .Catch<InvalidAddressException>()
+                .WithFailureMessage(ex => $"  => {ex.Message}")
                 .RetryOnFailure()
             .Catch<NotFoundException>()
+                .WithFailureMessage(ex => $"  => {ex.Message}")
                 .RetryOnFailure()
             .WithTimeout(TryLoadTimeout)
             .WithFailureMessage("TryLoad not successful.")

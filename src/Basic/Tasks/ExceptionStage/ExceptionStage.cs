@@ -29,7 +29,7 @@ internal class ExceptionStage<TResult, TException> :
         return this;
     }
 
-    IExceptionStage<TResult, TException> IExceptionStage<TResult, TException>.WithFailureMessage(Func<TException, string> message)
+    IExceptionStage<TResult, TException> IExceptionStage<TResult, TException>.WithFailureMessage(Func<Exception, string> message)
     {
         if (FailureMessage is not null)
         {
@@ -37,7 +37,7 @@ internal class ExceptionStage<TResult, TException> :
             throw new InvalidOperationException(msg);
         }
 
-        FailureMessage = new((Func<Exception, string>)message);
+        FailureMessage = new(message);
         return this;
     }
 
