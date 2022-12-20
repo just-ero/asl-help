@@ -23,19 +23,13 @@ public abstract class BasePointer<T> : MemoryWatcher
 
     public new T Current
     {
-        get
-        {
-            return (T)(base.Current ?? Default);
-        }
+        get => (T)(base.Current ?? Default);
         set => base.Current = value;
     }
 
     public new T Old
     {
-        get
-        {
-            return (T)(base.Old ?? Default);
-        }
+        get => (T)(base.Old ?? Default);
         set => base.Old = value;
     }
 
@@ -50,7 +44,7 @@ public abstract class BasePointer<T> : MemoryWatcher
     {
         if (_tick == Basic.Instance.Tick)
         {
-            return true;
+            return false;
         }
 
         _tick = Basic.Instance.Tick;
