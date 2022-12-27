@@ -4,8 +4,6 @@ public class ListPointer<T> : BasePointer<List<T>> where T : unmanaged
 {
     private static readonly Unity _game = Unity.Instance;
 
-    private T[] _buffer = Array.Empty<T>();
-
     public ListPointer(nint baseAddress, int[] offsets)
         : base(baseAddress, offsets) { }
 
@@ -30,10 +28,7 @@ public class ListPointer<T> : BasePointer<List<T>> where T : unmanaged
             return false;
         }
 
-        if (count != _buffer.Length)
-        {
-            _buffer = new T[count];
-        }
+        T[] resultArr = new T[count];
 
         if (!_game.TryRead<nint>(out nint items, deref + (_game.PtrSize * 2)))
         {
@@ -41,13 +36,13 @@ public class ListPointer<T> : BasePointer<List<T>> where T : unmanaged
             return false;
         }
 
-        if (!_game.TryReadSpan_Internal<T>(_buffer, items + (_game.PtrSize * 4)))
+        if (!_game.TryReadSpan_Internal<T>(resultArr, items + (_game.PtrSize * 4)))
         {
             result = new();
             return false;
         }
 
-        result = new(_buffer);
+        result = new(resultArr);
 
         return true;
     }

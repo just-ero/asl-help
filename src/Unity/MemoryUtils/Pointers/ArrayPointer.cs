@@ -4,8 +4,6 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
 {
     private static readonly Unity _game = Unity.Instance;
 
-    private T[] _buffer = Array.Empty<T>();
-
     public ArrayPointer(nint baseAddress, int[] offsets)
         : base(baseAddress, offsets) { }
 
@@ -28,18 +26,13 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
             return false;
         }
 
-        if (length != _buffer.Length)
-        {
-            _buffer = new T[length];
-        }
+        result = new T[length];
 
-        if (!_game.TryReadSpan_Internal<T>(_buffer, deref + (_game.PtrSize * 4)))
+        if (!_game.TryReadSpan_Internal<T>(result, deref + (_game.PtrSize * 4)))
         {
             result = Array.Empty<T>();
             return false;
         }
-
-        result = _buffer;
 
         return true;
     }

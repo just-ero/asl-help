@@ -2,13 +2,12 @@ namespace AslHelp.MemUtils.Pointers;
 
 public class SpanPointer<T> : BasePointer<T[]> where T : unmanaged
 {
-    private readonly T[] _buffer;
-    private readonly T[] _default;
+    private readonly int _length;
 
     public SpanPointer(int length, nint baseAddress, params int[] offsets)
         : base(baseAddress, offsets)
     {
-        _buffer = _default = new T[length];
+        _length = length;
     }
 
     protected override T[] Default { get; } = Array.Empty<T>();
@@ -20,13 +19,14 @@ public class SpanPointer<T> : BasePointer<T[]> where T : unmanaged
 
     protected override bool TryUpdate(out T[] result)
     {
-        if (!Basic.Instance.TryReadSpan_Internal<T>(_buffer, _base, _offsets))
+        result = new T[_length];
+
+        if (!Basic.Instance.TryReadSpan_Internal<T>(result, _base, _offsets))
         {
-            result = new T[_buffer.Length];
+            result = Array.Empty<T>();
             return false;
         }
 
-        result = _buffer;
         return true;
     }
 
