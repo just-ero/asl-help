@@ -8,86 +8,86 @@ public partial class Basic
     #region ReadSpanCustom
     public dynamic[] ReadSpanCustom(TypeDefinition definition, int length, int baseOffset, params int[] offsets)
     {
-        dynamic[] buffer = new dynamic[length];
-        TryReadSpanCustom(definition, buffer, MainModule, baseOffset, offsets);
+        dynamic[] items = new dynamic[length];
+        TryReadSpanCustom(definition, items, MainModule, baseOffset, offsets);
 
-        return buffer;
+        return items;
     }
 
     public dynamic[] ReadSpanCustom(TypeDefinition definition, int length, string module, int baseOffset, params int[] offsets)
     {
-        dynamic[] buffer = new dynamic[length];
-        TryReadSpanCustom(definition, buffer, Modules[module], baseOffset, offsets);
+        dynamic[] items = new dynamic[length];
+        TryReadSpanCustom(definition, items, Modules[module], baseOffset, offsets);
 
-        return buffer;
+        return items;
     }
 
     public dynamic[] ReadSpanCustom(TypeDefinition definition, int length, Module module, int baseOffset, params int[] offsets)
     {
-        dynamic[] buffer = new dynamic[length];
-        TryReadSpanCustom(definition, buffer, module, baseOffset, offsets);
+        dynamic[] items = new dynamic[length];
+        TryReadSpanCustom(definition, items, module, baseOffset, offsets);
 
-        return buffer;
+        return items;
     }
 
     public dynamic[] ReadSpanCustom(TypeDefinition definition, int length, nint baseAddress, params int[] offsets)
     {
-        dynamic[] buffer = new dynamic[length];
-        TryReadSpanCustom(definition, buffer, baseAddress, offsets);
+        dynamic[] items = new dynamic[length];
+        TryReadSpanCustom(definition, items, baseAddress, offsets);
 
-        return buffer;
+        return items;
     }
     #endregion
 
     #region TryReadSpanCustom
-    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] buffer, int baseOffset, params int[] offsets)
+    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] items, int baseOffset, params int[] offsets)
     {
-        return TryReadSpanCustom(definition, buffer, MainModule, baseOffset, offsets);
+        return TryReadSpanCustom(definition, items, MainModule, baseOffset, offsets);
     }
 
-    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] buffer, string module, int baseOffset, params int[] offsets)
+    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] items, string module, int baseOffset, params int[] offsets)
     {
-        return TryReadSpanCustom(definition, buffer, Modules[module], baseOffset, offsets);
+        return TryReadSpanCustom(definition, items, Modules[module], baseOffset, offsets);
     }
 
-    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] buffer, Module module, int baseOffset, params int[] offsets)
+    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] items, Module module, int baseOffset, params int[] offsets)
     {
         if (module is null)
         {
             Debug.Warn($"[ReadSpanCustom] Module could not be found.");
 
-            buffer = Array.Empty<dynamic>();
+            items = Array.Empty<dynamic>();
             return false;
         }
 
-        return TryReadSpanCustom(definition, buffer, module.Base + baseOffset, offsets);
+        return TryReadSpanCustom(definition, items, module.Base + baseOffset, offsets);
     }
 
-    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] buffer, nint baseAddress, params int[] offsets)
+    public bool TryReadSpanCustom(TypeDefinition definition, dynamic[] items, nint baseAddress, params int[] offsets)
     {
-        return ReadSpanCustom_Internal(definition, buffer, baseAddress, offsets);
+        return ReadSpanCustom_Internal(definition, items, baseAddress, offsets);
     }
     #endregion
 
-    internal unsafe bool ReadSpanCustom_Internal(TypeDefinition definition, dynamic[] buffer, nint baseAddress, params int[] offsets)
+    internal unsafe bool ReadSpanCustom_Internal(TypeDefinition definition, dynamic[] items, nint baseAddress, params int[] offsets)
     {
         if (!TryDeref(out nint deref, baseAddress, offsets))
         {
             return false;
         }
 
-        int defSize = definition.Size, bufSize = buffer.Length;
+        int size = definition.Size, itemCount = items.Length;
 
-        byte* bytes = stackalloc byte[defSize * bufSize];
+        byte* buffer = stackalloc byte[size * itemCount];
 
-        if (!Game.Read(deref, bytes, defSize * bufSize))
+        if (!Game.Read(deref, buffer, size * itemCount))
         {
             return false;
         }
 
-        for (int i = 0; i < bufSize; i++)
+        for (int i = 0; i < itemCount; i++)
         {
-            buffer[i] = Marshal.PtrToStructure((nint)buffer[i * defSize], definition.Type);
+            items[i] = Marshal.PtrToStructure((nint)(buffer + (i * size)), definition.Type);
         }
 
         return true;

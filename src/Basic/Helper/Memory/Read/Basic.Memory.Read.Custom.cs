@@ -63,9 +63,11 @@ public partial class Basic
             return false;
         }
 
-        byte* buffer = stackalloc byte[definition.Size];
+        int size = definition.Size;
 
-        if (!Game.Read(deref, buffer, definition.Size))
+        byte* buffer = stackalloc byte[size];
+
+        if (!Game.Read(deref, buffer, size))
         {
             result = definition.Default;
             return false;
