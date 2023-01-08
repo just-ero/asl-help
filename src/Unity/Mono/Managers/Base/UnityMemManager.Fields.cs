@@ -6,18 +6,19 @@ public abstract partial class UnityMemManager
 {
     internal IEnumerable<MonoField> EnumerateFields(nint klass)
     {
-        if (!ClassHasFields(klass, out nint fields, out int count))
-        {
-            yield break;
-        }
-
         nint parent = ClassParent(klass);
+
         if (parent != 0 && (ClassName(parent) != "Object" || ClassNamespace(parent) != "UnityEngine"))
         {
             foreach (MonoField field in EnumerateFields(parent))
             {
                 yield return field;
             }
+        }
+
+        if (!ClassHasFields(klass, out nint fields, out int count))
+        {
+            yield break;
         }
 
         bool isValueType = ClassIsValueType(klass);

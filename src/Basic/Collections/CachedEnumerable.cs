@@ -43,8 +43,6 @@ public abstract class CachedEnumerable<TKey, TValue> : IEnumerable<TValue> where
     {
         if (_cache.TryGetValue(key, out value))
         {
-            OnFound(value);
-
             return true;
         }
 
