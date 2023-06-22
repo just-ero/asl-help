@@ -62,7 +62,7 @@ To access a field like this, specify a number indicating how many classes in the
 vars.Helper["Manager"] = mono["Manager", 1].Make<IntPtr>("instance");
 ```
 
-### Publishing {#publishing}
+### Publishing
 When publishing an auto splitter that depends on asl-help, add the following to the auto splitter's entry in the master XML document inside of the `<URLs>` tag to ensure that it will be automatically downloaded along with the script.
 ```xml
 <URL>https://github.com/just-ero/asl-help/raw/main/lib/asl-help</URL>
