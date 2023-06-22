@@ -1,13 +1,6 @@
 # asl-help
 Welcome!
 
----
-## Third Party Notice
-This repository is not responsible for scripts malfunctioning due to issues that are not caused by asl-help.
-We reserve the right to immediately close any issues which report problems out of our control.
-
-Instead, please either open an issue in the repository of the script's creator, or ask a question in the [Speedrun Tool Development Discord server](https://discord.gg/cpYsxz7).
-
 ## Purpose
 Asl-help was created to aid autosplitter authors in writing scripts for games that use the mono framework, specifically the Unity fork. It is packaged as a .NET framework library that can be loaded at runtime from an autosplitter script, and uses codegen to allow for the creation of more streamlined, human-readable, and update-resilient pointer paths.
 
@@ -68,3 +61,9 @@ When publishing an autosplitter that depends on asl-help, add the following to t
 ```xml
 <URL>https://github.com/just-ero/asl-help/raw/main/lib/asl-help</URL>
 ```
+---
+## Third Party Notice
+This repository is not responsible for scripts malfunctioning due to issues that are not caused by asl-help.
+We reserve the right to immediately close any issues which report problems out of our control.
+
+Instead, please either open an issue in the repository of the script's creator, or ask a question in the [Speedrun Tool Development Discord server](https://discord.gg/cpYsxz7).
