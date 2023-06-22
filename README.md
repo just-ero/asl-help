@@ -24,6 +24,7 @@ init {
         // Declare your pointers here.
         return true;
     });
+}
 ```
 Because the `mono` variable is scoped to the anonymous function, it cannot be accessed outside of the function. Do not store a reference to it that could outlive said function.
 
