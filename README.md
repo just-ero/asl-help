@@ -2,14 +2,14 @@
 Welcome!
 
 ## Purpose
-Asl-help was created to aid autosplitter authors in writing scripts for games that use the mono framework, specifically the Unity fork. It is packaged as a .NET framework library that can be loaded at runtime from an autosplitter script, and uses codegen to allow for the creation of more streamlined, human-readable, and update-resilient pointer paths.
+asl-help was created to aid auto splitter authors in writing scripts for games that use the Mono framework, specifically the Unity fork. It is packaged as a .NET Framework library that can be loaded at runtime from an auto splitter script, and uses code generation to allow for the creation of more streamlined, human-readable, and update-resilient pointer paths.
 
 ## Usage 
 ### Devopment Setup
 Download the `asl-help` file located in the `lib` directory of this repository and place it in LiveSplit's components folder. This is only necessary for development—the file will be downloaded automatically for end users, provided that you configure your autosplitter correctly (see below).
 
 ### Loading Asl-Help
-Use the following snippet to load the asl-help binary in your autosplitter. This and the following examples will assume that the game runs on the Unity engine.
+Use the following snippet to load the asl-help binary in your auto splitter. This and the following examples will assume that the game runs on the Unity engine.
 ```cs
 startup {
     Assembly.Load(File.ReadAllBytes("Components/asl-help")).CreateInstance("Unity");
@@ -35,7 +35,7 @@ vars.Helper["WatcherName"] = mono["ClassName"].Make<Type>("FieldName", offset1, 
 `WatcherName` is the name that will be used to access the MemoryWatcher.  
 `ClassName` is the name of the class that owns the field that is to be accessed.  
 `Type` is the datatype of the value that is to be read from memory.  
-`FieldName` is the name of a **static** field on the class. It can also be replaced by a number representing that field's offset in the static field table. Asl-help will print all the static fields of any classes used to the debug output, wich can be used to ensure the name of the field matches said output.  
+`FieldName` is the name of a **static** field on the class. It can also be replaced by a number representing that field's offset in the static field table. asl-help will print all the static fields of any classes used to the debug output, wich can be used to ensure the name of the field matches said output.  
 `offset`, `offset2`, etc. are optional additional pointer offsets that work just like a normal pointer declaration.
 
 ### Accessing Pointers
@@ -63,7 +63,7 @@ vars.Helper["Manager"] = mono["Manager", 1].Make<IntPtr>("instance");
 ```
 
 ### Publishing
-When publishing an autosplitter that depends on asl-help, add the following to the autosplitter's entry in the master XML document inside of the `<URLs>` tag to ensure that it will be automatically downloaded along with the script.
+When publishing an auto splitter that depends on asl-help, add the following to the auto splitter's entry in the master XML document inside of the `<URLs>` tag to ensure that it will be automatically downloaded along with the script.
 ```xml
 <URL>https://github.com/just-ero/asl-help/raw/main/lib/asl-help</URL>
 ```
