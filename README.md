@@ -6,7 +6,7 @@ asl-help was created to aid auto splitter authors in writing scripts for games t
 
 ## Usage 
 ### Development Setup
-Download the `asl-help` file located in the `lib` directory of this repository and place it in LiveSplit's components folder. This is only necessary for development—the file will be downloaded automatically for end users, provided that you configure your autosplitter correctly (see below).
+Download the `asl-help` file located in the `lib` directory of this repository and place it in LiveSplit's components folder. This is only necessary for development — the file will be downloaded automatically for end users, provided that you configure your auto splitter correctly (see below).
 
 ### Loading Asl-Help
 Use the following snippet to load the asl-help binary in your auto splitter. This and the following examples will assume that the game runs on the Unity engine.
