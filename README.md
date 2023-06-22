@@ -5,7 +5,7 @@ Welcome!
 asl-help was created to aid auto splitter authors in writing scripts for games that use the Mono framework, specifically the Unity fork. It is packaged as a .NET Framework library that can be loaded at runtime from an auto splitter script, and uses code generation to allow for the creation of more streamlined, human-readable, and update-resilient pointer paths.
 
 ## Usage 
-### Devopment Setup
+### Development Setup
 Download the `asl-help` file located in the `lib` directory of this repository and place it in LiveSplit's components folder. This is only necessary for development—the file will be downloaded automatically for end users, provided that you configure your autosplitter correctly (see below).
 
 ### Loading Asl-Help
