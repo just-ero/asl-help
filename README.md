@@ -6,7 +6,7 @@ asl-help was created to aid auto splitter authors in writing scripts for games t
 
 ## Usage 
 ### Development Setup
-Download the `asl-help` file located in the `lib` directory of this repository and place it in LiveSplit's components folder. This is only necessary for development — the file will be downloaded automatically for end users, provided that you configure your auto splitter correctly (see below).
+Download the `asl-help` file located in the `lib` directory of this repository and place it in LiveSplit's components folder. This is only necessary for development — the file will be downloaded automatically for end users, provided that you configure your autosplitter correctly (see [Publishing](#publishing)).
 
 ### Loading Asl-Help
 Use the following snippet to load the asl-help binary in your auto splitter. This and the following examples will assume that the game runs on the Unity engine.
@@ -62,7 +62,7 @@ To access a field like this, specify a number indicating how many classes in the
 vars.Helper["Manager"] = mono["Manager", 1].Make<IntPtr>("instance");
 ```
 
-### Publishing
+### Publishing {#publishing}
 When publishing an auto splitter that depends on asl-help, add the following to the auto splitter's entry in the master XML document inside of the `<URLs>` tag to ensure that it will be automatically downloaded along with the script.
 ```xml
 <URL>https://github.com/just-ero/asl-help/raw/main/lib/asl-help</URL>
