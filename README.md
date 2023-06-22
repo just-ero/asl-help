@@ -69,7 +69,7 @@ When publishing an autosplitter that depends on asl-help, add the following to t
 ```
 
 ---
-## Third Party Notice
+##### Third Party Notice
 This repository is not responsible for scripts malfunctioning due to issues that are not caused by asl-help.
 We reserve the right to immediately close any issues which report problems out of our control.
 
