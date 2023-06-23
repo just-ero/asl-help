@@ -31,7 +31,7 @@ Because the `mono` variable is scoped to the anonymous function, it cannot be ac
 ### Pointers
 Pointers in asl-help are declared with the following syntax inside of the TryLoad function.
 ```cs
-vars.Helper["WatcherName"] = mono["ClassName"].Make<Type>("FieldName", offset1, offset...);
+vars.Helper["WatcherName"] = mono.Make<Type>("Classname", "FieldName", offset1, offset...);
 ```
 `WatcherName` is the name that will be used to access the MemoryWatcher.  
 `ClassName` is the name of the class that owns the field that is to be accessed.  
