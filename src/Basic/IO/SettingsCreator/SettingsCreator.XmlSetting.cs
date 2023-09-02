@@ -28,9 +28,9 @@ public partial class SettingsCreator
     {
         foreach (XmlSetting setting in settings)
         {
-            string id = setting.Id;
+            string id = setting.Id ?? setting.Label;
             bool state = bool.TryParse(setting.State, out bool pState) ? pState : defaultValue;
-            string label = setting.Label;
+            string label = setting.Label ?? setting.Id;
             string parent = setting.Parent ?? defaultParent;
             string tt = setting.ToolTip;
 

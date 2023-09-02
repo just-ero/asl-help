@@ -7,6 +7,8 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
     public ArrayPointer(nint baseAddress, int[] offsets)
         : base(baseAddress, offsets) { }
 
+    protected override T[] Default { get; } = Array.Empty<T>();
+
     public override bool Write(T[] value)
     {
         throw new NotImplementedException();
@@ -14,15 +16,15 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
 
     protected override bool TryUpdate(out T[] result)
     {
-        if (!_game.TryRead<nint>(out nint deref, _base, _offsets))
+        if (!_game.TryRead(out nint deref, _base, _offsets))
         {
-            result = Array.Empty<T>();
+            result = Default;
             return false;
         }
 
-        if (!_game.TryRead<int>(out int length, deref + (_game.PtrSize * 3)))
+        if (!_game.TryRead(out int length, deref + (_game.PtrSize * 3)))
         {
-            result = Array.Empty<T>();
+            result = Default;
             return false;
         }
 
@@ -30,7 +32,7 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
 
         if (!_game.TryReadSpan_Internal<T>(result, deref + (_game.PtrSize * 4)))
         {
-            result = Array.Empty<T>();
+            result = Default;
             return false;
         }
 
