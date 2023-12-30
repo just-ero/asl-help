@@ -180,6 +180,7 @@ public abstract partial class UnityMemManager
         int staticFieldOffset = monoField.Offset;
         int[] offsets = new int[otherFields.Length];
 
+        int tOffsets = 0;
         for (int i = 0; i < offsets.Length; i++)
         {
             object arg = otherFields[i];
@@ -196,7 +197,8 @@ public abstract partial class UnityMemManager
                 throw new ArgumentException(msg);
             }
 
-            if (!monoField.Type.Class.TryGetValue(fieldName, out monoField))
+            MonoClass klass = monoField.Type.Class;
+            if (!klass.TryGetValue(fieldName, out monoField))
             {
                 string msg =
                     $"Field '{fieldName}' could not be found. " +
@@ -205,8 +207,15 @@ public abstract partial class UnityMemManager
                 throw new NotFoundException(msg);
             }
 
-            offsets[i] = monoField.Offset;
+            offsets[tOffsets] += monoField.Offset;
+
+            if (i > 0 && !ClassIsValueType(klass.Address))
+            {
+                tOffsets++;
+            }
         }
+
+        Array.Resize(ref offsets, tOffsets + 1);
 
         return (staticFieldOffset, offsets);
     }
