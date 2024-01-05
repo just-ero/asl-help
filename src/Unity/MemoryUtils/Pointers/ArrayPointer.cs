@@ -7,7 +7,7 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
     public ArrayPointer(nint baseAddress, int[] offsets)
         : base(baseAddress, offsets) { }
 
-    protected override T[] Default { get; } = Array.Empty<T>();
+    protected override T[] Default => Array.Empty<T>();
 
     public override bool Write(T[] value)
     {

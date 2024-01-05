@@ -7,7 +7,7 @@ public class ListPointer<T> : BasePointer<List<T>> where T : unmanaged
     public ListPointer(nint baseAddress, int[] offsets)
         : base(baseAddress, offsets) { }
 
-    protected override List<T> Default { get; } = new();
+    protected override List<T> Default => new();
 
     public override bool Write(List<T> value)
     {
@@ -18,27 +18,27 @@ public class ListPointer<T> : BasePointer<List<T>> where T : unmanaged
     {
         if (!_game.TryRead<nint>(out nint deref, _base, _offsets))
         {
-            result = new();
+            result = Default;
             return false;
         }
 
         if (!_game.TryRead<int>(out int count, deref + (_game.PtrSize * 3)))
         {
-            result = new();
+            result = Default;
+            return false;
+        }
+
+        if (!_game.TryRead<nint>(out nint items, deref + (_game.PtrSize * 2)))
+        {
+            result = Default;
             return false;
         }
 
         T[] resultArr = new T[count];
 
-        if (!_game.TryRead<nint>(out nint items, deref + (_game.PtrSize * 2)))
-        {
-            result = new();
-            return false;
-        }
-
         if (!_game.TryReadSpan_Internal<T>(resultArr, items + (_game.PtrSize * 4)))
         {
-            result = new();
+            result = Default;
             return false;
         }
 

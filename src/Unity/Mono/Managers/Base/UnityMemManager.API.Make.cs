@@ -207,12 +207,12 @@ public abstract partial class UnityMemManager
                 throw new NotFoundException(msg);
             }
 
-            offsets[tOffsets] += monoField.Offset;
-
             if (i > 0 && !ClassIsValueType(klass.Address))
             {
                 tOffsets++;
             }
+
+            offsets[tOffsets] += monoField.Offset;
         }
 
         Array.Resize(ref offsets, tOffsets + 1);
