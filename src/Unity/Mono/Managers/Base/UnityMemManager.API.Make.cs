@@ -187,7 +187,12 @@ public abstract partial class UnityMemManager
 
             if (arg is int offset)
             {
-                offsets[i] = offset;
+                if (i > 0)
+                {
+                    tOffsets++;
+                }
+
+                offsets[tOffsets] = offset;
                 continue;
             }
 
