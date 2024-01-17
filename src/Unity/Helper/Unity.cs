@@ -42,7 +42,15 @@ public partial class Unity : HelperBase<UnityMemManager>
             return true;
         }
 
-        MonoModule = await FindModuleAsync(MONO_V1, MONO_V2, IL2CPP);
+        if (CustomMonoModules != null)
+        {
+            MonoModule = await FindModuleAsync([.. CustomMonoModules]);
+        }
+        else
+        {
+            MonoModule = await FindModuleAsync(MONO_V1, MONO_V2, IL2CPP);
+        }
+
 
         return true;
     }
