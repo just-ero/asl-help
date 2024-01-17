@@ -27,6 +27,23 @@ public partial class Unity
         }
     }
 
+    private List<string> _customMonoModules;
+    public List<string> CustomMonoModules
+    {
+        get => _customMonoModules;
+        set
+        {
+            if (Actions.Current != "startup")
+            {
+                string msg = $"{nameof(CustomMonoModules)} may only be set in the 'startup {{}}' action.";
+                throw new InvalidOperationException(msg);
+            }
+
+            Debug.Info($"  => Will try to load the mono modules {string.Join(", ", value)}. ");
+            _customMonoModules = value;
+        }
+    }
+
     private Version _unityVersion;
     public Version UnityVersion
     {
