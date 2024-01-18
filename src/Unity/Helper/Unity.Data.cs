@@ -84,7 +84,7 @@ public partial class Unity
 
             Debug.Info("Retrieving Unity version...");
 
-            string data = DataFolder ?? MainModule.FilePath[..^4] + "_Data";
+            string data = string.IsNullOrEmpty(DataFolder) ? MainModule.FilePath[..^4] + "_Data" : Path.Combine(Path.GetDirectoryName(MainModule.FilePath), DataFolder);
             string ggm = Path.Combine(data, GGM), md = Path.Combine(data, MD), du3d = Path.Combine(data, DU3D);
             bool ggmExists = File.Exists(ggm), mdExists = File.Exists(md), du3dExists = File.Exists(du3d);
 
@@ -194,7 +194,7 @@ public partial class Unity
 
             Debug.Info("Retrieving IL2CPP version...");
 
-            string data = DataFolder ?? MainModule.FilePath[..^4] + "_Data";
+            string data = string.IsNullOrEmpty(DataFolder) ? MainModule.FilePath[..^4] + "_Data" : Path.Combine(Path.GetDirectoryName(MainModule.FilePath), DataFolder);
             string gmd = Path.Combine(data, IL2CPPD, MD, GMD);
 
             if (File.Exists(gmd))
