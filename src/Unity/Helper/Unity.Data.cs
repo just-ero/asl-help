@@ -1,3 +1,4 @@
+using AslHelp;
 using AslHelp.Data.AutoSplitter;
 using AslHelp.IO;
 using AslHelp.SceneManagement;
@@ -18,13 +19,9 @@ public partial class Unity
         get => _dataFolder;
         set
         {
-            if (Actions.Current != "startup")
-            {
-                string msg = $"{nameof(DataFolder)} may only be set in the 'startup {{}}' action.";
-                throw new InvalidOperationException(msg);
-            }
+            Validation.AssertAction(nameof(DataFolder), "startup");
 
-            Debug.Info($"Will use {value} as the DataFolder");
+            Debug.Info($"  => Will use {value} as the DataFolder.");
             _dataFolder = value;
         }
     }
@@ -35,36 +32,52 @@ public partial class Unity
         get => _loadSceneManager;
         set
         {
-            if (Actions.Current != "startup")
-            {
-                string msg = $"{nameof(LoadSceneManager)} may only be set in the 'startup {{}}' action.";
-                throw new InvalidOperationException(msg);
-            }
+            Validation.AssertAction(nameof(LoadSceneManager), "startup");
 
             Debug.Info(value ? "  => Will try to load SceneManager." : "  => Will not load SceneManager.");
             _loadSceneManager = value;
         }
     }
-    private List<string> _customIL2CPPModules = new() { "GameAssembly.dll" };
-    public List<string> CustomIL2CPPModules
+
+    private List<string> _monoV1Modules = ["mono.dll"];
+    public List<string> MonoV1Modules
     {
-        get => _customIL2CPPModules;
+        get => _monoV1Modules;
         set
         {
-            if (Actions.Current != "startup")
-            {
-                string msg = $"{nameof(CustomIL2CPPModules)} may only be set in the 'startup {{}}' action.";
-                throw new InvalidOperationException(msg);
-            }
+            Validation.AssertAction(nameof(MonoV1Modules), "startup");
+            Validation.AssertNotNull(nameof(MonoV1Modules), value);
 
-            if (value == null)
-            {
-                string msg = $"{nameof(CustomIL2CPPModules)} may not be null.";
-                throw new ArgumentNullException(msg);
-            }
+            Debug.Info($"  => Will use the Mono V1 modules {string.Join(", ", value)}. ");
+            _monoV1Modules = value;
+        }
+    }
+
+    private List<string> _monoV2Modules = ["GameAssembly.dll"];
+    public List<string> MonoV2Modules
+    {
+        get => _monoV2Modules;
+        set
+        {
+            Validation.AssertAction(nameof(MonoV2Modules), "startup");
+            Validation.AssertNotNull(nameof(MonoV2Modules), value);
+
+            Debug.Info($"  => Will use the Mono V2 modules {string.Join(", ", value)}. ");
+            _monoV2Modules = value;
+        }
+    }
+
+    private List<string> _il2cppModules = ["GameAssembly.dll"];
+    public List<string> IL2CPPModules
+    {
+        get => _il2cppModules;
+        set
+        {
+            Validation.AssertAction(nameof(IL2CPPModules), "startup");
+            Validation.AssertNotNull(nameof(IL2CPPModules), value);
 
             Debug.Info($"  => Will use the IL2CPP modules {string.Join(", ", value)}. ");
-            _customIL2CPPModules = value;
+            _il2cppModules = value;
         }
     }
 
@@ -162,17 +175,8 @@ public partial class Unity
         }
         set
         {
-            if (Actions.Current != "startup")
-            {
-                string msg = $"{nameof(UnityVersion)} may only be set in the 'startup {{}}' action.";
-                throw new InvalidOperationException(msg);
-            }
-
-            if (value is null)
-            {
-                string msg = $"{nameof(UnityVersion)} may not be null.";
-                throw new ArgumentNullException(msg);
-            }
+            Validation.AssertAction(nameof(UnityVersion), "startup");
+            Validation.AssertNotNull(nameof(UnityVersion), value);
 
             _unityVersion = value;
         }
