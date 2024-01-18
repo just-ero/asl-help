@@ -1,9 +1,6 @@
 using AslHelp;
-using AslHelp.Data.AutoSplitter;
 using AslHelp.IO;
 using AslHelp.SceneManagement;
-using System.Data.SqlTypes;
-using System.Dynamic;
 
 public partial class Unity
 {
@@ -13,13 +10,13 @@ public partial class Unity
     public Module UnityPlayer { get; private set; }
     public SceneManager Scenes { get; private set; }
 
-    private string _dataFolder;
-    public string DataFolder
+    private string _dataDirectory;
+    public string DataDirectory
     {
         get
         {
             string directory = Path.GetDirectoryName(MainModule.FilePath);
-            string folderName = _dataFolder ?? Path.GetFileName(MainModule.FilePath)[..^4];
+            string folderName = _dataDirectory ?? Path.GetFileName(MainModule.FilePath)[..^4] + "_Data";
 
             return Path.Combine(directory, folderName);
         }
@@ -27,8 +24,7 @@ public partial class Unity
         {
             Assert.InAction("startup");
 
-            Debug.Info($"  => Will use {value} as the DataFolder.");
-            _dataFolder = value;
+            _dataDirectory = value;
         }
     }
 
@@ -42,45 +38,6 @@ public partial class Unity
 
             Debug.Info(value ? "  => Will try to load SceneManager." : "  => Will not load SceneManager.");
             _loadSceneManager = value;
-        }
-    }
-
-    private string[] _monoV1Modules = ["mono.dll"];
-    public string[] MonoV1Modules
-    {
-        get => _monoV1Modules;
-        set
-        {
-            Assert.InAction("startup");
-            Assert.NotNull(value, nameof(MonoV1Modules));
-
-            _monoV1Modules = value;
-        }
-    }
-
-    private string[] _monoV2Modules = ["mono-2.0-bdwgc.dll"];
-    public string[] MonoV2Modules
-    {
-        get => _monoV2Modules;
-        set
-        {
-            Assert.InAction("startup");
-            Assert.NotNull(value, nameof(MonoV2Modules));
-
-            _monoV2Modules = value;
-        }
-    }
-
-    private string[] _il2cppModules = ["GameAssembly.dll"];
-    public string[] IL2CPPModules
-    {
-        get => _il2cppModules;
-        set
-        {
-            Assert.InAction("startup");
-            Assert.NotNull(value, nameof(IL2CPPModules));
-
-            _il2cppModules = value;
         }
     }
 
@@ -100,7 +57,8 @@ public partial class Unity
 
             Debug.Info("Retrieving Unity version...");
 
-            string ggm = Path.Combine(DataFolder, GGM), md = Path.Combine(DataFolder, MD), du3d = Path.Combine(DataFolder, DU3D);
+            string data = DataDirectory;
+            string ggm = Path.Combine(data, GGM), md = Path.Combine(data, MD), du3d = Path.Combine(data, DU3D);
             bool ggmExists = File.Exists(ggm), mdExists = File.Exists(md), du3dExists = File.Exists(du3d);
 
             string ver = null;
@@ -200,7 +158,7 @@ public partial class Unity
 
             Debug.Info("Retrieving IL2CPP version...");
 
-            string gmd = Path.Combine(DataFolder, IL2CPPD, MD, GMD);
+            string gmd = Path.Combine(DataDirectory, IL2CPPD, MD, GMD);
 
             if (File.Exists(gmd))
             {

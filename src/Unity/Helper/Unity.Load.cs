@@ -3,6 +3,14 @@ using AslHelp.Mono.Managers;
 
 public partial class Unity
 {
+    private const string MONO_V1 = "mono.dll";
+    private const string MONO_V2 = "mono-2.0-bdwgc.dll";
+    private const string IL2CPP = "GameAssembly.dll";
+
+    public List<string> MonoV1Modules { get; } = [MONO_V1];
+    public List<string> MonoV2Modules { get; } = [MONO_V2];
+    public List<string> Il2CppModules { get; } = [IL2CPP];
+
     protected override UnityMemManager MakeManager()
     {
         if (MonoModule is null)
@@ -17,12 +25,12 @@ public partial class Unity
             throw new FatalNotFoundException(msg);
         }
 
-        if (MonoV1Modules.Contains(MainModule.Name))
+        if (MonoV1Modules.Contains(MonoModule.Name))
         {
             return new MonoV1Manager("v1");
         }
 
-        if (MonoV2Modules.Contains(MainModule.Name))
+        if (MonoV2Modules.Contains(MonoModule.Name))
         {
             return (UnityVersion.Major, UnityVersion.Minor) switch
             {
@@ -31,7 +39,7 @@ public partial class Unity
             };
         }
 
-        if (IL2CPPModules.Contains(MonoModule.Name))
+        if (Il2CppModules.Contains(MonoModule.Name))
         {
             return new Il2CppManager(UnityVersion.Major switch
             {
