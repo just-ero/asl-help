@@ -13,12 +13,12 @@ public static class Assert
         }
     }
 
-    public static void InAction(string action, [CallerMemberName] string name = "")
+    public static void InAction(string action, [CallerMemberName] string callerName = "")
     {
 
         if (Actions.Current != action)
         {
-            string msg = $"{name} may only be set in the '{action} {{}}' action.";
+            string msg = $"{callerName} may only be set in the '{action} {{}}' action.";
             throw new InvalidOperationException(msg);
         }
     }
