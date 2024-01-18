@@ -16,14 +16,19 @@ public partial class Unity
     private string _dataFolder;
     public string DataFolder
     {
-        get => _dataFolder == null ? MainModule.FilePath[..^4] + "_Data" : _dataFolder;
+        get
+        {
+            string directory = Path.GetDirectoryName(MainModule.FilePath);
+            string folderName = _dataFolder ?? Path.GetFileName(MainModule.FilePath)[..^4];
+
+            return Path.Combine(directory, folderName);
+        }
         set
         {
             Validation.AssertAction(nameof(DataFolder), "startup");
-            Validation.AssertNotNull(nameof(DataFolder), value);
 
-            _dataFolder = Path.Combine(Path.GetDirectoryName(MainModule.FilePath), value);
-            Debug.Info($"  => Will use {_dataFolder} as the DataFolder.");
+            Debug.Info($"  => Will use {value} as the DataFolder.");
+            _dataFolder = value;
         }
     }
 
