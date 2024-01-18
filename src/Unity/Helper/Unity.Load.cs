@@ -5,7 +5,7 @@ public partial class Unity
 {
     private const string MONO_V1 = "mono.dll";
     private const string MONO_V2 = "mono-2.0-bdwgc.dll";
-    private const string IL2CPP = "GameAssembly.dll";
+    // private const string IL2CPP = "GameAssembly.dll";
 
     protected override UnityMemManager MakeManager()
     {
@@ -29,7 +29,7 @@ public partial class Unity
                 (2021, >= 2) or ( > 2021, _) => new MonoV3Manager("v3"),
                 _ => new MonoV2Manager("v2")
             },
-            IL2CPP => new Il2CppManager(UnityVersion.Major switch
+            var _ when CustomIL2CPPModules.Contains(MonoModule.Name) => new Il2CppManager(UnityVersion.Major switch
             {
                 _ when !Is64Bit => "base",
                 < 2019 => "base",

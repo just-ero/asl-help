@@ -26,21 +26,26 @@ public partial class Unity
             _loadSceneManager = value;
         }
     }
-
-    private List<string> _customMonoModules;
-    public List<string> CustomMonoModules
+    private List<string> _customIL2CPPModules = new() { "GameAssembly.dll" };
+    public List<string> CustomIL2CPPModules
     {
-        get => _customMonoModules;
+        get => _customIL2CPPModules;
         set
         {
             if (Actions.Current != "startup")
             {
-                string msg = $"{nameof(CustomMonoModules)} may only be set in the 'startup {{}}' action.";
+                string msg = $"{nameof(CustomIL2CPPModules)} may only be set in the 'startup {{}}' action.";
                 throw new InvalidOperationException(msg);
             }
 
-            Debug.Info($"  => Will try to load the mono modules {string.Join(", ", value)}. ");
-            _customMonoModules = value;
+            if (value == null)
+            {
+                string msg = $"{nameof(CustomIL2CPPModules)} may not be null.";
+                throw new ArgumentNullException(msg);
+            }
+
+            Debug.Info($"  => Will use the IL2CPP modules {string.Join(", ", value)}. ");
+            _customIL2CPPModules = value;
         }
     }
 
