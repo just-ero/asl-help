@@ -58,7 +58,7 @@ public partial class Unity
         }
     }
 
-    private string[] _monoV2Modules = ["GameAssembly.dll"];
+    private string[] _monoV2Modules = ["mono-2.0-bdwgc.dll"];
     public string[] MonoV2Modules
     {
         get => _monoV2Modules;
