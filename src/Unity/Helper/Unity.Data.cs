@@ -16,13 +16,14 @@ public partial class Unity
     private string _dataFolder;
     public string DataFolder
     {
-        get => _dataFolder;
+        get => _dataFolder == null ? MainModule.FilePath[..^4] + "_Data" : _dataFolder;
         set
         {
             Validation.AssertAction(nameof(DataFolder), "startup");
+            Validation.AssertNotNull(nameof(DataFolder), null);
 
-            Debug.Info($"  => Will use {value} as the DataFolder.");
-            _dataFolder = value;
+            _dataFolder = Path.Combine(Path.GetDirectoryName(MainModule.FilePath), value);
+            Debug.Info($"  => Will use {_dataFolder} as the DataFolder.");
         }
     }
 
@@ -97,8 +98,7 @@ public partial class Unity
 
             Debug.Info("Retrieving Unity version...");
 
-            string data = string.IsNullOrEmpty(DataFolder) ? MainModule.FilePath[..^4] + "_Data" : Path.Combine(Path.GetDirectoryName(MainModule.FilePath), DataFolder);
-            string ggm = Path.Combine(data, GGM), md = Path.Combine(data, MD), du3d = Path.Combine(data, DU3D);
+            string ggm = Path.Combine(DataFolder, GGM), md = Path.Combine(DataFolder, MD), du3d = Path.Combine(DataFolder, DU3D);
             bool ggmExists = File.Exists(ggm), mdExists = File.Exists(md), du3dExists = File.Exists(du3d);
 
             string ver = null;
@@ -198,8 +198,7 @@ public partial class Unity
 
             Debug.Info("Retrieving IL2CPP version...");
 
-            string data = string.IsNullOrEmpty(DataFolder) ? MainModule.FilePath[..^4] + "_Data" : Path.Combine(Path.GetDirectoryName(MainModule.FilePath), DataFolder);
-            string gmd = Path.Combine(data, IL2CPPD, MD, GMD);
+            string gmd = Path.Combine(DataFolder, IL2CPPD, MD, GMD);
 
             if (File.Exists(gmd))
             {
