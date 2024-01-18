@@ -9,7 +9,7 @@ public static class Assert
     {
         if (argument == null)
         {
-            throw new ArgumentNullException($"{argument} may not be null.");
+            throw new ArgumentNullException($"{paramName} may not be null.");
         }
     }
 
