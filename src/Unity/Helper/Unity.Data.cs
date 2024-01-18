@@ -20,7 +20,7 @@ public partial class Unity
         set
         {
             Validation.AssertAction(nameof(DataFolder), "startup");
-            Validation.AssertNotNull(nameof(DataFolder), null);
+            Validation.AssertNotNull(nameof(DataFolder), value);
 
             _dataFolder = Path.Combine(Path.GetDirectoryName(MainModule.FilePath), value);
             Debug.Info($"  => Will use {_dataFolder} as the DataFolder.");
