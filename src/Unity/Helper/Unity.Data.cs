@@ -25,7 +25,7 @@ public partial class Unity
         }
         set
         {
-            Validation.AssertAction(nameof(DataFolder), "startup");
+            Assert.InAction(nameof(DataFolder), "startup");
 
             Debug.Info($"  => Will use {value} as the DataFolder.");
             _dataFolder = value;
@@ -38,7 +38,7 @@ public partial class Unity
         get => _loadSceneManager;
         set
         {
-            Validation.AssertAction(nameof(LoadSceneManager), "startup");
+            Assert.InAction("startup");
 
             Debug.Info(value ? "  => Will try to load SceneManager." : "  => Will not load SceneManager.");
             _loadSceneManager = value;
@@ -51,10 +51,9 @@ public partial class Unity
         get => _monoV1Modules;
         set
         {
-            Validation.AssertAction(nameof(MonoV1Modules), "startup");
-            Validation.AssertNotNull(nameof(MonoV1Modules), value);
+            Assert.InAction("startup");
+            Assert.NotNull(value, nameof(MonoV1Modules));
 
-            Debug.Info($"  => Will use the Mono V1 modules {string.Join(", ", value)}. ");
             _monoV1Modules = value;
         }
     }
@@ -65,10 +64,9 @@ public partial class Unity
         get => _monoV2Modules;
         set
         {
-            Validation.AssertAction(nameof(MonoV2Modules), "startup");
-            Validation.AssertNotNull(nameof(MonoV2Modules), value);
+            Assert.InAction("startup");
+            Assert.NotNull(value, nameof(MonoV2Modules));
 
-            Debug.Info($"  => Will use the Mono V2 modules {string.Join(", ", value)}. ");
             _monoV2Modules = value;
         }
     }
@@ -79,10 +77,9 @@ public partial class Unity
         get => _il2cppModules;
         set
         {
-            Validation.AssertAction(nameof(IL2CPPModules), "startup");
-            Validation.AssertNotNull(nameof(IL2CPPModules), value);
+            Assert.InAction("startup");
+            Assert.NotNull(value, nameof(IL2CPPModules));
 
-            Debug.Info($"  => Will use the IL2CPP modules {string.Join(", ", value)}. ");
             _il2cppModules = value;
         }
     }
@@ -180,8 +177,8 @@ public partial class Unity
         }
         set
         {
-            Validation.AssertAction(nameof(UnityVersion), "startup");
-            Validation.AssertNotNull(nameof(UnityVersion), value);
+            Assert.InAction("startup");
+            Assert.NotNull(value, nameof(UnityVersion));
 
             _unityVersion = value;
         }

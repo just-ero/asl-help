@@ -1,21 +1,22 @@
 using AslHelp.Data.AutoSplitter;
+using System.Runtime.CompilerServices;
 
 namespace AslHelp;
 
-public static class Validation
+public static class Assert
 {
-    public static void AssertNotNull(string name, dynamic value)
+    public static void NotNull(object argument, string paramName)
     {
-        if (value == null)
+        if (argument == null)
         {
-            throw new ArgumentNullException($"{name} may not be null.");
+            throw new ArgumentNullException($"{argument} may not be null.");
         }
     }
 
-    public static void AssertAction(string name, string action)
+    public static void InAction(string action, [CallerMemberName] string name = "")
     {
 
-        if (Actions.Current != "startup")
+        if (Actions.Current != action)
         {
             string msg = $"{name} may only be set in the '{action} {{}}' action.";
             throw new InvalidOperationException(msg);
