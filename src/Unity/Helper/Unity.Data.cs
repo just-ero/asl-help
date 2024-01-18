@@ -25,7 +25,7 @@ public partial class Unity
         }
         set
         {
-            Assert.InAction(nameof(DataFolder), "startup");
+            Assert.InAction("startup");
 
             Debug.Info($"  => Will use {value} as the DataFolder.");
             _dataFolder = value;
