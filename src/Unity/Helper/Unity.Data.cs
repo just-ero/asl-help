@@ -1,4 +1,4 @@
-using AslHelp.Data.AutoSplitter;
+using AslHelp;
 using AslHelp.IO;
 using AslHelp.SceneManagement;
 
@@ -10,17 +10,31 @@ public partial class Unity
     public Module UnityPlayer { get; private set; }
     public SceneManager Scenes { get; private set; }
 
+    private string _dataDirectory;
+    public string DataDirectory
+    {
+        get
+        {
+            string directory = Path.GetDirectoryName(MainModule.FilePath);
+            string folderName = _dataDirectory ?? Path.GetFileName(MainModule.FilePath)[..^4] + "_Data";
+
+            return Path.Combine(directory, folderName);
+        }
+        set
+        {
+            Assert.InAction("startup");
+
+            _dataDirectory = value;
+        }
+    }
+
     private bool _loadSceneManager;
     public bool LoadSceneManager
     {
         get => _loadSceneManager;
         set
         {
-            if (Actions.Current != "startup")
-            {
-                string msg = $"{nameof(LoadSceneManager)} may only be set in the 'startup {{}}' action.";
-                throw new InvalidOperationException(msg);
-            }
+            Assert.InAction("startup");
 
             Debug.Info(value ? "  => Will try to load SceneManager." : "  => Will not load SceneManager.");
             _loadSceneManager = value;
@@ -43,7 +57,7 @@ public partial class Unity
 
             Debug.Info("Retrieving Unity version...");
 
-            string data = MainModule.FilePath[..^4] + "_Data";
+            string data = DataDirectory;
             string ggm = Path.Combine(data, GGM), md = Path.Combine(data, MD), du3d = Path.Combine(data, DU3D);
             bool ggmExists = File.Exists(ggm), mdExists = File.Exists(md), du3dExists = File.Exists(du3d);
 
@@ -121,17 +135,8 @@ public partial class Unity
         }
         set
         {
-            if (Actions.Current != "startup")
-            {
-                string msg = $"{nameof(UnityVersion)} may only be set in the 'startup {{}}' action.";
-                throw new InvalidOperationException(msg);
-            }
-
-            if (value is null)
-            {
-                string msg = $"{nameof(UnityVersion)} may not be null.";
-                throw new ArgumentNullException(msg);
-            }
+            Assert.InAction("startup");
+            Assert.NotNull(value, nameof(UnityVersion));
 
             _unityVersion = value;
         }
@@ -153,8 +158,7 @@ public partial class Unity
 
             Debug.Info("Retrieving IL2CPP version...");
 
-            string data = MainModule.FilePath[..^4] + "_Data";
-            string gmd = Path.Combine(data, IL2CPPD, MD, GMD);
+            string gmd = Path.Combine(DataDirectory, IL2CPPD, MD, GMD);
 
             if (File.Exists(gmd))
             {

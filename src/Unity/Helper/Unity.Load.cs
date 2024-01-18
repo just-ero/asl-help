@@ -7,6 +7,10 @@ public partial class Unity
     private const string MONO_V2 = "mono-2.0-bdwgc.dll";
     private const string IL2CPP = "GameAssembly.dll";
 
+    public List<string> MonoV1Modules { get; } = [MONO_V1];
+    public List<string> MonoV2Modules { get; } = [MONO_V2];
+    public List<string> Il2CppModules { get; } = [IL2CPP];
+
     protected override UnityMemManager MakeManager()
     {
         if (MonoModule is null)
@@ -21,22 +25,31 @@ public partial class Unity
             throw new FatalNotFoundException(msg);
         }
 
-        return MonoModule.Name switch
+        if (MonoV1Modules.Contains(MonoModule.Name))
         {
-            MONO_V1 => new MonoV1Manager("v1"),
-            MONO_V2 => (UnityVersion.Major, UnityVersion.Minor) switch
+            return new MonoV1Manager("v1");
+        }
+
+        if (MonoV2Modules.Contains(MonoModule.Name))
+        {
+            return (UnityVersion.Major, UnityVersion.Minor) switch
             {
                 (2021, >= 2) or ( > 2021, _) => new MonoV3Manager("v3"),
                 _ => new MonoV2Manager("v2")
-            },
-            IL2CPP => new Il2CppManager(UnityVersion.Major switch
+            };
+        }
+
+        if (Il2CppModules.Contains(MonoModule.Name))
+        {
+            return new Il2CppManager(UnityVersion.Major switch
             {
                 _ when !Is64Bit => "base",
                 < 2019 => "base",
                 > 2019 when Il2CppVersion >= 27 => "2020",
                 _ => "2019"
-            }),
-            _ => throw new NotSupportedException("This version of Unity does not appear to be supported.")
+            });
         };
+
+        throw new NotSupportedException("This version of Unity does not appear to be supported.");
     }
 }
