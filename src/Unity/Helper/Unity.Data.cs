@@ -1,6 +1,8 @@
 using AslHelp.Data.AutoSplitter;
 using AslHelp.IO;
 using AslHelp.SceneManagement;
+using System.Data.SqlTypes;
+using System.Dynamic;
 
 public partial class Unity
 {
@@ -9,6 +11,23 @@ public partial class Unity
     public Module MonoModule { get; private set; }
     public Module UnityPlayer { get; private set; }
     public SceneManager Scenes { get; private set; }
+
+    private string _dataFolder;
+    public string DataFolder
+    {
+        get => _dataFolder;
+        set
+        {
+            if (Actions.Current != "startup")
+            {
+                string msg = $"{nameof(DataFolder)} may only be set in the 'startup {{}}' action.";
+                throw new InvalidOperationException(msg);
+            }
+
+            Debug.Info($"Will use {value} as the DataFolder");
+            _dataFolder = value;
+        }
+    }
 
     private bool _loadSceneManager;
     public bool LoadSceneManager
@@ -65,7 +84,7 @@ public partial class Unity
 
             Debug.Info("Retrieving Unity version...");
 
-            string data = MainModule.FilePath[..^4] + "_Data";
+            string data = DataFolder ?? MainModule.FilePath[..^4] + "_Data";
             string ggm = Path.Combine(data, GGM), md = Path.Combine(data, MD), du3d = Path.Combine(data, DU3D);
             bool ggmExists = File.Exists(ggm), mdExists = File.Exists(md), du3dExists = File.Exists(du3d);
 
@@ -175,7 +194,7 @@ public partial class Unity
 
             Debug.Info("Retrieving IL2CPP version...");
 
-            string data = MainModule.FilePath[..^4] + "_Data";
+            string data = DataFolder ?? MainModule.FilePath[..^4] + "_Data";
             string gmd = Path.Combine(data, IL2CPPD, MD, GMD);
 
             if (File.Exists(gmd))
