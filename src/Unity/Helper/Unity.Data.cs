@@ -45,8 +45,8 @@ public partial class Unity
         }
     }
 
-    private List<string> _monoV1Modules = ["mono.dll"];
-    public List<string> MonoV1Modules
+    private string[] _monoV1Modules = ["mono.dll"];
+    public string[] MonoV1Modules
     {
         get => _monoV1Modules;
         set
@@ -58,8 +58,8 @@ public partial class Unity
         }
     }
 
-    private List<string> _monoV2Modules = ["GameAssembly.dll"];
-    public List<string> MonoV2Modules
+    private string[] _monoV2Modules = ["GameAssembly.dll"];
+    public string[] MonoV2Modules
     {
         get => _monoV2Modules;
         set
@@ -71,8 +71,8 @@ public partial class Unity
         }
     }
 
-    private List<string> _il2cppModules = ["GameAssembly.dll"];
-    public List<string> IL2CPPModules
+    private string[] _il2cppModules = ["GameAssembly.dll"];
+    public string[] IL2CPPModules
     {
         get => _il2cppModules;
         set
