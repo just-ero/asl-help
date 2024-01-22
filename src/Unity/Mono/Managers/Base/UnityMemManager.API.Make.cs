@@ -178,21 +178,13 @@ public abstract partial class UnityMemManager
         }
 
         int staticFieldOffset = monoField.Offset;
-        int[] offsets = new int[otherFields.Length];
+        List<int> offsets = new(otherFields.Length);
 
-        int tOffsets = 0;
-        for (int i = 0; i < offsets.Length; i++)
+        foreach (object arg in otherFields)
         {
-            object arg = otherFields[i];
-
             if (arg is int offset)
             {
-                if (i > 0)
-                {
-                    tOffsets++;
-                }
-
-                offsets[tOffsets] = offset;
+                offsets.Add(offset);
                 continue;
             }
 
@@ -212,16 +204,16 @@ public abstract partial class UnityMemManager
                 throw new NotFoundException(msg);
             }
 
-            if (i > 0 && !ClassIsValueType(klass.Address))
+            if (ClassIsValueType(klass.Address))
             {
-                tOffsets++;
+                offsets[^1] += monoField.Offset;
             }
-
-            offsets[tOffsets] += monoField.Offset;
+            else
+            {
+                offsets.Add(monoField.Offset);
+            }
         }
 
-        Array.Resize(ref offsets, tOffsets + 1);
-
-        return (staticFieldOffset, offsets);
+        return (staticFieldOffset, offsets.ToArray());
     }
 }

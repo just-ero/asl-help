@@ -1,4 +1,5 @@
 using LiveSplit.ComponentUtil;
+using System.Text;
 
 namespace AslHelp.MemUtils.Pointers;
 
@@ -98,6 +99,15 @@ public abstract class BasePointer<T> : MemoryWatcher
 
     protected string OffsetsToString()
     {
-        return $"0x{_base.ToString("X")}, {string.Join(", ", _offsets.Select(o => $"0x{o:X}"))}";
+        StringBuilder sb = new();
+
+        sb.Append($"0x{_base.ToString("X")}");
+
+        foreach (int offset in _offsets)
+        {
+            sb.Append($", 0x{offset:X}");
+        }
+
+        return sb.ToString();
     }
 }
