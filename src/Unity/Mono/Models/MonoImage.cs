@@ -58,8 +58,6 @@ public class MonoImage : CachedEnumerable<string, MonoClass>
     {
         Debug.Info($"  => Found at 0x{monoClass.Address.ToString("X")}.");
         Debug.Info($"  => Static field table at 0x{monoClass.Static.ToString("X")}.");
-
-        monoClass.DebugAllFields();
     }
 
     protected override void OnNotFound(string key)
