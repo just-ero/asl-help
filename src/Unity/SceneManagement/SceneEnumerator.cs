@@ -12,7 +12,7 @@ public class SceneEnumerator : IEnumerable<Scene>
         _offset = offset;
     }
 
-    public int Count => Update() ? this.Count() : _sceneCache.Count;
+    public int Count => NeedsUpdate() ? this.Count() : _sceneCache.Count;
 
     public Scene this[int index]
     {
@@ -38,20 +38,19 @@ public class SceneEnumerator : IEnumerable<Scene>
         }
     }
 
-    private bool Update()
+    private bool NeedsUpdate()
     {
-        if (_tick == Unity.Instance.Tick)
-        {
-            return false;
-        }
+        return _tick != Unity.Instance.Tick;
+    }
 
+    private void Update()
+    {
         _tick = Unity.Instance.Tick;
-        return true;
     }
 
     public IEnumerator<Scene> GetEnumerator()
     {
-        if (!Update())
+        if (!NeedsUpdate())
         {
             foreach (Scene scene in _sceneCache)
             {
@@ -60,6 +59,8 @@ public class SceneEnumerator : IEnumerable<Scene>
 
             yield break;
         }
+
+        Update();
 
         lock (_sceneCache)
         {
