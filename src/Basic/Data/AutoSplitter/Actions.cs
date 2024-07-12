@@ -19,12 +19,12 @@ internal static partial class Actions
             {
                 if (trace.StartsWith("ASLScript.Do"))
                 {
-                    return trace[12..].ToLower();
+                    return trace[12..].ToLowerInvariant();
                 }
 
                 if (trace.StartsWith("ASLScript.Run"))
                 {
-                    return trace[13..].ToLower();
+                    return trace[13..].ToLowerInvariant();
                 }
             }
 
