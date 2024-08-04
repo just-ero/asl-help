@@ -1,7 +1,7 @@
 public partial class Basic
 {
     #region Main Module
-    public IEnumerable<nint> ScanAllRelRel(Signature signature, int alignment = 1)
+    public IEnumerable<nint> ScanAllRel(Signature signature, int alignment = 1)
     {
         return ScanAllRel(signature, MainModule, alignment);
     }

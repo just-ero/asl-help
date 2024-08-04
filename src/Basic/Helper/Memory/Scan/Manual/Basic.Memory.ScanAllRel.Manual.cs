@@ -1,13 +1,13 @@
 public partial class Basic
 {
     #region Main Module
-    public IEnumerable<nint> ScanAllRelRel(int offset, params string[] pattern)
+    public IEnumerable<nint> ScanAllRel(int offset, params string[] pattern)
     {
         Signature signature = new(offset, pattern);
         return ScanAllRel(signature, MainModule);
     }
 
-    public IEnumerable<nint> ScanAllRelRel(int offset, params byte[] pattern)
+    public IEnumerable<nint> ScanAllRel(int offset, params byte[] pattern)
     {
         Signature signature = new(offset, pattern);
         return ScanAllRel(signature, MainModule);
