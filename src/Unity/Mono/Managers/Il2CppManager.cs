@@ -13,7 +13,7 @@ internal class Il2CppManager : UnityMemManager
 
     private readonly Signature _typeInfoDefinitionTableTrg =
         Unity.Instance.Is64Bit
-        ? new(-4, "48 83 3C ?? 00 75 ?? 8B C? E8")
+        ? new(18, "48 C1 E9 0? BA 08 00 00 00")
         : new(2, "C3 A1 ???????? 83 3C ?? 00");
 
     private readonly bool _is2020;
@@ -22,7 +22,7 @@ internal class Il2CppManager : UnityMemManager
     public Il2CppManager(string version)
         : base("il2cpp", version)
     {
-        _is2020 = version == "2020";
+        _is2020 = version is "2020" or "29";
     }
 
     internal override nint FindAssemblies()

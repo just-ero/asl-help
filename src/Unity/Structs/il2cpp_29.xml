@@ -1,0 +1,87 @@
+<!-- Basically none of these structs' names are accurate. -->
+<!-- We're preserving the Mono names to cut down on duplicate code. -->
+
+<Structs>
+  <Inherit Engine="Unity" Major="il2cpp" Minor="2020" />
+
+  <Struct Name="MonoClass">
+    <Field Name="image" Type="MonoImage*" />
+    <Field Name="gc_desc" Type="void*" />
+    <Field Name="name" Type="char*" />
+    <Field Name="name_space" Type="char*" />
+    <Field Name="byval_arg" Type="MonoType" />
+    <Field Name="this_arg" Type="MonoType" />
+
+    <Field Name="element_class" Type="MonoClass*" />
+    <Field Name="castClass" Type="MonoClass*" />
+    <Field Name="declaringType" Type="MonoClass*" />
+    <Field Name="parent" Type="MonoClass*" />
+    <Field Name="generic_class" Type="MonoGenericClass*" />
+    <Field Name="typeMetadataHandle" Type="void*" />
+    <Field Name="interopData" Type="void*" />
+    <Field Name="klass" Type="MonoClass*" />
+
+    <Field Name="fields" Type="MonoClassField*" />
+    <Field Name="events" Type="EventInfo*" />
+    <Field Name="properties" Type="PropertyInfo*" />
+    <Field Name="methods" Type="MethodInfo**" />
+    <Field Name="nestedTypes" Type="MonoClass**" />
+    <Field Name="implementedInterfaces" Type="MonoClass**" />
+    <Field Name="interfaceOffsets" Type="void*" />
+
+    <Field Name="static_fields" Type="void*" />
+
+    <Field Name="rgctx_data" Type="void*" />
+    <Field Name="typeHierarchy" Type="MonoClass**" />
+    <Field Name="unity_user_data" Type="void*" />
+    <Field Name="initializationExceptionGCHandle" Type="uint" />
+    <Field Name="cctor_started" Type="uint" />
+    <Field Name="cctor_finished" Type="uint" />
+    <Field Name="cctor_thread" Type="ulong" />
+    <Field Name="genericContainerHandle" Type="void*" />
+
+    <Field Name="instance_size" Type="uint" />
+    <Field Name="stack_slot_size" Type="uint" /> <!-- New field in IL2CPP 29. -->
+    <Field Name="actualSize" Type="uint" />
+    <Field Name="element_size" Type="uint" />
+    <Field Name="native_size" Type="int" />
+    <Field Name="static_fields_size" Type="uint" />
+    <Field Name="thread_static_fields_size" Type="uint" />
+    <Field Name="thread_static_fields_offset" Type="int" />
+
+    <Field Name="flags" Type="uint" />
+    <Field Name="token" Type="uint" />
+
+    <Field Name="method_count" Type="ushort" />
+    <Field Name="property_count" Type="ushort" />
+    <Field Name="field_count" Type="ushort" />
+    <Field Name="event_count" Type="ushort" />
+    <Field Name="nested_type_count" Type="ushort" />
+    <Field Name="vtable_count" Type="ushort" />
+    <Field Name="interfaces_count" Type="ushort" />
+    <Field Name="interface_offsets_count" Type="ushort" />
+
+    <Field Name="typeHierarchyDepth" Type="byte" />
+    <Field Name="genericRecursionDepth" Type="byte" />
+    <Field Name="rank" Type="byte" />
+    <Field Name="minimumAlignment" Type="byte" />
+    <Field Name="naturalAligment" Type="byte" />
+    <Field Name="packingSize" Type="byte" />
+
+    <Field Name="initialized_and_no_error" Type="byte:1" />
+    <Field Name="valuetype" Type="byte:1" />
+    <Field Name="initialized" Type="byte:1" />
+    <Field Name="enumtype" Type="byte:1" />
+    <Field Name="is_generic" Type="byte:1" />
+    <Field Name="has_references" Type="byte:1" />
+    <Field Name="init_pending" Type="byte:1" />
+    <Field Name="size_inited" Type="byte:1" />
+
+    <Field Name="has_finalize" Type="byte:1" />
+    <Field Name="has_cctor" Type="byte:1" />
+    <Field Name="is_blittable" Type="byte:1" />
+    <Field Name="is_import_or_windows_runtime" Type="byte:1" />
+    <Field Name="is_vtable_initialized" Type="byte:1" />
+    <Field Name="has_initialization_error" Type="byte:1" />
+  </Struct>
+</Structs>

@@ -45,7 +45,8 @@ public partial class Unity
             {
                 _ when !Is64Bit => "base",
                 < 2019 => "base",
-                > 2019 when Il2CppVersion >= 27 => "2020",
+                > 2019 when Il2CppVersion == 27 => "2020",
+                _ when Il2CppVersion >= 29 => "29",
                 _ => "2019"
             });
         };

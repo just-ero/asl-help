@@ -28,13 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Structs\il2cpp_2019.xml" />
-    <EmbeddedResource Include="Structs\il2cpp_2020.xml" />
-    <EmbeddedResource Include="Structs\il2cpp_base.xml" />
-    <EmbeddedResource Include="Structs\mono_v1.xml" />
-    <EmbeddedResource Include="Structs\mono_v1_cattrs.xml" />
-    <EmbeddedResource Include="Structs\mono_v2.xml" />
-    <EmbeddedResource Include="Structs\mono_v3.xml" />
+    <EmbeddedResource Include="Structs\*.xml" />
   </ItemGroup>
 
   <ItemGroup>
