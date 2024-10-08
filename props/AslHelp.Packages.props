@@ -1,0 +1,13 @@
+<Project>
+
+  <!-- .NET Standard or .NET Framework -->
+  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETStandard' or '$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="PolySharp" Version="1.14.1"
+                      PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETStandard' or '$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+  </PropertyGroup>
+
+</Project>

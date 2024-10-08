@@ -1,0 +1,14 @@
+<Project>
+
+  <PropertyGroup>
+    <RootPath>$(MSBuildThisFileDirectory)/..</RootPath>
+
+    <ImplPath>$(RootPath)/impl</ImplPath>
+    <LibPath>$(RootPath)/lib</LibPath>
+    <SrcPath>$(RootPath)/src</SrcPath>
+    <TestPath>$(RootPath)/test</TestPath>
+
+    <ArtifactsPath>$(RootPath)/artifacts</ArtifactsPath>
+  </PropertyGroup>
+
+</Project>

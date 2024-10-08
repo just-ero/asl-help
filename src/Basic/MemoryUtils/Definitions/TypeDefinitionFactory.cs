@@ -1,23 +1,14 @@
 using AslHelp.MemUtils.Exceptions;
+
 using Microsoft.CSharp;
+
 using System.CodeDom.Compiler;
 
 namespace AslHelp.MemUtils.Definitions;
 
 internal static class TypeDefinitionFactory
 {
-    private static CSharpCodeProvider _codeProvider;
-
-    public static void Init()
-    {
-        _codeProvider ??= new();
-    }
-
-    public static void Dispose()
-    {
-        _codeProvider?.Dispose();
-        _codeProvider = null;
-    }
+    private static readonly CSharpCodeProvider _codeProvider = new();
 
     public static TypeDefinition CreateFromSource(string source, params string[] references)
     {
@@ -42,7 +33,7 @@ internal static class TypeDefinitionFactory
             throw new TypeDefinitionCompilerException(asm.Errors);
         }
 
-        Span<Type> types = asm.CompiledAssembly.GetTypes();
+        Type[] types = asm.CompiledAssembly.GetTypes();
 
         if (types.Length == 0)
         {

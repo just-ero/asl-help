@@ -48,4 +48,3 @@ internal static partial class Actions
     public static Action onReset { get; set; } = new(nameof(onReset));
 #pragma warning restore IDE1006
 }
-

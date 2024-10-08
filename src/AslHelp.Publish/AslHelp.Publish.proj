@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.Build.Traversal">
+
+  <PropertyGroup>
+    <AssemblyName>asl-help</AssemblyName>
+
+    <!-- <ILRepackTargetsFile>$(MSBuildThisFileDirectory)/targets/_MergeAssemblies.targets</ILRepackTargetsFile> -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- <ProjectReference Include="$(ImplDir)/AslHelp.Basic/*.csproj" /> -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.34.2" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)/targets/_MoveOutput.targets" />
+
+</Project>

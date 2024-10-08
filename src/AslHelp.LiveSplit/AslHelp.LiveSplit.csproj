@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net4.8.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SrcPath)/AslHelp.Shared/AslHelp.Shared.csproj" />
+    <ProjectReference Include="$(SrcPath)/AslHelp.Diagnostics/AslHelp.Diagnostics.csproj" />
+    <ProjectReference Include="$(SrcPath)/AslHelp.Memory/AslHelp.Memory.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Irony" Version="1.1.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(LibPath)/*.dll" />
+  </ItemGroup>
+
+</Project>

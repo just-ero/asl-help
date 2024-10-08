@@ -1,0 +1,18 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- <GenerateDocumentationFile>true</GenerateDocumentationFile> -->
+    <Nullable>enable</Nullable>
+
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(MSBuildProjectName).UnitTests" />
+  </ItemGroup>
+
+</Project>

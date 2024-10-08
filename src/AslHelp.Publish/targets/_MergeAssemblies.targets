@@ -1,0 +1,21 @@
+<Project>
+
+  <ItemGroup>
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Collections.dll" /> -->
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Common.dll" /> -->
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Diagnostics.dll" /> -->
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.IO.dll" /> -->
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.LiveSplit.dll" /> -->
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Memory.dll" /> -->
+
+    <!-- <AslHelpPluginAssemblies Include="$(OutputPath)/AslHelp.Basic.dll" /> -->
+  </ItemGroup>
+
+  <Target Name="_MergeAssemblies" AfterTargets="Build">
+    <ILRepack
+      Parallel="true"
+      InputAssemblies="@(AslHelpBaseAssemblies);@(AslHelpPluginAssemblies)"
+      OutputFile="$(OutputPath)/$(AssemblyName).dll" />
+  </Target>
+
+</Project>
