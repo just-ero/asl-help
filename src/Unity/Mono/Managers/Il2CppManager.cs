@@ -13,7 +13,7 @@ internal class Il2CppManager : UnityMemManager
 
     private readonly Signature _typeInfoDefinitionTableTrg =
         Unity.Instance.Is64Bit
-        ? new(18, "48 C1 E9 0? BA 08 00 00 00")
+        ? new(10, "48 C1 E9 0? BA 08 00 00 00")
         : new(2, "C3 A1 ???????? 83 3C ?? 00");
 
     private readonly bool _is2020;
@@ -82,7 +82,17 @@ internal class Il2CppManager : UnityMemManager
             return _typeInfoDefinitionTable;
         }
 
-        _typeInfoDefinitionTable = ReadPtr(_game.ScanRel(_typeInfoDefinitionTableTrg, _game.MonoModule));
+        if (_game.Is64Bit)
+        {
+            Signature mov = new(3, "48 89 05");
+
+            nint metadataInitialize = _game.Scan(_typeInfoDefinitionTableTrg, _game.MonoModule);
+            _typeInfoDefinitionTable = ReadPtr(_game.ScanRel(mov, metadataInitialize, 0x10));
+        }
+        else
+        {
+            _typeInfoDefinitionTable = ReadPtr(_game.ScanRel(_typeInfoDefinitionTableTrg, _game.MonoModule));
+        }
 
         if (_typeInfoDefinitionTable == 0)
         {
