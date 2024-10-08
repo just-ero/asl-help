@@ -1,8 +1,17 @@
+# IDE options/cache directories
 .vs/
 .vscode/
+.fleet/
+.idea/
 
+# Build results
+artifacts/
 bin/
 obj/
+BenchmarkDotNet.Artifacts/
+
+# User-specific files
 *.user
 
-.lsdir
+# asl-help
+lib/
