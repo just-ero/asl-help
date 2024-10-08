@@ -1,8 +1,8 @@
 namespace AslHelp.LiveSplit.Settings;
 
 internal sealed record Setting(
-    string Id,
+    string? Id,
     bool State,
-    string Label,
+    string? Label,
     string? Parent,
     string? ToolTip);

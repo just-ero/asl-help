@@ -8,8 +8,6 @@ using LiveSplit.ASL;
 
 namespace AslHelp.LiveSplit.Settings;
 
-#error Add remaining overloads.
-
 [Obsolete("Do not use ASL-specific features.", true)]
 public sealed partial class SettingsBuilder
 {
@@ -20,15 +18,21 @@ public sealed partial class SettingsBuilder
         _builder = builder;
     }
 
-    public void Add(Dictionary<string, string> settings)
+    public void Create(Dictionary<string, string> settings)
     {
         IEnumerable<Setting> converted = settings.Select(kvp => new Setting(kvp.Key, false, kvp.Value, null, null));
         Add(converted);
     }
 
-    public void Add(dynamic?[,] settings)
+    public void Create(dynamic?[,] settings)
     {
         IEnumerable<Setting> converted = ConvertFromDynamic(settings);
+        Add(converted);
+    }
+
+    public void CreateCustom(dynamic?[,] settings, params int[] positions)
+    {
+        IEnumerable<Setting> converted = ConvertFromDynamic(settings, positions);
         Add(converted);
     }
 
@@ -55,6 +59,39 @@ public sealed partial class SettingsBuilder
                 4 => new(settings[i, 0], settings[i, 1], settings[i, 2], settings[i, 3], null),
                 5 => new(settings[i, 0], settings[i, 1], settings[i, 2], settings[i, 3], settings[i, 4])
             };
+        }
+    }
+
+    private IEnumerable<Setting> ConvertFromDynamic(dynamic?[,] settings, int[] positions)
+    {
+        if (positions.Any(p => p is < 1 or > 5))
+        {
+            throw new ArgumentException("The positions must be in range 1 - 5.");
+        }
+
+        (int outerCount, int innerCount) = (settings.GetLength(0), settings.GetLength(1));
+
+        if (positions.Length != innerCount)
+        {
+            string msg = $"Amount of positions for settings ({positions.Length}) did not equal collection's inner elements' count ({innerCount}).";
+            throw new ArgumentException(msg);
+        }
+
+        for (int i = 0; i < outerCount; i++)
+        {
+            var sorted = new dynamic?[5];
+            for (int j = 0; j < innerCount; j++)
+            {
+                sorted[positions[j] - 1] = settings[i, j];
+            }
+
+            string? id = sorted[0] ?? sorted[2];
+            bool state = sorted[1] ?? true;
+            string? desc = sorted[2] ?? sorted[0];
+            string? parent = sorted[3];
+            string? tooltip = sorted[4];
+
+            yield return new(id, state, desc, parent, tooltip);
         }
     }
 
