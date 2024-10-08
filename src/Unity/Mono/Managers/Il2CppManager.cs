@@ -1,6 +1,7 @@
 using AslHelp.MemUtils.Exceptions;
 using AslHelp.MemUtils.SigScan;
 using AslHelp.Mono.Models;
+using System.Text;
 
 namespace AslHelp.Mono.Managers;
 
@@ -84,10 +85,18 @@ internal class Il2CppManager : UnityMemManager
 
         if (_game.Is64Bit)
         {
-            Signature mov = new(3, "48 89 05");
+            Signature str = new(Encoding.UTF8.GetBytes("global-metadata.dat"));
+            nint strRef = _game.Scan(str, _game.MonoModule);
 
-            nint metadataInitialize = _game.Scan(_typeInfoDefinitionTableTrg, _game.MonoModule);
-            _typeInfoDefinitionTable = ReadPtr(_game.ScanRel(mov, metadataInitialize, 0x10));
+            Signature lea = new(3, "48 8D 0D");
+            nint metadataInitialize = _game.ScanAll(lea, _game.MonoModule)
+                .FirstOrDefault(addr => _game.FromRelativeAddress(addr) == strRef);
+
+            Signature shr = new("48 C1 E9");
+            nint metedataInitialize2 = _game.Scan(shr, metadataInitialize, 0xB0);
+
+            Signature mov = new(3, "48 89 05");
+            _typeInfoDefinitionTable = ReadPtr(_game.ScanRel(mov, metedataInitialize2, 0x20));
         }
         else
         {
