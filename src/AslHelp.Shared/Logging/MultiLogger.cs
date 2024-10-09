@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AslHelp.Diagnostics.Logging;
+namespace AslHelp.Shared.Logging;
 
 /// <summary>
 ///     Represents a collection of <see cref="ILogger"/> instances that can be used together.
@@ -16,7 +16,7 @@ public sealed class MultiLogger : ILogger, IList<ILogger>
     /// </summary>
     public MultiLogger(params ILogger[] loggers)
     {
-        _loggers = new(loggers);
+        _loggers = [.. loggers];
     }
 
     /// <summary>

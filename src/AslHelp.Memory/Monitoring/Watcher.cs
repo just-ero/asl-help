@@ -5,10 +5,10 @@ namespace AslHelp.Memory.Monitoring;
 public sealed class Watcher<T> : WatcherBase<T, IMemoryReader>
     where T : unmanaged
 {
-    public Watcher(IMemoryReader memory, nuint baseAddress, params int[] offsets)
+    public Watcher(IMemoryReader memory, nint baseAddress, params int[] offsets)
         : base(memory, baseAddress, offsets) { }
 
-    public Watcher(IMemoryReader memory, TickCounter counter, nuint baseAddress, params int[] offsets)
+    public Watcher(IMemoryReader memory, TickCounter counter, nint baseAddress, params int[] offsets)
         : base(memory, counter, baseAddress, offsets) { }
 
     protected override bool Equals(T old, T current)
@@ -16,7 +16,7 @@ public sealed class Watcher<T> : WatcherBase<T, IMemoryReader>
         return old.Equals(current);
     }
 
-    protected override bool TryRead(IMemoryReader memory, nuint baseAddress, int[] offsets, out T value)
+    protected override bool TryRead(IMemoryReader memory, nint baseAddress, int[] offsets, out T value)
     {
         return memory.TryRead(out value, baseAddress, offsets);
     }

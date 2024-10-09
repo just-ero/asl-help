@@ -1,8 +1,8 @@
-namespace AslHelp.Tasks;
+using System;
 
-internal class ExceptionStage<TResult, TException> :
-    IExceptionStage<TResult, TException>,
-    IExceptionStage
+namespace AslHelp.Shared.Tasks;
+
+internal class ExceptionStage<TResult, TException> : IExceptionStage, IExceptionStage<TResult, TException>
     where TException : Exception
 {
     private readonly ICatchStage<TResult> _builder;
@@ -15,29 +15,17 @@ internal class ExceptionStage<TResult, TException> :
     public Type ExceptionType { get; } = typeof(TException);
     public FailureBehavior FailureBehavior { get; protected set; }
 
-    public BuilderMessage<Exception> FailureMessage { get; protected set; }
+    public Func<Exception, string>? FailureMessage { get; protected set; }
 
     IExceptionStage<TResult, TException> IExceptionStage<TResult, TException>.WithFailureMessage(string message)
     {
-        if (FailureMessage is not null)
-        {
-            string msg = "Failure message was already set.";
-            throw new InvalidOperationException(msg);
-        }
-
-        FailureMessage = new(message);
+        FailureMessage = (_) => message;
         return this;
     }
 
-    IExceptionStage<TResult, TException> IExceptionStage<TResult, TException>.WithFailureMessage(Func<Exception, string> message)
+    IExceptionStage<TResult, TException> IExceptionStage<TResult, TException>.WithFailureMessage(Func<TException, string> message)
     {
-        if (FailureMessage is not null)
-        {
-            string msg = "Failure message was already set.";
-            throw new InvalidOperationException(msg);
-        }
-
-        FailureMessage = new(message);
+        FailureMessage = (Func<Exception, string>)message;
         return this;
     }
 

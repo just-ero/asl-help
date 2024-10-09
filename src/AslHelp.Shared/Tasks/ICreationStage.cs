@@ -1,4 +1,7 @@
-namespace AslHelp.Tasks;
+using System;
+using System.Threading.Tasks;
+
+namespace AslHelp.Shared.Tasks;
 
 public interface ICreationStage<TResult>
 {

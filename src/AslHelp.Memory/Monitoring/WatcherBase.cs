@@ -10,7 +10,7 @@ public abstract class WatcherBase<T, TMemory> : IWatcher<T>
 {
     private readonly TMemory _memory;
 
-    private readonly nuint _baseAddress;
+    private readonly nint _baseAddress;
     private readonly int[] _offsets;
 
     private readonly TickCounter? _counter;
@@ -19,14 +19,14 @@ public abstract class WatcherBase<T, TMemory> : IWatcher<T>
     private T? _old;
     private T? _current;
 
-    public WatcherBase(TMemory memory, nuint baseAddress, params int[] offsets)
+    public WatcherBase(TMemory memory, nint baseAddress, params int[] offsets)
     {
         _memory = memory;
         _baseAddress = baseAddress;
         _offsets = offsets;
     }
 
-    public WatcherBase(TMemory memory, TickCounter counter, nuint baseAddress, params int[] offsets)
+    public WatcherBase(TMemory memory, TickCounter counter, nint baseAddress, params int[] offsets)
     {
         _memory = memory;
         _counter = counter;
@@ -57,7 +57,7 @@ public abstract class WatcherBase<T, TMemory> : IWatcher<T>
     public bool IsEnabled { get; set; }
     public bool UpdateOnFail { get; set; }
 
-    protected abstract bool TryRead(TMemory memory, nuint baseAddress, int[] offsets, [NotNullWhen(true)] out T? value);
+    protected abstract bool TryRead(TMemory memory, nint baseAddress, int[] offsets, [NotNullWhen(true)] out T? value);
     protected abstract bool Equals(T? old, T? current);
 
     public abstract override string ToString();

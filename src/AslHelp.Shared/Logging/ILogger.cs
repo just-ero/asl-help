@@ -1,4 +1,4 @@
-namespace AslHelp.Diagnostics.Logging;
+namespace AslHelp.Shared.Logging;
 
 public interface ILogger
 {

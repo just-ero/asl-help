@@ -5,9 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AslHelp.Shared;
-
-namespace AslHelp.Diagnostics.Logging;
+namespace AslHelp.Shared.Logging;
 
 /// <summary>
 ///     Provides an <see cref="ILogger"/> that writes to a specified file.

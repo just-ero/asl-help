@@ -1,4 +1,4 @@
-namespace AslHelp.Tasks;
+namespace AslHelp.Shared.Tasks;
 
 public enum FailureBehavior
 {

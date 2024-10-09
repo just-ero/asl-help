@@ -1,4 +1,5 @@
 using AslHelp.Data.AutoSplitter;
+
 using System.Runtime.CompilerServices;
 
 namespace AslHelp;
@@ -18,7 +19,7 @@ public static class Assert
 
         if (Actions.Current != action)
         {
-            string msg = $"{callerName} may only be set in the '{action} {{}}' action.";
+            string msg = $"{callerName} may only be accessed in '{action}'.";
             throw new InvalidOperationException(msg);
         }
     }

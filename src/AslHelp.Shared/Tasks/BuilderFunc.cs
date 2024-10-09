@@ -1,4 +1,7 @@
-namespace AslHelp.Tasks;
+using System;
+using System.Threading.Tasks;
+
+namespace AslHelp.Shared.Tasks;
 
 public class BuilderFunc<TResult>
 {
@@ -12,10 +15,10 @@ public class BuilderFunc<TResult>
 
     private readonly FuncType _type;
 
-    private readonly Func<TaskBuilderContext<TResult>, bool> _sync;
-    private readonly Func<TaskBuilderContext<TResult>, Task<bool>> _async;
-    private readonly Func<TaskBuilderContext<TResult>, object[], bool> _syncWithArgs;
-    private readonly Func<TaskBuilderContext<TResult>, object[], Task<bool>> _asyncWithArgs;
+    private readonly Func<TaskBuilderContext<TResult>, bool>? _sync;
+    private readonly Func<TaskBuilderContext<TResult>, Task<bool>>? _async;
+    private readonly Func<TaskBuilderContext<TResult>, object[], bool>? _syncWithArgs;
+    private readonly Func<TaskBuilderContext<TResult>, object[], Task<bool>>? _asyncWithArgs;
 
     public BuilderFunc(Func<TaskBuilderContext<TResult>, bool> func)
     {
@@ -45,10 +48,10 @@ public class BuilderFunc<TResult>
     {
         return _type switch
         {
-            FuncType.Sync => Task.FromResult(_sync(ctx)),
-            FuncType.Async => _async(ctx),
-            FuncType.SyncWithArgs => Task.FromResult(_syncWithArgs(ctx, args)),
-            FuncType.AsyncWithArgs => _asyncWithArgs(ctx, args),
+            FuncType.Sync => Task.FromResult(_sync!(ctx)),
+            FuncType.Async => _async!(ctx),
+            FuncType.SyncWithArgs => Task.FromResult(_syncWithArgs!(ctx, args)),
+            FuncType.AsyncWithArgs => _asyncWithArgs!(ctx, args),
             _ => throw new InvalidOperationException()
         };
     }

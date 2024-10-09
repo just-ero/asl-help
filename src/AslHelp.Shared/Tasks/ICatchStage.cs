@@ -1,4 +1,6 @@
-namespace AslHelp.Tasks;
+using System;
+
+namespace AslHelp.Shared.Tasks;
 
 public interface ICatchStage<TResult>
 {

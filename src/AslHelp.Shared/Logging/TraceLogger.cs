@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace AslHelp.Diagnostics.Logging;
+namespace AslHelp.Shared.Logging;
 
 public sealed class TraceLogger : ILogger
 {

@@ -1,46 +1,47 @@
-namespace AslHelp.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+using AslHelp.Shared.Logging;
+
+namespace AslHelp.Shared.Tasks;
 
 public class TaskBuilder<TResult> :
     ICreationStage<TResult>,
     ICatchStage<TResult>,
     IFinalizeStage<TResult>
 {
-    private readonly Process _game;
-    private readonly CancellationTokenSource _cts;
+    private readonly ILogger _logger;
+    private readonly CancellationToken _ct;
 
     private readonly TaskBuilderContext<TResult> _context = new();
-    private readonly List<object> _args = new();
-    private readonly List<IExceptionStage> _exceptions = new();
+    private readonly List<object> _args = [];
+    private readonly List<IExceptionStage> _exceptions = [];
 
-    private BuilderMessage<TResult> _startupMessage;
-    private BuilderMessage<TResult> _failureMessage;
-    private BuilderMessage<TResult> _completionMessage;
+    private string? _startupMessage;
+    private string? _failureMessage;
+    private Func<TResult?, string>? _completionMessage;
 
-    private BuilderFunc<TResult> _func;
+    private BuilderFunc<TResult>? _func;
 
     private int _retries = -1;
     private int _timeout;
 
-    private TaskBuilder(CancellationTokenSource cts)
+    private TaskBuilder(ILogger logger, CancellationToken ct = default)
     {
-        _game = Basic.Instance.Game;
-        _cts = cts;
+        _logger = logger;
+        _ct = ct;
     }
 
-    public static ICreationStage<TResult> Create(CancellationTokenSource cts)
+    public static ICreationStage<TResult> Create(ILogger logger, CancellationToken ct = default)
     {
-        return new TaskBuilder<TResult>(cts);
+        return new TaskBuilder<TResult>(logger, ct);
     }
 
     ICreationStage<TResult> ICreationStage<TResult>.WithStartupMessage(string message)
     {
-        if (_startupMessage is not null)
-        {
-            string msg = "Startup message was already set.";
-            throw new InvalidOperationException(msg);
-        }
-
-        _startupMessage = new(message);
+        _startupMessage = message;
         return this;
     }
 
@@ -96,56 +97,40 @@ public class TaskBuilder<TResult> :
 
     IFinalizeStage<TResult> IFinalizeStage<TResult>.WithFailureMessage(string message)
     {
-        if (_failureMessage is not null)
-        {
-            string msg = "Startup message was already set.";
-            throw new InvalidOperationException(msg);
-        }
-
-        _failureMessage = new(message);
+        _failureMessage = message;
         return this;
     }
 
     IFinalizeStage<TResult> IFinalizeStage<TResult>.WithCompletionMessage(string message)
     {
-        if (_completionMessage is not null)
-        {
-            string msg = "Startup message was already set.";
-            throw new InvalidOperationException(msg);
-        }
-
-        _completionMessage = new(message);
+        _completionMessage = (_) => message;
         return this;
     }
 
-    IFinalizeStage<TResult> IFinalizeStage<TResult>.WithCompletionMessage(Func<TResult, string> func)
+    IFinalizeStage<TResult> IFinalizeStage<TResult>.WithCompletionMessage(Func<TResult?, string> func)
     {
-        if (_completionMessage is not null)
-        {
-            string msg = "Startup message was already set.";
-            throw new InvalidOperationException(msg);
-        }
-
-        _completionMessage = new(func);
+        _completionMessage = func;
         return this;
     }
 
-    async Task<TResult> IFinalizeStage<TResult>.RunAsync()
+    async Task<TResult?> IFinalizeStage<TResult>.RunAsync()
     {
-        if (_cts is null)
+        if (_startupMessage is not null)
         {
-            return default;
+            _logger.Log(_startupMessage);
         }
 
-        _startupMessage?.Send();
-
-        while (!_cts.IsCancellationRequested && _game is not null && !_game.HasExited)
+        while (!_ct.IsCancellationRequested)
         {
             try
             {
-                if (await _func.Invoke(_context, _args.ToArray()))
+                if (await _func!.Invoke(_context, [.. _args])) // Cannot be null.
                 {
-                    _completionMessage?.Send(_context.Result);
+                    if (_completionMessage is not null)
+                    {
+                        _logger.Log(_completionMessage(_context.Result));
+                    }
+
                     return _context.Result;
                 }
             }
@@ -158,7 +143,10 @@ public class TaskBuilder<TResult> :
                         continue;
                     }
 
-                    exs.FailureMessage?.Send(ex);
+                    if (exs.FailureMessage is not null)
+                    {
+                        _logger.Log(exs.FailureMessage(ex));
+                    }
 
                     switch (exs.FailureBehavior)
                     {
@@ -172,7 +160,10 @@ public class TaskBuilder<TResult> :
             }
 
         Continue:
-            _failureMessage?.Send();
+            if (_failureMessage is not null)
+            {
+                _logger.Log(_failureMessage);
+            }
 
             if (_retries == 0)
             {
@@ -183,16 +174,16 @@ public class TaskBuilder<TResult> :
             {
                 string times = _retries == 1 ? "time" : "times";
 
-                Debug.Info($"  => Retrying {_retries} more {times} in {_timeout}ms...");
+                _logger.Log($"  => Retrying {_retries} more {times} in {_timeout}ms...");
             }
             else
             {
-                Debug.Info($"  => Retrying in {_timeout}ms...");
+                _logger.Log($"  => Retrying in {_timeout}ms...");
             }
 
             _retries--;
 
-            await Task.Delay(_timeout, _cts.Token);
+            await Task.Delay(_timeout, _ct);
         }
 
     Break:
