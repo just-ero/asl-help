@@ -5,7 +5,7 @@ namespace AslHelp.Memory;
 
 public readonly struct MemoryRange
 {
-    public MemoryRange(nuint @base, uint regionSize, MemoryRangeProtect protect, MemoryRangeState state, MemoryRangeType type)
+    public MemoryRange(nint @base, int regionSize, MemoryRangeProtect protect, MemoryRangeState state, MemoryRangeType type)
     {
         Base = @base;
         Size = regionSize;
@@ -16,15 +16,15 @@ public readonly struct MemoryRange
 
     internal unsafe MemoryRange(MemoryBasicInformation mbi)
     {
-        Base = (nuint)mbi.BaseAddress;
-        Size = (uint)mbi.RegionSize;
+        Base = (nint)mbi.BaseAddress;
+        Size = (int)mbi.RegionSize;
         Protect = mbi.Protect;
         State = mbi.State;
         Type = mbi.Type;
     }
 
-    public nuint Base { get; }
-    public uint Size { get; }
+    public nint Base { get; }
+    public int Size { get; }
 
     public MemoryRangeProtect Protect { get; }
     public MemoryRangeState State { get; }

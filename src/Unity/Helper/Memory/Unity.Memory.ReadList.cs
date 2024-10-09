@@ -72,7 +72,7 @@ public partial class Unity
 
         T[] buf = new T[count];
 
-        if (!TryReadSpan_Internal<T>(buf, items + (PtrSize * 4)))
+        if (!TryReadArray_Internal<T>(buf, items + (PtrSize * 4)))
         {
             result = new();
             return false;

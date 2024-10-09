@@ -30,7 +30,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool SymInitialize(nuint processHandle, string? userSearchPath, bool invadeProcess)
+    public static bool SymInitialize(nint processHandle, string? userSearchPath, bool invadeProcess)
     {
         fixed (char* pUserSearchPath = userSearchPath)
         {
@@ -82,24 +82,24 @@ internal static unsafe partial class WinInterop
     ///     The base address of the loaded module if the function succeeds;
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint SymLoadModule(
-        nuint processHandle,
-        nuint fileHandle,
+    public static nint SymLoadModule(
+        nint processHandle,
+        nint fileHandle,
         string imageName,
         string? moduleName,
-        nuint moduleBase,
+        nint moduleBase,
         uint memorySize,
         void* data,
         uint flags)
     {
         fixed (char* pImageName = imageName, pModuleName = moduleName)
         {
-            return (nuint)SymLoadModuleExW(
+            return (nint)SymLoadModuleExW(
                 (void*)processHandle,
                 (void*)fileHandle,
                 (ushort*)pImageName,
                 (ushort*)pModuleName,
-                moduleBase,
+                (ulong)moduleBase,
                 memorySize,
                 data,
                 flags);
@@ -147,8 +147,8 @@ internal static unsafe partial class WinInterop
     ///     otherwise, <see langword="false"/>.
     /// </returns>
     public static bool SymEnumSymbols(
-        nuint processHandle,
-        nuint moduleBase,
+        nint processHandle,
+        nint moduleBase,
         string? mask,
         delegate* unmanaged[Stdcall]<SymbolInfo*, uint, void*, int> pCallback,
         void* context)
@@ -157,7 +157,7 @@ internal static unsafe partial class WinInterop
         {
             return SymEnumSymbolsW(
                 (void*)processHandle,
-                moduleBase,
+                (ulong)moduleBase,
                 (ushort*)pMask,
                 pCallback,
                 context) != 0;
@@ -189,7 +189,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool SymCleanup(nuint processHandle)
+    public static bool SymCleanup(nint processHandle)
     {
         return SymCleanup((void*)processHandle) != 0;
 
@@ -199,9 +199,9 @@ internal static unsafe partial class WinInterop
             void* hProcess);
     }
 
-    public static bool SymFromName(nuint processHandle, string name, out SymbolInfo symbol)
+    public static bool SymFromName(nint processHandle, string name, out SymbolInfo symbol)
     {
-        var lSymbol = new SymbolInfo { SizeOfStruct = (uint)sizeof(SymbolInfo) };
+        SymbolInfo lSymbol = new() { SizeOfStruct = (uint)sizeof(SymbolInfo) };
 
         fixed (char* pName = name)
         {

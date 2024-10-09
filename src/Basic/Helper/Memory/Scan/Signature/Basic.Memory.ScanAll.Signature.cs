@@ -60,7 +60,7 @@ public partial class Basic
     public IEnumerable<nint> ScanAll(Signature signature, nint startAddress, int size, int alignment = 1)
     {
         byte[] memory = new byte[size];
-        if (!TryReadSpan_Internal<byte>(memory, startAddress))
+        if (!TryReadArray_Internal<byte>(memory, startAddress))
         {
             yield break;
         }

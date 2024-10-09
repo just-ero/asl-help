@@ -25,7 +25,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool GetExitCodeThread(nuint threadHandle, out uint exitCode)
+    public static bool GetExitCodeThread(nint threadHandle, out uint exitCode)
     {
         fixed (uint* pExitCode = &exitCode)
         {
@@ -71,11 +71,11 @@ internal static unsafe partial class WinInterop
     ///     A handle to the new thread if the function succeeds,
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint CreateRemoteThread(
-        nuint hProcess,
+    public static nint CreateRemoteThread(
+        nint hProcess,
         void* lpThreadAttributes,
-        nuint stackSize,
-        nuint startAddress,
+        nint stackSize,
+        nint startAddress,
         void* lpParameter,
         uint creationFlags,
         out uint threadId)
@@ -97,7 +97,7 @@ internal static unsafe partial class WinInterop
         static extern void* CreateRemoteThread(
             void* hProcess,
             void* lpThreadAttributes,
-            nuint dwStackSize,
+            nint dwStackSize,
             void* lpStartAddress,
             void* lpParameter,
             uint dwCreationFlags,
@@ -124,9 +124,9 @@ internal static unsafe partial class WinInterop
     ///     An open handle to the specified process if the function succeeds,
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint OpenProcess(uint processId, ProcessAccess desiredAccess, bool inheritHandle)
+    public static nint OpenProcess(int processId, ProcessAccess desiredAccess, bool inheritHandle)
     {
-        return (nuint)OpenProcess((uint)desiredAccess, inheritHandle ? 1 : 0, processId);
+        return (nint)OpenProcess((uint)desiredAccess, inheritHandle ? 1 : 0, (uint)processId);
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(OpenProcess), ExactSpelling = true, SetLastError = true)]
         [SuppressUnmanagedCodeSecurity]

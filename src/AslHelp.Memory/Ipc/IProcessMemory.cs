@@ -18,5 +18,5 @@ public interface IProcessMemory : IMemoryReader, IMemoryWriter, IMemoryScanner, 
 
     IEnumerable<MemoryRange> GetMemoryPages(bool allPages = false);
 
-    nuint ReadRelative(nuint relativeAddress, uint instructionSize = 0x4U);
+    nint ReadRelative(nint relativeAddress, uint instructionSize = 0x4U);
 }

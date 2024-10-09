@@ -99,7 +99,7 @@ internal class Il2CppManager : UnityMemManager
 
         nint[] classes = new nint[cacheSize];
 
-        if (!_game.TryReadSpan_Internal<nint>(classes, table + (_game.PtrSize * offset)))
+        if (!_game.TryReadArray_Internal<nint>(classes, table + (_game.PtrSize * offset)))
         {
             yield break;
         }

@@ -5,12 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using AslHelp.Collections.Extensions;
 using AslHelp.Memory.Errors;
 using AslHelp.Memory.Native;
 using AslHelp.Memory.Native.Enums;
 using AslHelp.Memory.Native.Structs;
 using AslHelp.Memory.Utils;
+using AslHelp.Shared.Extensions;
 using AslHelp.Shared.Results;
 using AslHelp.Shared.Results.Errors;
 
@@ -20,8 +20,7 @@ public static class ProcessExtensions
 {
     public static Result<bool> Is64Bit(this Process process)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
-        if (!WinInterop.IsWow64Process(processHandle, out bool isWow64))
+        if (!WinInterop.IsWow64Process(process.Handle, out bool isWow64))
         {
             return MemoryError.FromLastWin32Error();
         }
@@ -29,17 +28,15 @@ public static class ProcessExtensions
         return Environment.Is64BitOperatingSystem && !isWow64;
     }
 
-    public static unsafe bool ReadMemory(this Process process, nuint address, void* buffer, uint bufferSize)
+    public static unsafe bool ReadMemory(this Process process, nint address, void* buffer, nint bufferSize)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
-        return WinInterop.ReadProcessMemory(processHandle, address, buffer, bufferSize, out nuint nRead)
+        return WinInterop.ReadProcessMemory(process.Handle, address, buffer, bufferSize, out nint nRead)
             && nRead == bufferSize;
     }
 
-    public static unsafe bool WriteMemory(this Process process, nuint address, void* data, uint dataSize)
+    public static unsafe bool WriteMemory(this Process process, nint address, void* data, nint dataSize)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
-        return WinInterop.WriteProcessMemory(processHandle, address, data, dataSize, out nuint nWritten)
+        return WinInterop.WriteProcessMemory(process.Handle, address, data, dataSize, out nint nWritten)
             && nWritten == dataSize;
     }
 
@@ -63,8 +60,7 @@ public static class ProcessExtensions
 
     public static IEnumerable<Module> GetModules(this Process process)
     {
-        uint processId = (uint)process.Id;
-        nuint snapshot = WinInterop.CreateToolhelp32Snapshot(processId, ThFlags.Module | ThFlags.Module32);
+        nint snapshot = WinInterop.CreateToolhelp32Snapshot(process.Id, ThFlags.Module | ThFlags.Module32);
 
         try
         {
@@ -90,23 +86,23 @@ public static class ProcessExtensions
 
     public static unsafe Result<List<Module>> GetModulesLongPathSafe(this Process process)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
+        nint processHandle = process.Handle;
         if (!WinInterop.EnumProcessModules(processHandle, [], 0, out uint bytesNeeded, ListModulesFilter.ListAll)
             || bytesNeeded == 0)
         {
             return MemoryError.FromLastWin32Error();
         }
 
-        int count = (int)bytesNeeded / sizeof(nuint);
-        nuint[]? mhRented = null;
-        Span<nuint> moduleHandles =
+        int count = (int)bytesNeeded / sizeof(nint);
+        nint[]? mhRented = null;
+        Span<nint> moduleHandles =
             count <= 128
-            ? stackalloc nuint[128]
-            : (mhRented = ArrayPool<nuint>.Shared.Rent(count));
+            ? stackalloc nint[128]
+            : (mhRented = ArrayPool<nint>.Shared.Rent(count));
 
         if (!WinInterop.EnumProcessModules(processHandle, moduleHandles[..count], bytesNeeded, out _, ListModulesFilter.ListAll))
         {
-            ArrayPool<nuint>.Shared.ReturnIfNotNull(mhRented);
+            ArrayPool<nint>.Shared.ReturnIfNotNull(mhRented);
             return MemoryError.FromLastWin32Error();
         }
 
@@ -115,7 +111,7 @@ public static class ProcessExtensions
         char[] fnRented;
         Span<char> fileName = fnRented = ArrayPool<char>.Shared.Rent(WinInterop.UnicodeStringMaxChars);
 
-        foreach (nuint moduleHandle in moduleHandles[..count])
+        foreach (nint moduleHandle in moduleHandles[..count])
         {
             uint length = WinInterop.GetModuleFileName(processHandle, moduleHandle, fileName);
             if (length == 0)
@@ -135,7 +131,7 @@ public static class ProcessExtensions
             });
         }
 
-        ArrayPool<nuint>.Shared.ReturnIfNotNull(mhRented);
+        ArrayPool<nint>.Shared.ReturnIfNotNull(mhRented);
         ArrayPool<char>.Shared.Return(fnRented);
 
         return modules;
@@ -149,8 +145,8 @@ public static class ProcessExtensions
             yield break;
         }
 
-        nuint processHandle = (nuint)(nint)process.Handle;
-        nuint address = 0x10000, max = (nuint)(is64Bit ? 0x7FFFFFFEFFFF : 0x7FFEFFFF);
+        nint processHandle = process.Handle;
+        nint address = 0x10000, max = (nint)(is64Bit ? 0x7FFFFFFEFFFF : 0x7FFEFFFF);
 
         do
         {
@@ -201,7 +197,7 @@ public static class ProcessExtensions
         }
 
         if (!Allocate(process, dllToInject)
-            .TryUnwrap(out nuint pDll, out err))
+            .TryUnwrap(out nint pDll, out err))
         {
             return Result.Err(err);
         }
@@ -221,13 +217,13 @@ public static class ProcessExtensions
 
     private static unsafe Result Inject64(this Process process, string dllToInject)
     {
-        nuint kernel32 = WinInterop.GetModuleHandle(Lib.Kernel32);
+        nint kernel32 = WinInterop.GetModuleHandle(Lib.Kernel32);
         if (kernel32 == 0)
         {
             return MemoryError.FromLastWin32Error();
         }
 
-        nuint loadLibraryW = WinInterop.GetProcAddress(kernel32, "LoadLibraryW"u8);
+        nint loadLibraryW = WinInterop.GetProcAddress(kernel32, "LoadLibraryW"u8);
         if (loadLibraryW == 0)
         {
             WinInterop.CloseHandle(kernel32);
@@ -235,7 +231,7 @@ public static class ProcessExtensions
         }
 
         if (!Allocate(process, dllToInject)
-            .TryUnwrap(out nuint pDll, out IResultError? err))
+            .TryUnwrap(out nint pDll, out IResultError? err))
         {
             WinInterop.CloseHandle(kernel32);
             return Result.Err(err);
@@ -254,10 +250,9 @@ public static class ProcessExtensions
             : MemoryError.FromLastWin32Error();
     }
 
-    public static unsafe Result<uint> CreateRemoteThreadAndGetExitCode(this Process process, nuint startAddress, nuint arg)
+    public static unsafe Result<uint> CreateRemoteThreadAndGetExitCode(this Process process, nint startAddress, nint arg)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
-        nuint threadHandle = WinInterop.CreateRemoteThread(processHandle, null, 0, startAddress, (void*)arg, 0, out _);
+        nint threadHandle = WinInterop.CreateRemoteThread(process.Handle, null, 0, startAddress, (void*)arg, 0, out _);
         if (threadHandle == 0)
         {
             return MemoryError.FromLastWin32Error();
@@ -278,35 +273,34 @@ public static class ProcessExtensions
         return result;
     }
 
-    public static unsafe Result<nuint> Allocate<T>(this Process process, T data)
+    public static unsafe Result<nint> Allocate<T>(this Process process, T data)
         where T : unmanaged
     {
-        return Allocate(process, &data, (uint)sizeof(T));
+        return Allocate(process, &data, sizeof(T));
     }
 
-    public static unsafe Result<nuint> Allocate(this Process process, string value)
+    public static unsafe Result<nint> Allocate(this Process process, string value)
     {
         fixed (char* pValue = value)
         {
-            uint length = (uint)((value.Length + 1) * sizeof(char));
+            int length = (value.Length + 1) * sizeof(char);
             return Allocate(process, pValue, length);
         }
     }
 
-    public static unsafe Result<nuint> Allocate(this Process process, ReadOnlySpan<byte> value)
+    public static unsafe Result<nint> Allocate(this Process process, ReadOnlySpan<byte> value)
     {
         fixed (byte* pValue = value)
         {
-            uint length = (uint)(value.Length + 1);
+            int length = value.Length + 1;
             return Allocate(process, pValue, length);
         }
     }
 
-    public static unsafe Result<nuint> Allocate(this Process process, void* data, uint dataSize)
+    public static unsafe Result<nint> Allocate(this Process process, void* data, int dataSize)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
-        nuint pRemote = WinInterop.VirtualAlloc(
-            processHandle,
+        nint pRemote = WinInterop.VirtualAlloc(
+            process.Handle,
             0,
             dataSize,
             MemoryRangeState.Commit | MemoryRangeState.Reserve,
@@ -325,10 +319,9 @@ public static class ProcessExtensions
         return pRemote;
     }
 
-    public static Result Free(this Process process, nuint address)
+    public static Result Free(this Process process, nint address)
     {
-        nuint processHandle = (nuint)(nint)process.Handle;
-        return WinInterop.VirtualFree(processHandle, address, 0, MemoryRangeState.Release)
+        return WinInterop.VirtualFree(process.Handle, address, 0, MemoryRangeState.Release)
             ? Result.Ok()
             : MemoryError.FromLastWin32Error();
     }

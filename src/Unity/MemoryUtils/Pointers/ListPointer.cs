@@ -36,7 +36,7 @@ public class ListPointer<T> : BasePointer<List<T>> where T : unmanaged
 
         T[] resultArr = new T[count];
 
-        if (!_game.TryReadSpan_Internal<T>(resultArr, items + (_game.PtrSize * 4)))
+        if (!_game.TryReadArray_Internal<T>(resultArr, items + (_game.PtrSize * 4)))
         {
             result = Default;
             return false;

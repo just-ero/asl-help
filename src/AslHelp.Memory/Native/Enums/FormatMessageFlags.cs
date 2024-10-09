@@ -3,7 +3,7 @@ using System;
 namespace AslHelp.Memory.Native.Enums;
 
 /// <summary>
-///     Provides flags for the <see cref="WinInterop.FormatMessage(FormatMessageFlags, nuint, uint, uint, char*, uint, void*)"/> P/Invoke.
+///     Provides flags for the <see cref="WinInterop.FormatMessage(FormatMessageFlags, nint, uint, uint, char*, uint, void*)"/> P/Invoke.
 /// </summary>
 /// <remarks>
 ///     For further information, see:

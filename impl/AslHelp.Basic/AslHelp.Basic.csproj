@@ -4,4 +4,17 @@
     <TargetFramework>net4.8.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="$(SrcPath)/AslHelp.LiveSplit/AslHelp.LiveSplit.csproj" />
+    <ProjectReference Include="$(SrcPath)/AslHelp.Memory/AslHelp.Memory.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(LibPath)/LiveSplit.Core.dll" />
+  </ItemGroup>
+
 </Project>

@@ -16,7 +16,7 @@ internal static unsafe partial class WinInterop
     ///         CreateToolhelp32Snapshot function (tlhelp32.h)
     ///     </see></i>
     /// </summary>
-    /// <param name="processID">
+    /// <param name="processId">
     ///     The process identifier of the process to be included in the snapshot.
     /// </param>
     /// <param name="flags">
@@ -26,9 +26,9 @@ internal static unsafe partial class WinInterop
     ///     An open handle to the specified snapshot if the funcion succeeds;
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint CreateToolhelp32Snapshot(uint processID, ThFlags flags)
+    public static nint CreateToolhelp32Snapshot(int processId, ThFlags flags)
     {
-        return (nuint)CreateToolhelp32Snapshot((uint)flags, processID);
+        return (nint)CreateToolhelp32Snapshot((uint)flags, (uint)processId);
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(CreateToolhelp32Snapshot), ExactSpelling = true, SetLastError = true)]
         [SuppressUnmanagedCodeSecurity]
@@ -54,7 +54,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool Module32First(nuint snapshotHandle, ref ModuleEntry32 me)
+    public static bool Module32First(nint snapshotHandle, ref ModuleEntry32 me)
     {
         fixed (ModuleEntry32* pModuleEntry = &me)
         {
@@ -85,7 +85,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool Module32Next(nuint snapshotHandle, ref ModuleEntry32 me)
+    public static bool Module32Next(nint snapshotHandle, ref ModuleEntry32 me)
     {
         fixed (ModuleEntry32* pModuleEntry = &me)
         {

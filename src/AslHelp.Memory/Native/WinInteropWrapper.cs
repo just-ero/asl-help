@@ -2,17 +2,18 @@ using System;
 using System.Runtime.InteropServices;
 
 using AslHelp.Memory.Native.Enums;
+using AslHelp.Shared;
 
 namespace AslHelp.Memory.Native;
 
-internal static unsafe partial class WinInteropWrapper
+public static unsafe class WinInteropWrapper
 {
     public static string GetLastWin32ErrorMessage(this Module module)
     {
         return GetLastWin32ErrorMessage(module.Base);
     }
 
-    public static string GetLastWin32ErrorMessage(nuint moduleHandle = 0)
+    public static string GetLastWin32ErrorMessage(nint moduleHandle = 0)
     {
         const int ERROR_INSUFFICIENT_BUFFER = 0x7A;
 
@@ -68,5 +69,27 @@ internal static unsafe partial class WinInteropWrapper
 
             return buffer[..length].ToString();
         }
+    }
+
+    public static bool ProcessIs64Bit(nint processHandle)
+    {
+        if (!WinInterop.IsWow64Process(processHandle, out bool isWow64))
+        {
+            ThrowHelper.ThrowWin32Exception();
+        }
+
+        return Environment.Is64BitOperatingSystem && !isWow64;
+    }
+
+    public static bool ReadMemory(nint processHandle, nint address, void* buffer, nint bufferSize)
+    {
+        return WinInterop.ReadProcessMemory(processHandle, address, buffer, bufferSize, out nint nRead)
+            && nRead == bufferSize;
+    }
+
+    public static bool WriteMemory(nint processHandle, nint address, void* data, nint dataSize)
+    {
+        return WinInterop.WriteProcessMemory(processHandle, address, data, dataSize, out nint nWritten)
+            && nWritten == dataSize;
     }
 }

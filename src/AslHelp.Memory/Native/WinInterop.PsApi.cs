@@ -13,13 +13,13 @@ internal static unsafe partial class WinInterop
     public const int UnicodeStringMaxChars = 32767;
 
     public static bool EnumProcessModules(
-        nuint processHandle,
-        Span<nuint> modules,
+        nint processHandle,
+        Span<nint> modules,
         uint size,
         out uint bytesNeeded,
         ListModulesFilter filter)
     {
-        fixed (nuint* pModules = modules)
+        fixed (nint* pModules = modules)
         fixed (uint* pBytesNeeded = &bytesNeeded)
         {
             return EnumProcessModulesEx((void*)processHandle, (void**)pModules, size, pBytesNeeded, (uint)filter) != 0;
@@ -35,23 +35,23 @@ internal static unsafe partial class WinInterop
             uint dwFilterFlag);
     }
 
-    public static uint GetModuleFileName(nuint processHandle, nuint moduleHandle, Span<char> fileName)
+    public static uint GetModuleFileName(nint processHandle, nint moduleHandle, Span<char> fileName)
     {
         fixed (char* pFileName = fileName)
         {
-            return GetModuleFileNameExW((void*)processHandle, (void**)moduleHandle, (ushort*)pFileName, (uint)fileName.Length);
+            return GetModuleFileNameExW((void*)processHandle, (void*)moduleHandle, (ushort*)pFileName, (uint)fileName.Length);
         }
 
         [DllImport(Lib.PsApi, EntryPoint = nameof(GetModuleFileNameExW), ExactSpelling = true, SetLastError = true)]
         [SuppressUnmanagedCodeSecurity]
         static extern uint GetModuleFileNameExW(
             void* hProcess,
-            void** hModule,
+            void* hModule,
             ushort* lpFilename,
             uint nSize);
     }
 
-    public static bool GetModuleInformation(nuint processHandle, nuint moduleHandle, out ModuleInfo moduleInfo)
+    public static bool GetModuleInformation(nint processHandle, nint moduleHandle, out ModuleInfo moduleInfo)
     {
         fixed (ModuleInfo* pModuleInfo = &moduleInfo)
         {

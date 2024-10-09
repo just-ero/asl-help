@@ -29,7 +29,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool IsWow64Process(nuint processHandle, out bool isWow64)
+    public static bool IsWow64Process(nint processHandle, out bool isWow64)
     {
         int bWow64Process;
         bool success = IsWow64Process((void*)processHandle, &bWow64Process) != 0;

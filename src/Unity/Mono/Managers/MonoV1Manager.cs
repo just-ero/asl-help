@@ -123,7 +123,7 @@ internal class MonoV1Manager : UnityMemManager
     {
         nint[] classes = new nint[cacheSize];
 
-        if (!_game.TryReadSpan_Internal<nint>(classes, cacheTable))
+        if (!_game.TryReadArray_Internal<nint>(classes, cacheTable))
         {
             yield break;
         }

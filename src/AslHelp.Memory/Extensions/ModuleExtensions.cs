@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -20,12 +17,11 @@ public static class ModuleExtensions
 {
     public static IEnumerable<MemoryRange> GetMemoryPages(this Module module)
     {
-        nuint processHandle = (nuint)(nint)module.ContainingProcess.Handle;
-        nuint address = module.Base, max = module.Base + module.MemorySize;
+        nint address = module.Base, max = module.Base + (nint)module.MemorySize;
 
         do
         {
-            if (WinInterop.VirtualQuery(processHandle, address, out MemoryBasicInformation mbi) == 0)
+            if (WinInterop.VirtualQuery(module.ContainingProcess.Handle, address, out MemoryBasicInformation mbi) == 0)
             {
                 break;
             }
@@ -48,13 +44,13 @@ public static class ModuleExtensions
 
     public static unsafe Result<DebugSymbol> GetSymbol(this Module module, string symbolName, string? pdbDirectory = null)
     {
-        nuint processHandle = (nuint)(nint)module.ContainingProcess.Handle;
+        nint processHandle = module.ContainingProcess.Handle;
         if (!WinInterop.SymInitialize(processHandle, pdbDirectory, false))
         {
             return MemoryError.FromLastWin32Error();
         }
 
-        nuint symLoadBase = WinInterop.SymLoadModule(processHandle, 0, module.FileName, null, module.Base, module.MemorySize, null, 0);
+        nint symLoadBase = WinInterop.SymLoadModule(processHandle, 0, module.FileName, null, module.Base, module.MemorySize, null, 0);
         if (symLoadBase == 0)
         {
             WinInterop.SymCleanup(processHandle);
@@ -74,7 +70,7 @@ public static class ModuleExtensions
 
     public static unsafe Result<List<DebugSymbol>> GetSymbols(this Module module, string? symbolMask = "*", string? pdbDirectory = null)
     {
-        nuint processHandle = (nuint)(nint)module.ContainingProcess.Handle;
+        nint processHandle = module.ContainingProcess.Handle;
 
         var callback =
             (delegate* unmanaged[Stdcall]<SymbolInfo*, uint, void*, int>)Marshal.GetFunctionPointerForDelegate(enumSymbolsCallback);
@@ -87,7 +83,7 @@ public static class ModuleExtensions
             return MemoryError.FromLastWin32Error();
         }
 
-        nuint symLoadBase = WinInterop.SymLoadModule(processHandle, 0, module.FileName, null, module.Base, module.MemorySize, null, 0);
+        nint symLoadBase = WinInterop.SymLoadModule(processHandle, 0, module.FileName, null, module.Base, module.MemorySize, null, 0);
         if (symLoadBase == 0)
         {
             WinInterop.SymCleanup(processHandle);
@@ -141,7 +137,7 @@ public static class ModuleExtensions
         }
 
         if (!module.ContainingProcess.Allocate(arg)
-            .TryUnwrap(out nuint pArg, out err))
+            .TryUnwrap(out nint pArg, out err))
         {
             return Result<uint>.Err(err);
         }
@@ -155,14 +151,14 @@ public static class ModuleExtensions
     private static unsafe Result<uint> CallRemoteFunction64<T>(this Module module, string functionName, T arg)
         where T : unmanaged
     {
-        nuint pFunction = WinInterop.GetProcAddress(module.Base, Encoding.UTF8.GetBytes(functionName));
+        nint pFunction = WinInterop.GetProcAddress(module.Base, Encoding.UTF8.GetBytes(functionName));
         if (pFunction == 0)
         {
             return MemoryError.FromLastWin32Error();
         }
 
         if (!module.ContainingProcess.Allocate(arg)
-            .TryUnwrap(out nuint pArg, out IResultError? err))
+            .TryUnwrap(out nint pArg, out IResultError? err))
         {
             return Result<uint>.Err(err);
         }

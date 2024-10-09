@@ -6,7 +6,7 @@ namespace AslHelp.Memory;
 
 public readonly struct DebugSymbol
 {
-    public DebugSymbol(string name, nuint address, uint size)
+    public DebugSymbol(string name, nint address, uint size)
     {
         Name = name;
         Address = address;
@@ -16,12 +16,12 @@ public readonly struct DebugSymbol
     internal unsafe DebugSymbol(SymbolInfo symbol)
     {
         Name = new Span<char>(symbol.Name, (int)symbol.NameLength).ToString();
-        Address = (nuint)symbol.Address;
+        Address = (nint)symbol.Address;
         Size = symbol.Size;
     }
 
     public string Name { get; }
-    public nuint Address { get; }
+    public nint Address { get; }
     public uint Size { get; }
 
     public override string ToString()

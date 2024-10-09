@@ -67,7 +67,7 @@ public partial class Basic
         }
 
         byte[] memory = new byte[size];
-        if (!TryReadSpan(memory, startAddress))
+        if (!TryReadArray(memory, startAddress))
         {
             yield break;
         }

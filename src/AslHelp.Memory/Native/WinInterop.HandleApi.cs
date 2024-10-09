@@ -21,7 +21,7 @@ internal static unsafe partial class WinInterop
     ///     <see langword="true"/> if the function succeeds;
     ///     otherwise, <see langword="false"/>.
     /// </returns>
-    public static bool CloseHandle(nuint objectHandle)
+    public static bool CloseHandle(nint objectHandle)
     {
         return CloseHandle((void*)objectHandle) != 0;
 

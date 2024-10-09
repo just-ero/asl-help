@@ -6,37 +6,37 @@ namespace AslHelp.Memory.Ipc;
 
 public interface IMemoryScanner
 {
-    nuint Scan(ScanPattern pattern);
-    nuint Scan(ScanPattern pattern, nuint size);
-    nuint Scan(ScanPattern pattern, string moduleName);
-    nuint Scan(ScanPattern pattern, string moduleName, nuint size);
-    nuint Scan(ScanPattern pattern, Module module);
-    nuint Scan(ScanPattern pattern, Module module, nuint size);
+    nint Scan(ScanPattern pattern);
+    nint Scan(ScanPattern pattern, int size);
+    nint Scan(ScanPattern pattern, string moduleName);
+    nint Scan(ScanPattern pattern, string moduleName, int size);
+    nint Scan(ScanPattern pattern, Module module);
+    nint Scan(ScanPattern pattern, Module module, int size);
 
-    nuint Scan(ScanPattern pattern, nuint startAddress, nuint size);
-    nuint Scan(ScanPattern pattern, nuint startAddress, byte[] memory);
+    nint Scan(ScanPattern pattern, nint startAddress, int size);
+    nint Scan(ScanPattern pattern, nint startAddress, byte[] memory);
 
-    nuint Scan(int offset, string pattern);
-    nuint Scan(int offset, string pattern, string moduleName);
-    nuint Scan(int offset, string pattern, Module module);
+    nint Scan(int offset, string pattern);
+    nint Scan(int offset, string pattern, string moduleName);
+    nint Scan(int offset, string pattern, Module module);
 
-    nuint Scan(int offset, string pattern, nuint startAddress, nuint size);
-    nuint Scan(int offset, string pattern, nuint startAddress, byte[] memory);
+    nint Scan(int offset, string pattern, nint startAddress, int size);
+    nint Scan(int offset, string pattern, nint startAddress, byte[] memory);
 
-    IEnumerable<nuint> ScanAll(ScanPattern pattern);
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, nuint size);
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, string moduleName);
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, string moduleName, nuint size);
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, Module module);
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, Module module, nuint size);
+    IEnumerable<nint> ScanAll(ScanPattern pattern);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, int size);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, string moduleName);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, string moduleName, int size);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, Module module);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, Module module, int size);
 
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, nuint startAddress, nuint size);
-    IEnumerable<nuint> ScanAll(ScanPattern pattern, nuint startAddress, byte[] memory);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, nint startAddress, int size);
+    IEnumerable<nint> ScanAll(ScanPattern pattern, nint startAddress, byte[] memory);
 
-    IEnumerable<nuint> ScanAll(int offset, string pattern);
-    IEnumerable<nuint> ScanAll(int offset, string pattern, string moduleName);
-    IEnumerable<nuint> ScanAll(int offset, string pattern, Module module);
+    IEnumerable<nint> ScanAll(int offset, string pattern);
+    IEnumerable<nint> ScanAll(int offset, string pattern, string moduleName);
+    IEnumerable<nint> ScanAll(int offset, string pattern, Module module);
 
-    IEnumerable<nuint> ScanAll(int offset, string pattern, nuint startAddress, nuint size);
-    IEnumerable<nuint> ScanAll(int offset, string pattern, nuint startAddress, byte[] memory);
+    IEnumerable<nint> ScanAll(int offset, string pattern, nint startAddress, int size);
+    IEnumerable<nint> ScanAll(int offset, string pattern, nint startAddress, byte[] memory);
 }

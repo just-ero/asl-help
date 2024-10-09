@@ -22,11 +22,11 @@ internal static unsafe partial class WinInterop
     ///     A handle to the specified module, if the function succeeds;
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint GetModuleHandle(string? moduleName)
+    public static nint GetModuleHandle(string? moduleName)
     {
         fixed (char* pModuleName = moduleName)
         {
-            return (nuint)GetModuleHandleW((ushort*)pModuleName);
+            return (nint)GetModuleHandleW((ushort*)pModuleName);
         }
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(GetModuleHandleW), ExactSpelling = true, SetLastError = true)]
@@ -52,11 +52,11 @@ internal static unsafe partial class WinInterop
     ///     The address of the exported function or variable, if the function succeeds;
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint GetProcAddress(nuint moduleHandle, ReadOnlySpan<byte> procName)
+    public static nint GetProcAddress(nint moduleHandle, ReadOnlySpan<byte> procName)
     {
         fixed (byte* pProcName = procName)
         {
-            return (nuint)GetProcAddress((void*)moduleHandle, pProcName);
+            return (nint)GetProcAddress((void*)moduleHandle, pProcName);
         }
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(GetProcAddress), ExactSpelling = true, SetLastError = true)]

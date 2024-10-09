@@ -23,7 +23,7 @@ internal static unsafe partial class WinInterop
     /// <returns>
     ///     The event that caused the function to return.
     /// </returns>
-    public static uint WaitForSingleObject(nuint handle, uint milliseconds)
+    public static uint WaitForSingleObject(nint handle, uint milliseconds)
     {
         return WaitForSingleObject((void*)handle, milliseconds);
 

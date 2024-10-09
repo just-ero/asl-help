@@ -4,18 +4,18 @@ using AslHelp.Memory.Ipc;
 
 namespace AslHelp.Memory.Monitoring;
 
-public sealed class SpanWatcher<T> : WatcherBase<T[], IMemoryReader>
+public sealed class ArrayWatcher<T> : WatcherBase<T[], IMemoryReader>
     where T : unmanaged
 {
     private readonly int _length;
 
-    public SpanWatcher(int length, IMemoryReader memory, nint baseAddress, params int[] offsets)
+    public ArrayWatcher(int length, IMemoryReader memory, nint baseAddress, params int[] offsets)
         : base(memory, baseAddress, offsets)
     {
         _length = length;
     }
 
-    public SpanWatcher(int length, IMemoryReader memory, TickCounter counter, nint baseAddress, params int[] offsets)
+    public ArrayWatcher(int length, IMemoryReader memory, TickCounter counter, nint baseAddress, params int[] offsets)
         : base(memory, counter, baseAddress, offsets)
     {
         _length = length;
@@ -23,7 +23,7 @@ public sealed class SpanWatcher<T> : WatcherBase<T[], IMemoryReader>
 
     protected override bool TryRead(IMemoryReader memory, nint baseAddress, int[] offsets, [NotNullWhen(true)] out T[]? value)
     {
-        return memory.TryReadSpan(out value, _length, baseAddress, offsets);
+        return memory.TryReadArray(out value, _length, baseAddress, offsets);
     }
 
     protected override bool Equals(T[]? old, T[]? current)

@@ -37,13 +37,13 @@ internal static unsafe partial class WinInterop
     ///     otherwise, <see langword="false"/>.
     /// </returns>
     public static bool ReadProcessMemory(
-        nuint processHandle,
-        nuint baseAddress,
+        nint processHandle,
+        nint baseAddress,
         void* buffer,
-        nuint bufferSize,
-        out nuint numberOfBytesRead)
+        nint bufferSize,
+        out nint numberOfBytesRead)
     {
-        fixed (nuint* pNumberOfBytesRead = &numberOfBytesRead)
+        fixed (nint* pNumberOfBytesRead = &numberOfBytesRead)
         {
             return ReadProcessMemory((void*)processHandle, (void*)baseAddress, buffer, bufferSize, pNumberOfBytesRead) != 0;
         }
@@ -54,8 +54,8 @@ internal static unsafe partial class WinInterop
             void* hProcess,
             void* lpBaseAddress,
             void* lpBuffer,
-            nuint nSize,
-            nuint* lpNumberOfBytesRead);
+            nint nSize,
+            nint* lpNumberOfBytesRead);
     }
 
     /// <summary>
@@ -85,13 +85,13 @@ internal static unsafe partial class WinInterop
     ///     otherwise, <see langword="false"/>.
     /// </returns>
     public static bool WriteProcessMemory(
-        nuint processHandle,
-        nuint baseAddress,
+        nint processHandle,
+        nint baseAddress,
         void* buffer,
-        nuint bufferSize,
-        out nuint numberOfBytesWritten)
+        nint bufferSize,
+        out nint numberOfBytesWritten)
     {
-        fixed (nuint* pNumberOfBytesWritten = &numberOfBytesWritten)
+        fixed (nint* pNumberOfBytesWritten = &numberOfBytesWritten)
         {
             return WriteProcessMemory((void*)processHandle, (void*)baseAddress, buffer, bufferSize, pNumberOfBytesWritten) != 0;
         }
@@ -102,8 +102,8 @@ internal static unsafe partial class WinInterop
             void* hProcess,
             void* lpBaseAddress,
             void* lpBuffer,
-            nuint nSize,
-            nuint* lpNumberOfBytesWritten);
+            nint nSize,
+            nint* lpNumberOfBytesWritten);
     }
 
     /// <summary>
@@ -126,11 +126,11 @@ internal static unsafe partial class WinInterop
     ///     The actual number of bytes returned in the information buffer if the function succeeds;
     ///     otherwise, 0.
     /// </returns>
-    public static nuint VirtualQuery(nuint processHandle, nuint baseAddress, out MemoryBasicInformation mbi)
+    public static nint VirtualQuery(nint processHandle, nint baseAddress, out MemoryBasicInformation mbi)
     {
         fixed (MemoryBasicInformation* pMbi = &mbi)
         {
-            return VirtualQueryEx((void*)processHandle, (void*)baseAddress, pMbi, (nuint)sizeof(MemoryBasicInformation));
+            return (nint)VirtualQueryEx((void*)processHandle, (void*)baseAddress, pMbi, sizeof(MemoryBasicInformation));
         }
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(VirtualQueryEx), ExactSpelling = true, SetLastError = true)]
@@ -139,7 +139,7 @@ internal static unsafe partial class WinInterop
             void* hProcess,
             void* lpAddress,
             MemoryBasicInformation* lpBuffer,
-            nuint dwLength);
+            nint dwLength);
     }
 
     /// <summary>
@@ -168,10 +168,10 @@ internal static unsafe partial class WinInterop
     ///     The base address of the allocated region of pages if the function succeeds;
     ///     otherwise, <see langword="null"/>.
     /// </returns>
-    public static nuint VirtualAlloc(
-        nuint processHandle,
-        nuint baseAddress,
-        nuint size,
+    public static nint VirtualAlloc(
+        nint processHandle,
+        nint baseAddress,
+        nint size,
         MemoryRangeState allocationType,
         MemoryRangeProtect memoryProtection)
     {
@@ -179,10 +179,10 @@ internal static unsafe partial class WinInterop
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(VirtualAllocEx), ExactSpelling = true, SetLastError = true)]
         [SuppressUnmanagedCodeSecurity]
-        static extern nuint VirtualAllocEx(
+        static extern nint VirtualAllocEx(
             void* hProcess,
             void* lpAddress,
-            nuint dwSize,
+            nint dwSize,
             uint flAllocationType,
             uint flProtect);
     }
@@ -211,9 +211,9 @@ internal static unsafe partial class WinInterop
     ///     otherwise, <see langword="false"/>.
     /// </returns>
     public static bool VirtualFree(
-        nuint processHandle,
-        nuint baseAddress,
-        uint size,
+        nint processHandle,
+        nint baseAddress,
+        int size,
         MemoryRangeState freeType)
     {
         return VirtualFreeEx((void*)processHandle, (void*)baseAddress, size, (uint)freeType) != 0;
@@ -223,7 +223,7 @@ internal static unsafe partial class WinInterop
         static extern int VirtualFreeEx(
             void* hProcess,
             void* lpAddress,
-            nuint dwSize,
+            nint dwSize,
             uint dwFreeType);
     }
 }

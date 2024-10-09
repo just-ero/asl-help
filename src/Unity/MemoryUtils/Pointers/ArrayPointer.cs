@@ -30,7 +30,7 @@ public class ArrayPointer<T> : BasePointer<T[]> where T : unmanaged
 
         result = new T[length];
 
-        if (!_game.TryReadSpan_Internal<T>(result, deref + (_game.PtrSize * 4)))
+        if (!_game.TryReadArray_Internal<T>(result, deref + (_game.PtrSize * 4)))
         {
             result = Default;
             return false;

@@ -32,7 +32,7 @@ internal unsafe struct MemoryBasicInformation
     /// <summary>
     ///     The size of the region beginning at the base address in which all pages have identical attributes, in bytes.
     /// </summary>
-    public nuint RegionSize;
+    public nint RegionSize;
 
     /// <summary>
     ///     The state of the pages in the region.

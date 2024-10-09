@@ -66,7 +66,7 @@ public partial class Unity
 
         result = new T[length];
 
-        return TryReadSpan_Internal<T>(result, deref + (PtrSize * 4));
+        return TryReadArray_Internal<T>(result, deref + (PtrSize * 4));
     }
     #endregion
 }

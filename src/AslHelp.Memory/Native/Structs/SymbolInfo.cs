@@ -17,7 +17,7 @@ internal unsafe struct SymbolInfo
     /// <summary>
     ///     The size of the structure, in bytes.
     /// </summary>
-    public uint SizeOfStruct;
+    public required uint SizeOfStruct;
 
     /// <summary>
     ///     A unique value that identifies the type data that describes the symbol.

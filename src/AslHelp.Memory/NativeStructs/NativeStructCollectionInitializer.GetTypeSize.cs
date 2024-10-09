@@ -5,9 +5,6 @@ using System.Text.RegularExpressions;
 using AslHelp.Collections.Errors;
 using AslHelp.Shared.Results;
 
-using InputField = (string TypeName, string Name, uint Alignment);
-using InputStruct = (string Name, string? Super, (string Type, string Name, uint Alignment)[] Fields);
-
 namespace AslHelp.Memory.NativeStructs;
 
 internal sealed partial class NativeStructCollectionInitializer
@@ -86,7 +83,7 @@ internal sealed partial class NativeStructCollectionInitializer
             "uint" or "int" or "float" => 0x04,
             "ulong" or "long" or "double" => 0x08,
             "decimal" => 0x10,
-            "nint" or "nuint" => _pointerSize,
+            "nint" or "nint" => _pointerSize,
             _ => 0
         };
 

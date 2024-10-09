@@ -49,7 +49,7 @@ internal static unsafe partial class WinInterop
     /// </returns>
     public static int FormatMessage(
         FormatMessageFlags flags,
-        nuint source,
+        nint source,
         uint messageId,
         uint languageId,
         char* buffer,

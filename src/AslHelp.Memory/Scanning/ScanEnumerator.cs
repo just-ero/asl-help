@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AslHelp.Memory.Scanning;
 
-internal sealed unsafe class ScanEnumerator : IEnumerable<uint>, IEnumerator<uint>
+public sealed unsafe class ScanEnumerator : IEnumerable<int>, IEnumerator<int>
 {
     private const int UNROLLS = 8;
 
@@ -18,7 +18,7 @@ internal sealed unsafe class ScanEnumerator : IEnumerable<uint>, IEnumerator<uin
     private readonly int _length;
     private readonly int _end;
 
-    private uint _cursor;
+    private int _cursor;
 
     public ScanEnumerator(byte[] data, ScanPattern pattern)
     {
@@ -30,12 +30,12 @@ internal sealed unsafe class ScanEnumerator : IEnumerable<uint>, IEnumerator<uin
         _end = data.Length - _length - UNROLLS;
     }
 
-    public uint Current { get; private set; }
+    public int Current { get; private set; }
 
     public bool MoveNext()
     {
         int length = _length, end = _end;
-        uint cursor = _cursor;
+        int cursor = _cursor;
 
         fixed (byte* pData = _data)
         fixed (ulong* pValues = _values, pMasks = _masks)
@@ -117,7 +117,7 @@ internal sealed unsafe class ScanEnumerator : IEnumerable<uint>, IEnumerator<uin
         }
     }
 
-    private static bool RemainingValuesMatch(uint cursor, int length, byte* pData, ulong* pValues, ulong* pMasks)
+    private static bool RemainingValuesMatch(int cursor, int length, byte* pData, ulong* pValues, ulong* pMasks)
     {
         for (int i = 1; i < length; i++)
         {
@@ -141,7 +141,7 @@ internal sealed unsafe class ScanEnumerator : IEnumerable<uint>, IEnumerator<uin
 
     object IEnumerator.Current => Current;
 
-    IEnumerator<uint> IEnumerable<uint>.GetEnumerator()
+    IEnumerator<int> IEnumerable<int>.GetEnumerator()
     {
         return this;
     }
