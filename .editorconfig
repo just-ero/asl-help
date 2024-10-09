@@ -39,6 +39,7 @@ indent_size = 4
 dotnet_diagnostic.IDE0001.severity = warning    # Simplify name
 dotnet_diagnostic.IDE0002.severity = suggestion # Simplify member access
 dotnet_diagnostic.IDE0004.severity = warning    # Remove unnecessary cast
+dotnet_diagnostic.IDE0005.severity = warning    # Using directive is unnecessary
 dotnet_diagnostic.IDE0035.severity = suggestion # Remove unreachable code
 dotnet_diagnostic.IDE0050.severity = warning    # Convert anonymous type to tuple
 dotnet_diagnostic.IDE0051.severity = suggestion # Remove unused private member

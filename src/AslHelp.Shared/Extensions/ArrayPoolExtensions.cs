@@ -1,6 +1,6 @@
 using System.Buffers;
 
-namespace AslHelp.Collections.Extensions;
+namespace AslHelp.Shared.Extensions;
 
 public static class ArrayPoolExtensions
 {

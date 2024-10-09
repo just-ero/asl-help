@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AslHelp.Diagnostics", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AslHelp.LiveSplit", "src\AslHelp.LiveSplit\AslHelp.LiveSplit.csproj", "{115F5F06-1FC6-4DBF-AF79-E04E4CF412ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AslHelp.IO", "src\AslHelp.IO\AslHelp.IO.csproj", "{43888091-87E7-4A49-A07D-6FBB988BD46C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{115F5F06-1FC6-4DBF-AF79-E04E4CF412ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{115F5F06-1FC6-4DBF-AF79-E04E4CF412ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{115F5F06-1FC6-4DBF-AF79-E04E4CF412ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43888091-87E7-4A49-A07D-6FBB988BD46C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43888091-87E7-4A49-A07D-6FBB988BD46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43888091-87E7-4A49-A07D-6FBB988BD46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43888091-87E7-4A49-A07D-6FBB988BD46C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +77,6 @@ Global
 		{006C6CB4-61C0-4924-8804-0097141F2024} = {A14C8A6B-F58F-4C04-B820-B0579FFCD735}
 		{95C0FFFC-EE93-41C9-968A-A81991436973} = {A14C8A6B-F58F-4C04-B820-B0579FFCD735}
 		{115F5F06-1FC6-4DBF-AF79-E04E4CF412ED} = {A14C8A6B-F58F-4C04-B820-B0579FFCD735}
+		{43888091-87E7-4A49-A07D-6FBB988BD46C} = {A14C8A6B-F58F-4C04-B820-B0579FFCD735}
 	EndGlobalSection
 EndGlobal

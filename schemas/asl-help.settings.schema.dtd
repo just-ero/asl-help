@@ -1,0 +1,11 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT Settings (Setting)+>
+<!ATTLIST Settings>
+
+<!ELEMENT Setting (Setting)*>
+<!ATTLIST Setting
+  Id ID #REQUIRED
+  Label CDATA #IMPLIED
+  State (true|false) #IMPLIED
+  Parent IDREF #IMPLIED>

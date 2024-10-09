@@ -1,0 +1,29 @@
+{
+  "title": "asl-help.settings",
+  "description": "Defines some settings that can be loaded by asl-help.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "label": {
+        "description": "The display string of the setting.",
+        "type": "string",
+        "minLength": 1
+      },
+      "state": {
+        "description": "The default state of the setting.",
+        "type": "boolean"
+      },
+      "tooltip": {
+        "description": "The settings's tool tip.",
+        "type": "string",
+        "minLength": 1
+      },
+      "children": {
+        "description": "An optional amount of child settings.",
+        "$ref": "#"
+      }
+    }
+  }
+}

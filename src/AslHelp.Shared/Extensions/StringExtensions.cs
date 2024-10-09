@@ -4,8 +4,7 @@ using System.Buffers;
 namespace AslHelp.Shared.Extensions;
 
 /// <summary>
-///     The <see cref="StringExtensions"/> class
-///     provides useful extension methods for the <see cref="string"/> type.
+///     Provides useful extension methods for the <see cref="string"/> type.
 /// </summary>
 public static class StringExtensions
 {
