@@ -1,9 +1,11 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ASL;
+
 using System;
 
 using AslHelp.Shared.Extensions;
 using AslHelp.LiveSplit.Diagnostics;
-
-using LiveSplit.ASL;
 
 namespace AslHelp.LiveSplit;
 

@@ -1,7 +1,9 @@
-using System.Drawing;
+extern alias Ls;
 
-using LiveSplit.Model;
-using LiveSplit.UI.Components;
+using Ls::LiveSplit.Model;
+using Ls::LiveSplit.UI.Components;
+
+using System.Drawing;
 
 namespace AslHelp.LiveSplit.Control;
 

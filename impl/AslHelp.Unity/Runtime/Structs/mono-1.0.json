@@ -1,0 +1,162 @@
+{
+  "$schema": "../../../../schemas/asl-help.structs.schema.json",
+  "structs": [
+    {
+      "name": "GList", "fields": [
+        { "type": "void*",  "name": "data"     },
+        { "type": "GList*", "name": "next"     },
+        { "type": "GList*", "name": "previous" }
+      ]
+    },
+    {
+      "name": "GSList", "fields": [
+        { "type": "void*",   "name": "data" },
+        { "type": "GSList*", "name": "next" }
+      ]
+    },
+    {
+      "name": "GHashTable", "fields": [
+        { "type": "void*",  "name": "hash_func"          },
+        { "type": "void*",  "name": "key_equal_func"     },
+        { "type": "Slot**", "name": "table"              },
+        { "type": "int",    "name": "table_size"         },
+        { "type": "int",    "name": "in_use"             },
+        { "type": "int",    "name": "threshold"          },
+        { "type": "int",    "name": "last_rehash"        },
+        { "type": "void*",  "name": "value_destroy_func" },
+        { "type": "void*",  "name": "key_destroy_func"   }
+      ]
+    },
+    {
+      "name": "Slot", "fields": [
+        { "type": "void*", "name": "key"   },
+        { "type": "void*", "name": "value" },
+        { "type": "Slot*", "name": "next"  }
+      ]
+    },
+
+    {
+      "name": "MonoAssemblyName", "fields": [
+        { "type": "sbyte*",   "name": "name"             },
+        { "type": "sbyte*",   "name": "culture"          },
+        { "type": "sbyte*",   "name": "hash_value"       },
+        { "type": "byte*",    "name": "public_key"       },
+        { "type": "byte[17]", "name": "public_key_token" },
+        { "type": "uint",     "name": "hash_alg"         },
+        { "type": "uint",     "name": "hash_len"         },
+        { "type": "uint",     "name": "flags"            },
+        { "type": "ushort",   "name": "major"            },
+        { "type": "ushort",   "name": "minor"            },
+        { "type": "ushort",   "name": "build"            },
+        { "type": "ushort",   "name": "revision"         },
+        { "type": "ushort",   "name": "arch"             }
+      ]
+    },
+    {
+      "name": "MonoAssembly", "fields": [
+        { "type": "int",              "name": "ref_count"                        },
+        { "type": "sbyte*",           "name": "basedir"                          },
+        { "type": "MonoAssemblyName", "name": "aname"                            },
+        { "type": "MonoImage*",       "name": "image"                            },
+        { "type": "GSList*",          "name": "friend_assembly_names"            },
+        { "type": "byte",             "name": "friend_assembly_names_inited"     },
+        { "type": "byte",             "name": "in_gac"                           },
+        { "type": "byte",             "name": "dynamic"                          },
+        { "type": "byte",             "name": "corlib_internal"                  },
+        { "type": "bool",             "name": "ref_only"                         },
+        { "type": "byte",             "name": "wrap_non_exception_throws"        },
+        { "type": "byte",             "name": "wrap_non_exception_throws_inited" },
+        { "type": "byte",             "name": "jit_optimizer_disabled"           },
+        { "type": "byte",             "name": "jit_optimizer_disabled_inited"    },
+        { "type": "uint:2",           "name": "ecma"                             },
+        { "type": "uint:2",           "name": "aptc"                             },
+        { "type": "uint:2",           "name": "fulltrust"                        },
+        { "type": "uint:2",           "name": "unmanaged"                        },
+        { "type": "uint:2",           "name": "skipverification"                 }
+      ]
+    },
+
+    {
+      "name": "MonoStreamHeader", "fields": [
+        { "type": "sbyte*", "name": "data" },
+        { "type": "uint", "name": "size"   }
+      ]
+    },
+    {
+      "name": "MonoTableInfo", "fields": [
+        { "type": "sbyte*",  "name": "base"          },
+        { "type": "uint:24", "name": "rows"          },
+        { "type": "uint:8",  "name": "row_size"      },
+        { "type": "uint",    "name": "size_bitfield" }
+      ]
+    },
+    {
+      "name": "MonoInternalHashTable", "fields": [
+        { "type": "void*",  "name": "hash_func"   },
+        { "type": "void*",  "name": "key_extract" },
+        { "type": "void*",  "name": "next_value"  },
+        { "type": "int",    "name": "size"        },
+        { "type": "int",    "name": "num_entries" },
+        { "type": "void**", "name": "table"       }
+      ]
+    },
+    {
+      "name": "MonoImage", "fields": [
+        { "type": "int",                   "name": "ref_count"              },
+        { "type": "void*",                 "name": "raw_data_handle"        },
+        { "type": "sbyte*",                "name": "raw_data"               },
+        { "type": "uint",                  "name": "raw_data_len"           },
+        { "type": "byte:1",                "name": "raw_buffer_used"        },
+        { "type": "byte:1",                "name": "raw_data_allocated"     },
+        { "type": "byte:1",                "name": "fileio_used"            },
+        { "type": "byte:1",                "name": "dynamic"                },
+        { "type": "byte:1",                "name": "ref_only"               },
+        { "type": "byte:1",                "name": "uncompressed_metadata"  },
+        { "type": "byte:1",                "name": "metadata_only"          },
+        { "type": "byte:1",                "name": "checked_module_cctor"   },
+        { "type": "byte:1",                "name": "has_module_cctor"       },
+        { "type": "byte:1",                "name": "idx_string_wide"        },
+        { "type": "byte:1",                "name": "idx_guid_wide"          },
+        { "type": "byte:1",                "name": "idx_blob_wide"          },
+        { "type": "byte:1",                "name": "core_clr_platform_code" },
+        { "type": "sbyte*",                "name": "name"                   },
+        { "type": "sbyte*",                "name": "assembly_name"          },
+        { "type": "sbyte*",                "name": "module_name"            },
+        { "type": "sbyte*",                "name": "version"                },
+        { "type": "ushort",                "name": "md_version_major"       },
+        { "type": "ushort",                "name": "md_version_minor"       },
+        { "type": "sbyte*",                "name": "guid"                   },
+        { "type": "void*",                 "name": "image_info"             },
+        { "type": "MonoMemPool*",          "name": "mempool"                },
+        { "type": "sbyte*",                "name": "raw_metadata"           },
+        { "type": "MonoStreamHeader",      "name": "heap_strings"           },
+        { "type": "MonoStreamHeader",      "name": "heap_us"                },
+        { "type": "MonoStreamHeader",      "name": "heap_blob"              },
+        { "type": "MonoStreamHeader",      "name": "heap_guid"              },
+        { "type": "MonoStreamHeader",      "name": "heap_tables"            },
+        { "type": "MonoStreamHeader",      "name": "heap_pdb"               },
+        { "type": "sbyte*",                "name": "tables_base"            },
+        { "type": "MonoTableInfo[45]",     "name": "tables"                 },
+        { "type": "MonoAssembly**",        "name": "references"             },
+        { "type": "int",                   "name": "nreferences"            },
+        { "type": "MonoImage**",           "name": "modules"                },
+        { "type": "uint",                  "name": "module_count"           },
+        { "type": "bool",                  "name": "modules_loaded"         },
+        { "type": "MonoImage**",           "name": "files"                  },
+        { "type": "void*",                 "name": "aot_module"             },
+        { "type": "byte[16]",              "name": "aotid"                  },
+        { "type": "MonoAssembly*",         "name": "assembly"               },
+        { "type": "GHashTable*",           "name": "method_cache"           },
+        { "type": "MonoInternalHashTable", "name": "class_cache"            }
+      ]
+    }
+  ]
+}
+
+/*
+    {
+      "name": "", "fields": [
+        { "type": "", "name": "" },
+      ]
+    }
+*/

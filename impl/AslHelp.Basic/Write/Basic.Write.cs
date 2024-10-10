@@ -9,12 +9,16 @@ public partial class Basic
     public void Write<T>(T value, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         Write(value, MainModule, baseOffset, offsets);
     }
 
     public void Write<T>(T value, string moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         Write(value, Modules[moduleName], baseOffset, offsets);
     }
 
@@ -40,12 +44,16 @@ public partial class Basic
     public bool TryWrite<T>(T value, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return TryWrite(value, MainModule, baseOffset, offsets);
     }
 
     public bool TryWrite<T>(T value, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         if (moduleName is null)
         {
             return false;

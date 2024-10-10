@@ -14,7 +14,7 @@ public partial class SettingsBuilder
         [property: DataMember(Name = "tooltip")] string? ToolTip,
         [property: DataMember(Name = "children")] Dictionary<string, JsonSetting>? Children);
 
-    public void FromJson(string path)
+    public void CreateFromJson(string path)
     {
         using FileStream fs = File.OpenRead(path);
         DataContractJsonSerializer serializer = new(typeof(Dictionary<string, JsonSetting>));

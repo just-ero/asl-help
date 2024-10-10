@@ -1,3 +1,8 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ASL;
+using Ls::LiveSplit.UI.Components;
+
 using System;
 using System.IO;
 using System.Linq;
@@ -5,9 +10,6 @@ using System.Linq;
 using AslHelp.Shared.Extensions;
 
 using Irony.Parsing;
-
-using LiveSplit.ASL;
-using LiveSplit.UI.Components;
 
 namespace AslHelp.LiveSplit;
 

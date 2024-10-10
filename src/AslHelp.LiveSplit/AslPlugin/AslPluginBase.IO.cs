@@ -10,6 +10,6 @@ public partial class AslPluginBase
     public TimerController? Timer { get; private set; }
     public TextComponentController? Texts { get; private set; }
 
-    public abstract AslPluginBase LogToFile(string fileName, int maxLines = 4096, int linesToErase = 512);
-    public abstract FileReader CreateFileReader(string fileName);
+    public abstract void StartFileLogger(string fileName, int maxLines = 4096, int linesToErase = 512);
+    public abstract FileWatcher StartFileWatcher(string fileName);
 }

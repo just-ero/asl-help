@@ -68,7 +68,7 @@ internal sealed class CollectedInput : OrderedDictionary<string, InputStruct>
                 {
                     foreach (JsonScanPattern pattern in patterns)
                     {
-                        input.Patterns[pattern.Name] = ScanPattern.Parse(pattern.Offset, pattern.Pattern).Unwrap();
+                        input.Patterns[pattern.Name] = ScanPattern.Parse(pattern.Offset, pattern.Pattern);
                     }
                 }
 

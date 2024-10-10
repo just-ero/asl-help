@@ -11,12 +11,16 @@ public partial class Basic
     public T[] ReadArray<T>(int length, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return ReadArray<T>(length, MainModule, baseOffset, offsets);
     }
 
     public T[] ReadArray<T>(int length, string moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return ReadArray<T>(length, Modules[moduleName], baseOffset, offsets);
     }
 
@@ -38,12 +42,16 @@ public partial class Basic
     public bool TryReadArray<T>([NotNullWhen(true)] out T[]? result, int length, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return TryReadArray(out result, length, MainModule, baseOffset, offsets);
     }
 
     public bool TryReadArray<T>([NotNullWhen(true)] out T[]? result, int length, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         if (moduleName is null)
         {
             result = null;
@@ -75,12 +83,16 @@ public partial class Basic
     public void ReadArray<T>(Span<T> buffer, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         ReadArray(buffer, MainModule, baseOffset, offsets);
     }
 
     public void ReadArray<T>(Span<T> buffer, string moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         ReadArray(buffer, Modules[moduleName], baseOffset, offsets);
     }
 
@@ -131,12 +143,16 @@ public partial class Basic
     public bool TryReadArray<T>(Span<T> buffer, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return TryReadArray(buffer, MainModule, baseOffset, offsets);
     }
 
     public bool TryReadArray<T>(Span<T> buffer, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         if (moduleName is null)
         {
             return false;

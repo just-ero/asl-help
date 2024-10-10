@@ -1,10 +1,12 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ASL;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using AslHelp.Shared;
-
-using LiveSplit.ASL;
 
 namespace AslHelp.LiveSplit.Settings;
 

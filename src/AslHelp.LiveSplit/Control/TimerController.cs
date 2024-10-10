@@ -1,6 +1,8 @@
-using System;
+extern alias Ls;
 
-using LiveSplit.Model;
+using Ls::LiveSplit.Model;
+
+using System;
 
 namespace AslHelp.LiveSplit.Control;
 

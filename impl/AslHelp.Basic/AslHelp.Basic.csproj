@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="$(LibPath)/LiveSplit.Core.dll" />
+    <Reference Include="$(LibPath)/LiveSplit.Core.dll" SpecificVersion="false" Aliases="Ls" />
   </ItemGroup>
 
 </Project>

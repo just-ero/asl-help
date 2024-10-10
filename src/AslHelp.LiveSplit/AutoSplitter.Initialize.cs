@@ -1,85 +1,74 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ASL;
+using Ls::LiveSplit.Model;
+using Ls::LiveSplit.UI.Components;
+using Ls::LiveSplit.View;
+
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
 using AslHelp.Shared.Extensions;
-using AslHelp.LiveSplit.Diagnostics;
-
-using LiveSplit.ASL;
-using LiveSplit.Model;
-using LiveSplit.UI.Components;
-using LiveSplit.View;
+using AslHelp.Shared.Results;
 
 namespace AslHelp.LiveSplit;
 
 public sealed partial class Autosplitter
 {
-    public static bool TryInitialize([NotNullWhen(true)] out Autosplitter? autosplitter)
+    public static Result<Autosplitter> Initialize()
     {
-        if (!TryGetTimerData(out LiveSplitState? state))
-        {
-            AslDebug.Error($"An instance of type '{nameof(TimerForm)}' could not be found within the open forms of the application.");
+        return GetTimerData()
+            .AndThen(state =>
+            {
+                return GetScriptData(state)
+                    .Map(scriptData => (State: state, Component: scriptData.Component, Script: scriptData.Script, Methods: scriptData.Methods));
+            })
+            .AndThen<Autosplitter>(res =>
+            {
+                ASLSettings? settings = res.Script.GetFieldValue<ASLSettings>("_settings");
+                if (settings?.Builder is not ASLSettingsBuilder builder)
+                {
+                    return LiveSplitInitializationError.ScriptSettingsInvalid;
+                }
 
-            autosplitter = default;
-            return false;
-        }
+                ScriptActions actions = ParseActions(res.Component, res.Methods);
 
-        if (!TryGetScriptData(state, out ASLComponent? component, out ASLScript? script, out ASLScript.Methods? methods))
-        {
-            AslDebug.Error($"The assembly or component containing the executing script could not be found.");
-
-            autosplitter = default;
-            return false;
-        }
-
-        ScriptActions actions = ParseActions(component, methods);
-
-        ASLSettings? settings = script.GetFieldValue<ASLSettings>("_settings");
-        if (settings?.Builder is not ASLSettingsBuilder builder)
-        {
-            AslDebug.Error($"The '{nameof(ASLScript)}' did not contain a valid instance of '{nameof(ASLSettingsBuilder)}'.");
-
-            autosplitter = default;
-            return false;
-        }
-
-        autosplitter = new(state, script, actions, builder);
-        return true;
+                return new Autosplitter(res.State, res.Script, actions, builder);
+            });
     }
 
-    private static bool TryGetTimerData([NotNullWhen(true)] out LiveSplitState? state)
+    private static Result<LiveSplitState> GetTimerData()
     {
         if (Application.OpenForms[nameof(TimerForm)] is not TimerForm timerForm)
         {
-            state = default;
-            return false;
+            return LiveSplitInitializationError.TimerFormNotFound;
         }
 
-        state = timerForm.CurrentState;
-        return true;
+        if (timerForm.CurrentState is not LiveSplitState state)
+        {
+            return LiveSplitInitializationError.LiveSplitStateInvalid;
+        }
+
+        return state;
     }
 
-    private static bool TryGetScriptData(
-        LiveSplitState state,
-        [NotNullWhen(true)] out ASLComponent? component,
-        [NotNullWhen(true)] out ASLScript? script,
-        [NotNullWhen(true)] out ASLScript.Methods? methods)
+    private static Result<(ASLComponent Component, ASLScript Script, ASLScript.Methods Methods)> GetScriptData(LiveSplitState state)
     {
-        component = default;
-        script = default;
-        methods = default;
-
         Assembly? scriptAssembly = ReflectionExtensions.AssemblyTrace
             .FirstOrDefault(asm => asm.GetType("CompiledScript") is not null);
 
         if (scriptAssembly is null)
         {
-            return false;
+            return LiveSplitInitializationError.ScriptAssemblyNotFound;
         }
 
         IEnumerable<IComponent?> components = state.Layout.Components.Prepend(state.Run.AutoSplitter?.Component);
+
+        ASLComponent? component = default;
+        ASLScript? script = default;
+        ASLScript.Methods? methods = default;
 
         foreach (ASLComponent c in components.OfType<ASLComponent>())
         {
@@ -99,8 +88,11 @@ public sealed partial class Autosplitter
             }
         }
 
-        return component is not null
-            && script is not null
-            && methods is not null;
+        if (component is null || script is null || methods is null)
+        {
+            return LiveSplitInitializationError.ScriptComponentNotFound;
+        }
+
+        return (component, script, methods);
     }
 }

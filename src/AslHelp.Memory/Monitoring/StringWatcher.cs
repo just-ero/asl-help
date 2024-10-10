@@ -1,3 +1,7 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ComponentUtil;
+
 using System.Diagnostics.CodeAnalysis;
 
 using AslHelp.Memory.Ipc;
@@ -7,16 +11,16 @@ namespace AslHelp.Memory.Monitoring;
 public sealed class StringWatcher : WatcherBase<string, IMemoryReader>
 {
     private readonly int _length;
-    private readonly StringType _type;
+    private readonly ReadStringType _type;
 
-    public StringWatcher(int length, StringType type, IMemoryReader memory, nint baseAddress, params int[] offsets)
+    public StringWatcher(int length, ReadStringType type, IMemoryReader memory, nint baseAddress, params int[] offsets)
         : base(memory, baseAddress, offsets)
     {
         _length = length;
         _type = type;
     }
 
-    public StringWatcher(int length, StringType type, IMemoryReader memory, TickCounter counter, nint baseAddress, params int[] offsets)
+    public StringWatcher(int length, ReadStringType type, IMemoryReader memory, TickCounter counter, nint baseAddress, params int[] offsets)
         : base(memory, counter, baseAddress, offsets)
     {
         _length = length;

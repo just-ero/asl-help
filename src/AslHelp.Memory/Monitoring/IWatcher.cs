@@ -1,3 +1,7 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ComponentUtil;
+
 namespace AslHelp.Memory.Monitoring;
 
 public interface IWatcher
@@ -7,8 +11,8 @@ public interface IWatcher
 
     bool Changed { get; }
 
-    bool IsEnabled { get; set; }
-    bool UpdateOnFail { get; set; }
+    bool Enabled { get; set; }
+    MemoryWatcher.ReadFailAction FailAction { get; set; }
 }
 
 public interface IWatcher<T> : IWatcher

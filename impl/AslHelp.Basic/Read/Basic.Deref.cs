@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 using AslHelp.Memory;
-using AslHelp.Memory.Extensions;
 using AslHelp.Memory.Native;
 using AslHelp.Shared;
 
@@ -9,11 +8,15 @@ public partial class Basic
 {
     public nint Deref(int baseOffset, params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return Deref(MainModule, baseOffset, offsets);
     }
 
     public nint Deref(string moduleName, int baseOffset, params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return Deref(Modules[moduleName], baseOffset, offsets);
     }
 
@@ -24,11 +27,7 @@ public partial class Basic
 
     public unsafe nint Deref(nint baseAddress, params int[] offsets)
     {
-        if (_disposed)
-        {
-            const string Msg = "Cannot interact with the process memory after it has been disposed.";
-            ThrowHelper.ThrowObjectDisposedException(Msg);
-        }
+        ThrowHelper.ThrowIfNull(Game);
 
         if (baseAddress == 0)
         {
@@ -41,7 +40,7 @@ public partial class Basic
 
         for (int i = 0; i < offsets.Length; i++)
         {
-            if (!Process.ReadMemory(result, &result, size))
+            if (!WinInteropWrapper.ReadMemory(_handle, result, &result, size))
             {
                 string msg = $"Failed to dereference address at {(ulong)result:X}: {WinInteropWrapper.GetLastWin32ErrorMessage()}";
                 ThrowHelper.ThrowException(msg);
@@ -61,11 +60,15 @@ public partial class Basic
 
     public bool TryDeref(out nint result, int baseOffset, params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return TryDeref(out result, MainModule, baseOffset, offsets);
     }
 
     public bool TryDeref(out nint result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         if (moduleName is null)
         {
             result = default;
@@ -88,12 +91,9 @@ public partial class Basic
 
     public unsafe bool TryDeref(out nint result, nint baseAddress, params int[] offsets)
     {
-        result = 0;
+        ThrowHelper.ThrowIfNull(Game);
 
-        if (_disposed)
-        {
-            return false;
-        }
+        result = 0;
 
         if (baseAddress == 0)
         {

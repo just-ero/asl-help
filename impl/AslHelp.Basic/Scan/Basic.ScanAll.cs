@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AslHelp.Memory;
 using AslHelp.Memory.Ipc;
 using AslHelp.Memory.Scanning;
+using AslHelp.Shared;
 
 using LiveSplit.ComponentUtil;
 
@@ -35,21 +36,29 @@ public partial class Basic
 
     public IEnumerable<nint> ScanAll(SigScanTarget pattern)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return ScanAll(pattern, MainModule);
     }
 
     public IEnumerable<nint> ScanAll(SigScanTarget pattern, int size)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return ScanAll(pattern, MainModule, size);
     }
 
     public IEnumerable<nint> ScanAll(SigScanTarget pattern, string moduleName)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return ScanAll(pattern, Modules[moduleName]);
     }
 
     public IEnumerable<nint> ScanAll(SigScanTarget pattern, string moduleName, int size)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return ScanAll(pattern, Modules[moduleName], size);
     }
 
@@ -65,32 +74,35 @@ public partial class Basic
 
     public IEnumerable<nint> ScanAll(SigScanTarget pattern, nint startAddress, int size)
     {
-        byte[] memory = ReadArray<byte>(size, startAddress);
-        return ScanAll(pattern, startAddress, memory);
-    }
-
-    public IEnumerable<nint> ScanAll(SigScanTarget pattern, nint startAddress, byte[] memory)
-    {
-
+        SignatureScanner scanner = new(Game, startAddress, size);
+        return scanner.ScanAll(pattern);
     }
 
     IEnumerable<nint> IMemoryScanner.ScanAll(ScanPattern pattern)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return ((IMemoryScanner)this).ScanAll(pattern, MainModule);
     }
 
     IEnumerable<nint> IMemoryScanner.ScanAll(ScanPattern pattern, int size)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return ((IMemoryScanner)this).ScanAll(pattern, MainModule, size);
     }
 
     IEnumerable<nint> IMemoryScanner.ScanAll(ScanPattern pattern, string moduleName)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return ((IMemoryScanner)this).ScanAll(pattern, Modules[moduleName]);
     }
 
     IEnumerable<nint> IMemoryScanner.ScanAll(ScanPattern pattern, string moduleName, int size)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return ((IMemoryScanner)this).ScanAll(pattern, Modules[moduleName], size);
     }
 

@@ -1,41 +1,47 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AslHelp.LiveSplit;
 
-#error Implement memory on the type.
-
 public partial class AslPluginBase
 {
-    private Process? _game;
-
+    [field: AllowNull]
     public Process? Game
     {
         get
         {
-            if (_game is null)
+            if (field is null)
             {
-                EnsureInitialized();
+                field = _asl.Game;
 
-                _game = _asl.Game;
+                if (field is not null)
+                {
+                    InitializeMemory(field);
+                }
+            }
+            else if (field.HasExited)
+            {
+                DisposeMemory();
             }
 
-            return _game;
+            return field;
         }
         set
         {
-            EnsureInitialized();
-
-            _game = value;
+            field = value;
             _asl.Game = value;
 
             if (value is null)
             {
-                DisposeGameAndMemory();
+                DisposeMemory();
+            }
+            else
+            {
+                InitializeMemory(value);
             }
         }
     }
 
-    public abstract IProcessMemory? Memory { get; }
-
-    protected abstract void DisposeGameAndMemory();
+    protected abstract void InitializeMemory(Process game);
+    protected abstract void DisposeMemory();
 }

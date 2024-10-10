@@ -18,7 +18,7 @@ public partial class SettingsBuilder
         [XmlElement("Setting")] public XmlSetting[]? Children { get; set; }
     }
 
-    public void FromXml(string path)
+    public void CreateFromXml(string path)
     {
         using FileStream fs = File.OpenRead(path);
         XmlSerializer ser = new(typeof(XmlSetting[]), root: new("Settings"));

@@ -9,12 +9,16 @@ public partial class Basic
     public void WriteArray<T>(ReadOnlySpan<T> values, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         WriteArray(values, MainModule, baseOffset, offsets);
     }
 
     public void WriteArray<T>(ReadOnlySpan<T> values, string moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         WriteArray(values, Modules[moduleName], baseOffset, offsets);
     }
 
@@ -43,12 +47,16 @@ public partial class Basic
     public bool TryWriteArray<T>(ReadOnlySpan<T> values, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return TryWriteArray(values, MainModule, baseOffset, offsets);
     }
 
     public bool TryWriteArray<T>(ReadOnlySpan<T> values, string? moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         if (moduleName is null)
         {
             return false;

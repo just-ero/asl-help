@@ -1,3 +1,7 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ComponentUtil;
+
 using System;
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
@@ -10,28 +14,28 @@ using AslHelp.Shared.Extensions;
 
 public partial class Basic
 {
-    public string ReadString(int maxLength, StringType stringType, int baseOffset, params int[] offsets)
+    public string ReadString(int maxLength, ReadStringType stringType, int baseOffset, params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return ReadString(maxLength, stringType, MainModule, baseOffset, offsets);
     }
 
-    public string ReadString(int maxLength, StringType stringType, string moduleName, int baseOffset, params int[] offsets)
+    public string ReadString(int maxLength, ReadStringType stringType, string moduleName, int baseOffset, params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return ReadString(maxLength, stringType, Modules[moduleName], baseOffset, offsets);
     }
 
-    public string ReadString(int maxLength, StringType stringType, Module module, int baseOffset, params int[] offsets)
+    public string ReadString(int maxLength, ReadStringType stringType, Module module, int baseOffset, params int[] offsets)
     {
         return ReadString(maxLength, stringType, module.Base + baseOffset, offsets);
     }
 
-    public string ReadString(int maxLength, StringType stringType, nint baseAddress, params int[] offsets)
+    public string ReadString(int maxLength, ReadStringType stringType, nint baseAddress, params int[] offsets)
     {
-        if (maxLength < 0)
-        {
-            const string Msg = "The maximum string length must not be a negative integer.";
-            ThrowHelper.ThrowArgumentOutOfRangeException(nameof(maxLength), Msg);
-        }
+        ThrowHelper.ThrowIfLessThan(maxLength, 0);
 
         if (maxLength == 0)
         {
@@ -40,8 +44,9 @@ public partial class Basic
 
         return stringType switch
         {
-            StringType.Utf8 => ReadUtf8String(maxLength, baseAddress, offsets),
-            StringType.Utf16 => ReadUtf16String(maxLength, baseAddress, offsets),
+            ReadStringType.ASCII => ReadAsciiString(maxLength, baseAddress, offsets),
+            ReadStringType.UTF8 => ReadUtf8String(maxLength, baseAddress, offsets),
+            ReadStringType.UTF16 => ReadUtf16String(maxLength, baseAddress, offsets),
             _ => ReadAutoString(maxLength, baseAddress, offsets)
         };
     }
@@ -49,21 +54,25 @@ public partial class Basic
     public bool TryReadString(
         [NotNullWhen(true)] out string? result,
         int maxLength,
-        StringType stringType,
+        ReadStringType stringType,
         int baseOffset,
         params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return TryReadString(out result, maxLength, stringType, MainModule, baseOffset, offsets);
     }
 
     public bool TryReadString(
         [NotNullWhen(true)] out string? result,
         int maxLength,
-        StringType stringType,
+        ReadStringType stringType,
         [NotNullWhen(true)] string? moduleName,
         int baseOffset,
         params int[] offsets)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         if (moduleName is null)
         {
             result = default;
@@ -76,7 +85,7 @@ public partial class Basic
     public bool TryReadString(
         [NotNullWhen(true)] out string? result,
         int maxLength,
-        StringType stringType,
+        ReadStringType stringType,
         [NotNullWhen(true)] Module? module,
         int baseOffset,
         params int[] offsets)
@@ -93,7 +102,7 @@ public partial class Basic
     public bool TryReadString(
         [NotNullWhen(true)] out string? result,
         int maxLength,
-        StringType stringType,
+        ReadStringType stringType,
         nint baseAddress,
         params int[] offsets)
     {
@@ -111,9 +120,9 @@ public partial class Basic
 
         result = stringType switch
         {
-            StringType.Ascii => ReadAsciiString(maxLength, baseAddress, offsets),
-            StringType.Utf8 => ReadUtf8String(maxLength, baseAddress, offsets),
-            StringType.Utf16 => ReadUtf16String(maxLength, baseAddress, offsets),
+            ReadStringType.ASCII => ReadAsciiString(maxLength, baseAddress, offsets),
+            ReadStringType.UTF8 => ReadUtf8String(maxLength, baseAddress, offsets),
+            ReadStringType.UTF16 => ReadUtf16String(maxLength, baseAddress, offsets),
             _ => ReadAutoString(maxLength, baseAddress, offsets)
         };
 

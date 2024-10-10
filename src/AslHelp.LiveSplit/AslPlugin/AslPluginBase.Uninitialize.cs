@@ -7,41 +7,23 @@ namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    protected abstract void ExitPlugin();
-    protected abstract void ShutdownPlugin(bool closing);
+    protected abstract void DisposePlugin(bool closing);
 
-    public AslPluginBase Exit()
+    public void Dispose()
     {
-        EnsureInitialized();
-
         using (AslDebug.Indent("Disposing..."))
         {
-            ExitPlugin();
-            FreeMemory();
-        }
-
-        return this;
-    }
-
-    public AslPluginBase Shutdown()
-    {
-        EnsureInitialized();
-
-        using (AslDebug.Indent("Disposing..."))
-        {
-            AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
-            AppDomain.CurrentDomain.FirstChanceException -= FirstChanceHandler;
-
             bool closing = AslDebug.StackTraceMethodNames.Any(name =>
                 name is "TimerForm.TimerForm_FormClosing"
                 or "TimerForm.OpenLayoutFromFile"
                 or "TimerForm.LoadDefaultLayout");
 
-            ShutdownPlugin(closing);
+            AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
+            AppDomain.CurrentDomain.FirstChanceException -= FirstChanceHandler;
+
+            DisposePlugin(closing);
             FreeMemory();
         }
-
-        return this;
     }
 
     private static void FreeMemory()

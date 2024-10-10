@@ -68,11 +68,6 @@ public partial class Basic
         return ScanAll(target, startAddress, size).FirstOrDefault();
     }
 
-    public nint Scan(SigScanTarget target, nint startAddress, byte[] memory)
-    {
-        return ScanAll(target, startAddress, memory).FirstOrDefault();
-    }
-
     nint IMemoryScanner.Scan(ScanPattern pattern)
     {
         return ((IMemoryScanner)this).ScanAll(pattern).FirstOrDefault();

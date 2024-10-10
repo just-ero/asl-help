@@ -2,6 +2,13 @@
   "title": "asl-help.settings",
   "description": "Defines some settings that can be loaded by asl-help.",
   "type": "object",
+  "minProperties": 1,
+  "properties": {
+    "$schema": {
+      "description": "Path to the schema against which this document should be validated.",
+      "type": "string"
+    }
+  },
   "additionalProperties": {
     "type": "object",
     "additionalProperties": false,
@@ -22,7 +29,7 @@
       },
       "children": {
         "description": "An optional amount of child settings.",
-        "$ref": "#"
+        "$ref": "#/additionalProperties"
       }
     }
   }

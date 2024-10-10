@@ -1,33 +1,28 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ASL;
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Text;
 
 using AslHelp.LiveSplit.Diagnostics;
-
-using LiveSplit.ASL;
+using AslHelp.Shared;
 
 namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    public bool Initialized { get; private set; }
+    private bool _initialized;
 
     protected abstract void InitializePlugin();
-    protected abstract void GenerateCode(string? helperName, Autosplitter asl);
+    protected abstract void GenerateCode(Autosplitter asl);
 
-    public AslPluginBase Initialize(
-        string? gameName = null,
-        bool generateCode = false)
+    [MemberNotNull(nameof(_asl), nameof(Timer), nameof(Texts), nameof(Settings))]
+    private void Initialize(bool generateCode)
     {
-        if (Initialized)
-        {
-            AslDebug.Warn("asl-help is already initialized.");
-            return this;
-        }
-
-        _gameName = gameName;
-
         using (AslDebug.Indent("Initializing asl-help..."))
         {
             AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
@@ -35,13 +30,14 @@ public partial class AslPluginBase
 
             using (AslDebug.Indent("Initializing timer and script data..."))
             {
-                if (!Autosplitter.TryInitialize(out _asl))
+                _asl = Autosplitter.Initialize().UnwrapOrElse(err =>
                 {
                     AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
                     AppDomain.CurrentDomain.FirstChanceException -= FirstChanceHandler;
 
-                    return this;
-                }
+                    ThrowHelper.ThrowException(err.ToString());
+                    return default;
+                });
 
                 AslDebug.Info("Success.");
             }
@@ -59,30 +55,12 @@ public partial class AslPluginBase
 
             Timer = new(_asl.State);
             Texts = new(_asl.State);
-            // Settings = new(_asl.SettingsBuilder);
+            Settings = new(_asl.SettingsBuilder);
 
             AslDebug.Info("Success.");
         }
 
-        Initialized = true;
-
-        return this;
-    }
-
-    private void GenerateCode(Autosplitter asl)
-    {
-        string? helperName = null;
-
-        foreach (var entry in asl.Vars)
-        {
-            if (entry.Value == this)
-            {
-                helperName = entry.Key;
-                break;
-            }
-        }
-
-        GenerateCode(helperName, asl);
+        _initialized = true;
     }
 
     private static Assembly? AssemblyResolve(object? sender, ResolveEventArgs e)

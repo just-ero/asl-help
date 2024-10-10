@@ -2,8 +2,12 @@
   "title": "asl-help.structs",
   "description": "Specifies a collection of structs reflected from a game engine's internals.",
   "type": "object",
-  "additionalProperties": false,
+  "minProperties": 1,
   "properties": {
+    "$schema": {
+      "description": "Path to the schema against which this document should be validated.",
+      "type": "string"
+    },
     "inherits": {
       "type": "object",
       "additionalProperties": false,

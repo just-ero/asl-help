@@ -1,3 +1,7 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ComponentUtil;
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -45,13 +49,13 @@ public interface IMemoryReader
     bool TryReadArray<T>(Span<T> buffer, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets) where T : unmanaged;
     bool TryReadArray<T>(Span<T> buffer, nint baseAddress, params int[] offsets) where T : unmanaged;
 
-    string ReadString(int maxLength, StringType stringType, int baseOffset, params int[] offsets);
-    string ReadString(int maxLength, StringType stringType, string moduleName, int baseOffset, params int[] offsets);
-    string ReadString(int maxLength, StringType stringType, Module module, int baseOffset, params int[] offsets);
-    string ReadString(int maxLength, StringType stringType, nint baseAddress, params int[] offsets);
+    string ReadString(int maxLength, ReadStringType stringType, int baseOffset, params int[] offsets);
+    string ReadString(int maxLength, ReadStringType stringType, string moduleName, int baseOffset, params int[] offsets);
+    string ReadString(int maxLength, ReadStringType stringType, Module module, int baseOffset, params int[] offsets);
+    string ReadString(int maxLength, ReadStringType stringType, nint baseAddress, params int[] offsets);
 
-    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, StringType stringType, int baseOffset, params int[] offsets);
-    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, StringType stringType, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets);
-    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, StringType stringType, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets);
-    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, StringType stringType, nint baseAddress, params int[] offsets);
+    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, ReadStringType stringType, int baseOffset, params int[] offsets);
+    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, ReadStringType stringType, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets);
+    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, ReadStringType stringType, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets);
+    bool TryReadString([NotNullWhen(true)] out string? result, int maxLength, ReadStringType stringType, nint baseAddress, params int[] offsets);
 }

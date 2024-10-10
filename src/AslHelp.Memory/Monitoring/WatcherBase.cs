@@ -1,3 +1,7 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ComponentUtil;
+
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -54,8 +58,8 @@ public abstract class WatcherBase<T, TMemory> : IWatcher<T>
 
     public bool Changed { get; private set; }
 
-    public bool IsEnabled { get; set; }
-    public bool UpdateOnFail { get; set; }
+    public bool Enabled { get; set; }
+    public MemoryWatcher.ReadFailAction FailAction { get; set; }
 
     protected abstract bool TryRead(TMemory memory, nint baseAddress, int[] offsets, [NotNullWhen(true)] out T? value);
     protected abstract bool Equals(T? old, T? current);
@@ -64,7 +68,7 @@ public abstract class WatcherBase<T, TMemory> : IWatcher<T>
 
     private void Update()
     {
-        if (!IsEnabled)
+        if (!Enabled)
         {
             return;
         }
@@ -84,7 +88,7 @@ public abstract class WatcherBase<T, TMemory> : IWatcher<T>
             _old = _current;
             _current = value;
         }
-        else if (UpdateOnFail)
+        else if (FailAction == MemoryWatcher.ReadFailAction.SetZeroOrNull)
         {
             _old = _current;
             _current = default;

@@ -1,23 +1,23 @@
-using System.Windows.Forms;
+extern alias Ls;
 
-using LiveSplit.Model;
+using Ls::LiveSplit.Model;
+
+using System.Windows.Forms;
 
 namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    public AslPluginBase AlertRealTime(string? message = default)
+    public void AlertRealTime(string? message = default)
     {
-        EnsureInitialized();
-
         if (_asl.State.CurrentTimingMethod == TimingMethod.RealTime)
         {
-            return this;
+            return;
         }
 
         DialogResult result = MessageBox.Show(
             message ??
-            $"{_gameName ?? "This game"} uses real time as its timing method.\nWould you like to switch to it?",
+            $"{GameName ?? "This game"} uses real time as its timing method.\nWould you like to switch now?",
             $"LiveSplit | {GameName}",
             MessageBoxButtons.YesNo);
 
@@ -25,22 +25,18 @@ public partial class AslPluginBase
         {
             _asl.State.CurrentTimingMethod = TimingMethod.RealTime;
         }
-
-        return this;
     }
 
-    public AslPluginBase AlertGameTime(string? message = default)
+    public void AlertGameTime(string? message = default)
     {
-        EnsureInitialized();
-
         if (_asl.State.CurrentTimingMethod == TimingMethod.GameTime)
         {
-            return this;
+            return;
         }
 
         DialogResult result = MessageBox.Show(
             message ??
-            $"{_gameName ?? "This game"} uses in-game time.\nWould you like to switch to it?",
+            $"{GameName ?? "This game"} uses in-game time.\nWould you like to switch now?",
             $"LiveSplit | {GameName}",
             MessageBoxButtons.YesNo);
 
@@ -48,22 +44,18 @@ public partial class AslPluginBase
         {
             _asl.State.CurrentTimingMethod = TimingMethod.GameTime;
         }
-
-        return this;
     }
 
-    public AslPluginBase AlertLoadless(string? message = default)
+    public void AlertLoadless(string? message = default)
     {
-        EnsureInitialized();
-
         if (_asl.State.CurrentTimingMethod == TimingMethod.GameTime)
         {
-            return this;
+            return;
         }
 
         DialogResult result = MessageBox.Show(
             message ??
-            $"Removing loads from {_gameName ?? "this game"} requires comparing against Game Time.\nWould you like to switch to it?",
+            $"Removing loads from {GameName ?? "this game"} requires comparing against Game Time.\nWould you like to switch now?",
             $"LiveSplit | {GameName}",
             MessageBoxButtons.YesNo);
 
@@ -71,7 +63,5 @@ public partial class AslPluginBase
         {
             _asl.State.CurrentTimingMethod = TimingMethod.GameTime;
         }
-
-        return this;
     }
 }

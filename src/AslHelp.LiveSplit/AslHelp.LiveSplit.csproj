@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="$(SrcPath)/AslHelp.Shared/AslHelp.Shared.csproj" />
-    <ProjectReference Include="$(SrcPath)/AslHelp.Diagnostics/AslHelp.Diagnostics.csproj" />
+    <ProjectReference Include="$(SrcPath)/AslHelp.IO/AslHelp.IO.csproj" />
     <ProjectReference Include="$(SrcPath)/AslHelp.Memory/AslHelp.Memory.csproj" />
   </ItemGroup>
 
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="$(LibPath)/*.dll" />
+    <Reference Include="$(LibPath)/*.dll" SpecificVersion="false" Aliases="Ls" />
   </ItemGroup>
 
 </Project>
