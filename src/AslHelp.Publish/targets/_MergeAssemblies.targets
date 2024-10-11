@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Collections.dll" /> -->
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Common.dll" /> -->
+    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Shared.dll" /> -->
     <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Diagnostics.dll" /> -->
     <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.IO.dll" /> -->
     <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.LiveSplit.dll" /> -->

@@ -1,10 +1,12 @@
+extern alias Ls;
+
+using Ls::LiveSplit.ComponentUtil;
+
 using System.Linq;
 
 using AslHelp.Memory;
 using AslHelp.Memory.Ipc;
 using AslHelp.Memory.Scanning;
-
-using LiveSplit.ComponentUtil;
 
 public partial class Basic
 {

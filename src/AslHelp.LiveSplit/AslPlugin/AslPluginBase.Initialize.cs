@@ -15,7 +15,7 @@ namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    private bool _initialized;
+    // private bool _initialized;
 
     protected abstract void InitializePlugin();
     protected abstract void GenerateCode(Autosplitter asl);
@@ -60,7 +60,7 @@ public partial class AslPluginBase
             AslDebug.Info("Success.");
         }
 
-        _initialized = true;
+        // _initialized = true;
     }
 
     private static Assembly? AssemblyResolve(object? sender, ResolveEventArgs e)

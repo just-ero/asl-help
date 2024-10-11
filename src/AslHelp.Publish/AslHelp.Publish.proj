@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <AssemblyName>asl-help</AssemblyName>
+    <OutputPath>$(ArtifactsPath)/bin/AslHelp.Publish</OutputPath>
 
     <!-- <ILRepackTargetsFile>$(MSBuildThisFileDirectory)/targets/_MergeAssemblies.targets</ILRepackTargetsFile> -->
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- <ProjectReference Include="$(ImplDir)/AslHelp.Basic/*.csproj" /> -->
+    <ProjectReference Include="$(ImplPath)/AslHelp.Basic/AslHelp.Basic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

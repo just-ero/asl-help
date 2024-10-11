@@ -1,34 +1,36 @@
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    [field: AllowNull]
+    // TODO: Use semi-auto property in RC2.
+#pragma warning disable IDE0032 // Use auto property
+    private Process? _game;
+#pragma warning restore IDE0032
     public Process? Game
     {
         get
         {
-            if (field is null)
+            if (_game is null)
             {
-                field = _asl.Game;
+                _game = _asl.Game;
 
-                if (field is not null)
+                if (_game is not null)
                 {
-                    InitializeMemory(field);
+                    InitializeMemory(_game);
                 }
             }
-            else if (field.HasExited)
+            else if (_game.HasExited)
             {
                 DisposeMemory();
             }
 
-            return field;
+            return _game;
         }
         set
         {
-            field = value;
+            _game = value;
             _asl.Game = value;
 
             if (value is null)

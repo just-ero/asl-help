@@ -3,18 +3,21 @@ using System.Linq;
 using System.Security.Cryptography;
 
 using AslHelp.Memory;
+using AslHelp.Shared;
 
-namespace AslHelp.LiveSplit;
-
-public partial class AslPluginBase
+public partial class Basic
 {
     public string GetMD5Hash()
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return GetMD5Hash(MainModule);
     }
 
     public string GetMD5Hash(string moduleName)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return GetMD5Hash(Modules[moduleName]);
     }
 
@@ -26,11 +29,15 @@ public partial class AslPluginBase
 
     public string GetSHA1Hash()
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return GetSHA1Hash(MainModule);
     }
 
     public string GetSHA1Hash(string moduleName)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return GetSHA1Hash(Modules[moduleName]);
     }
 
@@ -42,11 +49,15 @@ public partial class AslPluginBase
 
     public string GetSHA256Hash()
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return GetSHA256Hash(MainModule);
     }
 
     public string GetSHA256Hash(string moduleName)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return GetSHA256Hash(Modules[moduleName]);
     }
 
@@ -58,11 +69,15 @@ public partial class AslPluginBase
 
     public string GetSHA512Hash()
     {
+        ThrowHelper.ThrowIfNull(MainModule);
+
         return GetSHA512Hash(MainModule);
     }
 
     public string GetSHA512Hash(string moduleName)
     {
+        ThrowHelper.ThrowIfNull(Modules);
+
         return GetSHA512Hash(Modules[moduleName]);
     }
 

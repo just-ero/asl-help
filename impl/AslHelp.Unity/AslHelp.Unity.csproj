@@ -4,4 +4,8 @@
     <TargetFramework>net4.8.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="$(ImplPath)/AslHelp.Basic/AslHelp.Basic.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -15,6 +15,10 @@ public sealed class FileWatcher : IDisposable
         _path = path;
     }
 
+    // TODO: Use semi-auto property in RC2.
+#pragma warning disable IDE0032 // Use auto property
+    private string? _line;
+#pragma warning restore IDE0032
     public string? Line
     {
         get
@@ -26,13 +30,11 @@ public sealed class FileWatcher : IDisposable
 
             if (_reader?.ReadLine() is string line)
             {
-                field = line;
+                _line = line;
             }
 
-            return field;
+            return _line;
         }
-
-        private set;
     }
 
     private bool TryOpen()
@@ -44,7 +46,7 @@ public sealed class FileWatcher : IDisposable
 
             while (_reader.ReadLine() is string line)
             {
-                Line = line;
+                _line = line;
             }
 
             _open = true;

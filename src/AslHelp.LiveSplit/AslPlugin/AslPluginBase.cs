@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AslHelp.LiveSplit;
 
@@ -13,10 +12,13 @@ public abstract partial class AslPluginBase
         Initialize(generateCode);
     }
 
-    [field: AllowNull]
+    // TODO: Use semi-auto property in RC2.
+#pragma warning disable IDE0032 // Use auto property
+    private string? _gameName;
+#pragma warning restore IDE0032
     public string GameName
     {
-        get => field ?? Game?.ProcessName ?? "Autosplitter";
-        set;
+        get => _gameName ?? Game?.ProcessName ?? "Autosplitter";
+        set => _gameName = value;
     }
 }

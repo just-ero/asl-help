@@ -88,7 +88,7 @@ internal static unsafe partial class WinInterop
         string imageName,
         string? moduleName,
         nint moduleBase,
-        uint memorySize,
+        int memorySize,
         void* data,
         uint flags)
     {
@@ -100,7 +100,7 @@ internal static unsafe partial class WinInterop
                 (ushort*)pImageName,
                 (ushort*)pModuleName,
                 (ulong)moduleBase,
-                memorySize,
+                (uint)memorySize,
                 data,
                 flags);
         }

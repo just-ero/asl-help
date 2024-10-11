@@ -82,7 +82,7 @@ internal static unsafe partial class WinInterop
     {
         fixed (uint* pThreadId = &threadId)
         {
-            return (nuint)CreateRemoteThread(
+            return (nint)CreateRemoteThread(
                 (void*)hProcess,
                 lpThreadAttributes,
                 stackSize,

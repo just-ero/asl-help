@@ -17,7 +17,7 @@ public static class ModuleExtensions
 {
     public static IEnumerable<MemoryRange> GetMemoryPages(this Module module)
     {
-        nint address = module.Base, max = module.Base + (nint)module.MemorySize;
+        nint address = module.Base, max = module.Base + module.MemorySize;
 
         do
         {
