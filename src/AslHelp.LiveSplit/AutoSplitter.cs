@@ -23,7 +23,7 @@ public sealed partial class Autosplitter
         State = state;
         Actions = actions;
         Vars = script.Vars;
-        Current = script.State.Data;
+        // Current = script.State.Data;
         SettingsBuilder = settingsBuilder;
     }
 
@@ -31,7 +31,7 @@ public sealed partial class Autosplitter
 
     public ScriptActions Actions { get; }
     public IDictionary<string, object?> Vars { get; }
-    public IDictionary<string, object?>? Current { get; }
+    // public IDictionary<string, object?>? Current { get; }
     public ASLSettingsBuilder SettingsBuilder { get; }
 
     public Process? Game

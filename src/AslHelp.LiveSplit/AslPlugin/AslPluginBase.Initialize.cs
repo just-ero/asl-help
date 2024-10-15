@@ -15,12 +15,10 @@ namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    // private bool _initialized;
-
     protected abstract void InitializePlugin();
     protected abstract void GenerateCode(Autosplitter asl);
 
-    [MemberNotNull(nameof(_asl), nameof(Timer), nameof(Texts), nameof(Settings))]
+    [MemberNotNull(nameof(_asl), nameof(Timer), nameof(Texts))]
     private void Initialize(bool generateCode)
     {
         using (AslDebug.Indent("Initializing asl-help..."))
@@ -55,7 +53,7 @@ public partial class AslPluginBase
 
             Timer = new(_asl.State);
             Texts = new(_asl.State);
-            Settings = new(_asl.SettingsBuilder);
+            // Settings = new(_asl.SettingsBuilder);
 
             AslDebug.Info("Success.");
         }

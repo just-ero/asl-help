@@ -83,7 +83,7 @@ internal sealed partial class NativeStructCollectionInitializer
             "uint" or "int" or "float" => 0x04,
             "ulong" or "long" or "double" => 0x08,
             "decimal" => 0x10,
-            "nint" or "nint" => _pointerSize,
+            "nint" or "nuint" => _pointerSize,
             _ => 0
         };
 

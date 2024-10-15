@@ -130,12 +130,12 @@ internal static unsafe partial class WinInterop
     {
         fixed (MemoryBasicInformation* pMbi = &mbi)
         {
-            return (nint)VirtualQueryEx((void*)processHandle, (void*)baseAddress, pMbi, sizeof(MemoryBasicInformation));
+            return VirtualQueryEx((void*)processHandle, (void*)baseAddress, pMbi, sizeof(MemoryBasicInformation));
         }
 
         [DllImport(Lib.Kernel32, EntryPoint = nameof(VirtualQueryEx), ExactSpelling = true, SetLastError = true)]
         [SuppressUnmanagedCodeSecurity]
-        static extern nuint VirtualQueryEx(
+        static extern nint VirtualQueryEx(
             void* hProcess,
             void* lpAddress,
             MemoryBasicInformation* lpBuffer,

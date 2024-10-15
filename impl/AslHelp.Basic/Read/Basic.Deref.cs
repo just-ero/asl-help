@@ -10,14 +10,14 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return Deref(MainModule, baseOffset, offsets);
+        return Deref(MainModule.Base + baseOffset, offsets);
     }
 
     public nint Deref(string moduleName, int baseOffset, params int[] offsets)
     {
         ThrowHelper.ThrowIfNull(Modules);
 
-        return Deref(Modules[moduleName], baseOffset, offsets);
+        return Deref(Modules[moduleName].Base + baseOffset, offsets);
     }
 
     public nint Deref(Module module, int baseOffset, params int[] offsets)
@@ -62,7 +62,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return TryDeref(out result, MainModule, baseOffset, offsets);
+        return TryDeref(out result, MainModule.Base + baseOffset, offsets);
     }
 
     public bool TryDeref(out nint result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
@@ -75,7 +75,13 @@ public partial class Basic
             return false;
         }
 
-        return TryDeref(out result, Modules[moduleName], baseOffset, offsets);
+        if (!Modules.TryGetValue(moduleName, out Module? module))
+        {
+            result = default;
+            return false;
+        }
+
+        return TryDeref(out result, module.Base + baseOffset, offsets);
     }
 
     public bool TryDeref(out nint result, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)

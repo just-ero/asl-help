@@ -6,19 +6,12 @@ using AslHelp.Shared;
 
 public partial class Basic
 {
-    public nint ReadRelative(nint relativeAddress, int instructionSize = 0x4)
-    {
-        return Is64Bit
-            ? relativeAddress + instructionSize + Read<int>(relativeAddress)
-            : Read<nint>(relativeAddress);
-    }
-
     public T Read<T>(int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return Read<T>(MainModule, baseOffset, offsets);
+        return Read<T>(MainModule.Base + baseOffset, offsets);
     }
 
     public T Read<T>(string moduleName, int baseOffset, params int[] offsets)
@@ -26,7 +19,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(Modules);
 
-        return Read<T>(Modules[moduleName], baseOffset, offsets);
+        return Read<T>(Modules[moduleName].Base + baseOffset, offsets);
     }
 
     public T Read<T>(Module module, int baseOffset, params int[] offsets)
@@ -56,7 +49,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return TryRead(out result, MainModule, baseOffset, offsets);
+        return TryRead(out result, MainModule.Base + baseOffset, offsets);
     }
 
     public bool TryRead<T>(out T result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
@@ -70,7 +63,13 @@ public partial class Basic
             return false;
         }
 
-        return TryRead(out result, Modules[moduleName], baseOffset, offsets);
+        if (!Modules.TryGetValue(moduleName, out Module? module))
+        {
+            result = default;
+            return false;
+        }
+
+        return TryRead(out result, module.Base + baseOffset, offsets);
     }
 
     public bool TryRead<T>(out T result, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)

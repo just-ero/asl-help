@@ -15,7 +15,7 @@ public sealed class FileWatcher : IDisposable
         _path = path;
     }
 
-    // TODO: Use semi-auto property in RC2.
+    // TODO: Use semi-auto property in 9.0.
 #pragma warning disable IDE0032 // Use auto property
     private string? _line;
 #pragma warning restore IDE0032

@@ -1,0 +1,86 @@
+{
+  "inherits": { "runtime": "il2cpp", "version": "22.0" },
+  "structs": [
+    {
+      "name": "Il2CppClass",
+      "fields": [
+        { "type": "Il2CppImage*", "name": "image" },
+        { "type": "void*", "name": "gc_desc" },
+
+        { "type": "sbyte*", "name": "name" },
+        { "type": "sbyte*", "name": "namespaze" },
+
+        { "type": "Il2CppType", "name": "byval_arg" },
+        { "type": "Il2CppType", "name": "this_arg" },
+
+        { "type": "Il2CppClass*", "name": "element_class" },
+        { "type": "Il2CppClass*", "name": "castClass" },
+        { "type": "Il2CppClass*", "name": "declaringType" },
+        { "type": "Il2CppClass*", "name": "parent" },
+        { "type": "Il2CppGenericClass*", "name": "generic_class" },
+        { "type": "Il2CppTypeDefinition*", "name": "typeDefinition" },
+        { "type": "Il2CppInteropData*", "name": "interopData" },
+
+        { "type": "FieldInfo*", "name": "fields" },
+        { "type": "EventInfo*", "name": "events" },
+        { "type": "PropertyInfo*", "name": "properties" },
+        { "type": "MethodInfo**", "name": "methods" },
+        { "type": "Il2CppClass**", "name": "nestedTypes" },
+        { "type": "Il2CppClass**", "name": "implementedInterfaces" },
+        { "type": "void*", "name": "interfaceOffsets" },
+
+        { "type": "void*", "name": "static_fields" },
+
+        { "type": "void*", "name": "rgctx_data" },
+        { "type": "Il2CppClass**", "name": "typeHierarchy" },
+
+        { "type": "uint", "name": "cctor_started" },
+        { "type": "uint", "name": "cctor_finished" },
+        { "type": "ulong", "name": "cctor_thread", "alignment": 8 },
+
+        { "type": "int", "name": "genericContainerIndex" },
+        { "type": "int", "name": "customAttributeIndex" },
+
+        { "type": "uint", "name": "instance_size" },
+        { "type": "uint", "name": "actualSize" },
+        { "type": "uint", "name": "element_size" },
+        { "type": "int", "name": "native_size" },
+        { "type": "uint", "name": "static_fields_size" },
+        { "type": "uint", "name": "thread_static_fields_size" },
+        { "type": "int", "name": "thread_static_fields_offset" },
+
+        { "type": "uint", "name": "flags" },
+        { "type": "uint", "name": "token" },
+
+        { "type": "ushort", "name": "method_count" },
+        { "type": "ushort", "name": "property_count" },
+        { "type": "ushort", "name": "field_count" },
+        { "type": "ushort", "name": "event_count" },
+        { "type": "ushort", "name": "nested_type_count" },
+        { "type": "ushort", "name": "vtable_count" },
+        { "type": "ushort", "name": "interfaces_count" },
+        { "type": "ushort", "name": "interface_offsets_count" },
+
+        { "type": "byte", "name": "typeHierarchyDepth" },
+        { "type": "byte", "name": "genericRecursionDepth" },
+        { "type": "byte", "name": "rank" },
+        { "type": "byte", "name": "minimumAlignment" },
+        { "type": "byte", "name": "packingSize" },
+
+        { "type": "byte:1", "name": "valuetype" },
+        { "type": "byte:1", "name": "initialized" },
+        { "type": "byte:1", "name": "enumtype" },
+        { "type": "byte:1", "name": "is_generic" },
+        { "type": "byte:1", "name": "has_references" },
+        { "type": "byte:1", "name": "init_pending" },
+        { "type": "byte:1", "name": "size_inited" },
+        { "type": "byte:1", "name": "has_finalize" },
+
+        { "type": "byte:1", "name": "has_cctor" },
+        { "type": "byte:1", "name": "is_blittable" },
+        { "type": "byte:1", "name": "is_import_or_windows_runtime" },
+        { "type": "byte:1", "name": "is_vtable_initialized" }
+      ]
+    }
+  ]
+}

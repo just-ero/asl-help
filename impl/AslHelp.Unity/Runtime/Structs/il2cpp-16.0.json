@@ -1,0 +1,175 @@
+{
+  "structs": [
+    {
+      "name": "Il2CppAssemblyName",
+      "fields": [
+        { "type": "int", "name": "nameIndex" },
+        { "type": "int", "name": "cultureIndex" },
+        { "type": "int", "name": "hashValueIndex" },
+        { "type": "int", "name": "publicKeyIndex" },
+
+        { "type": "uint", "name": "hash_alg" },
+        { "type": "int", "name": "hash_len" },
+        { "type": "uint", "name": "flags" },
+
+        { "type": "int", "name": "major" },
+        { "type": "int", "name": "minor" },
+        { "type": "int", "name": "build" },
+        { "type": "int", "name": "revision" },
+
+        { "type": "byte[8]", "name": "public_key_token" }
+      ]
+    },
+    {
+      "name": "Il2CppAssembly",
+      "fields": [
+        { "type": "int", "name": "imageIndex" },
+        { "type": "int", "name": "customAttributeIndex" },
+        { "type": "Il2CppAssemblyName", "name": "aname" }
+      ]
+    },
+
+    {
+      "name": "Il2CppImage",
+      "fields": [
+        { "type": "sbyte*", "name": "name" },
+        { "type": "int", "name": "assemblyIndex" },
+
+        { "type": "int", "name": "typeStart" },
+        { "type": "uint", "name": "typeCount" },
+
+        { "type": "int", "name": "entryPointIndex" },
+
+        { "type": "void*", "name": "nameToClassHashTable" }
+      ]
+    },
+
+    {
+      "name": "Il2CppType",
+      "fields": [
+        { "type": "void*", "name": "data" },
+        { "type": "uint:16", "name": "attrs" },
+        { "type": "uint:8", "name": "type" },
+        { "type": "uint:6", "name": "num_mods" },
+        { "type": "uint:1", "name": "byref" },
+        { "type": "uint:1", "name": "pinned" }
+      ]
+    },
+    {
+      "name": "Il2CppArrayType",
+      "fields": [
+        { "type": "Il2CppType*", "name": "etype" },
+        { "type": "byte", "name": "rank" },
+        { "type": "byte", "name": "numsizes" },
+        { "type": "byte", "name": "numlobounds" },
+        { "type": "int*", "name": "sizes" },
+        { "type": "int*", "name": "lobounds" }
+      ]
+    },
+
+    {
+      "name": "Il2CppClass",
+      "fields": [
+        { "type": "Il2CppImage*", "name": "image" },
+        { "type": "void*", "name": "gc_desc" },
+
+        { "type": "sbyte*", "name": "name" },
+        { "type": "sbyte*", "name": "namespaze" },
+
+        { "type": "Il2CppType", "name": "byval_arg" },
+        { "type": "Il2CppType", "name": "this_arg" },
+
+        { "type": "Il2CppClass*", "name": "element_class" },
+        { "type": "Il2CppClass*", "name": "castClass" },
+        { "type": "Il2CppClass*", "name": "declaringType" },
+        { "type": "Il2CppClass*", "name": "parent" },
+        { "type": "Il2CppGenericClass*", "name": "generic_class" },
+        { "type": "Il2CppTypeDefinition*", "name": "typeDefinition" },
+
+        { "type": "FieldInfo*", "name": "fields" },
+        { "type": "EventInfo*", "name": "events" },
+        { "type": "PropertyInfo*", "name": "properties" },
+        { "type": "MethodInfo**", "name": "methods" },
+        { "type": "Il2CppClass**", "name": "nestedTypes" },
+        { "type": "Il2CppClass**", "name": "implementedInterfaces" },
+        { "type": "MethodInfo**", "name": "vtable" },
+        { "type": "void*", "name": "interfaceOffsets" },
+
+        { "type": "void*", "name": "static_fields" },
+
+        { "type": "void*", "name": "rgctx_data" },
+        { "type": "Il2CppClass**", "name": "typeHierarchy" },
+
+        { "type": "uint", "name": "cctor_started" },
+        { "type": "uint", "name": "cctor_finished" },
+        { "type": "ulong", "name": "cctor_thread", "alignment": 8 },
+
+        { "type": "int", "name": "genericContainerIndex" },
+        { "type": "int", "name": "customAttributeIndex" },
+
+        { "type": "uint", "name": "instance_size" },
+        { "type": "uint", "name": "actualSize" },
+        { "type": "uint", "name": "element_size" },
+        { "type": "int", "name": "native_size" },
+        { "type": "uint", "name": "static_fields_size" },
+        { "type": "uint", "name": "thread_static_fields_size" },
+        { "type": "int", "name": "thread_static_fields_offset" },
+
+        { "type": "uint", "name": "flags" },
+
+        { "type": "ushort", "name": "method_count" },
+        { "type": "ushort", "name": "property_count" },
+        { "type": "ushort", "name": "field_count" },
+        { "type": "ushort", "name": "event_count" },
+        { "type": "ushort", "name": "nested_type_count" },
+        { "type": "ushort", "name": "vtable_count" },
+        { "type": "ushort", "name": "interfaces_count" },
+        { "type": "ushort", "name": "interface_offsets_count" },
+
+        { "type": "byte", "name": "typeHierarchyDepth" },
+        { "type": "byte", "name": "rank" },
+        { "type": "byte", "name": "minimumAlignment" },
+        { "type": "byte", "name": "packingSize" },
+
+        { "type": "byte:1", "name": "valuetype" },
+        { "type": "byte:1", "name": "initialized" },
+        { "type": "byte:1", "name": "enumtype" },
+        { "type": "byte:1", "name": "is_generic" },
+        { "type": "byte:1", "name": "has_references" },
+        { "type": "byte:1", "name": "init_pending" },
+        { "type": "byte:1", "name": "size_inited" },
+        { "type": "byte:1", "name": "has_finalize" },
+
+        { "type": "byte:1", "name": "has_cctor" },
+        { "type": "byte:1", "name": "is_blittable" }
+      ]
+    },
+
+    {
+      "name": "Il2CppGenericContext",
+      "fields": [
+        { "type": "Il2CppGenericInst*", "name": "class_inst" },
+        { "type": "Il2CppGenericInst*", "name": "method_inst" }
+      ]
+    },
+    {
+      "name": "Il2CppGenericClass",
+      "fields": [
+        { "type": "int", "name": "typeDefinitionIndex" },
+        { "type": "Il2CppGenericContext", "name": "context" },
+        { "type": "Il2CppClass*", "name": "cached_class" }
+      ]
+    },
+
+    {
+      "name": "FieldInfo",
+      "fields": [
+        { "type": "sbyte*", "name": "name" },
+        { "type": "Il2CppType*", "name": "type" },
+        { "type": "Il2CppClass*", "name": "parent" },
+        { "type": "int", "name": "offset" },
+        { "type": "int", "name": "customAttributeIndex" }
+      ]
+    }
+  ]
+}

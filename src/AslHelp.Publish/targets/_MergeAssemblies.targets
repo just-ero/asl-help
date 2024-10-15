@@ -1,14 +1,13 @@
 <Project>
 
   <ItemGroup>
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Collections.dll" /> -->
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Shared.dll" /> -->
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Diagnostics.dll" /> -->
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.IO.dll" /> -->
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.LiveSplit.dll" /> -->
-    <!-- <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Memory.dll" /> -->
+    <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Collections.dll" />
+    <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.IO.dll" />
+    <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.LiveSplit.dll" />
+    <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Memory.dll" />
+    <AslHelpBaseAssemblies Include="$(OutputPath)/AslHelp.Shared.dll" />
 
-    <!-- <AslHelpPluginAssemblies Include="$(OutputPath)/AslHelp.Basic.dll" /> -->
+    <AslHelpPluginAssemblies Include="$(OutputPath)/AslHelp.Basic.dll" />
   </ItemGroup>
 
   <Target Name="_MergeAssemblies" AfterTargets="Build">

@@ -18,14 +18,14 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return ReadString(maxLength, stringType, MainModule, baseOffset, offsets);
+        return ReadString(maxLength, stringType, MainModule.Base + baseOffset, offsets);
     }
 
     public string ReadString(int maxLength, ReadStringType stringType, string moduleName, int baseOffset, params int[] offsets)
     {
         ThrowHelper.ThrowIfNull(Modules);
 
-        return ReadString(maxLength, stringType, Modules[moduleName], baseOffset, offsets);
+        return ReadString(maxLength, stringType, Modules[moduleName].Base + baseOffset, offsets);
     }
 
     public string ReadString(int maxLength, ReadStringType stringType, Module module, int baseOffset, params int[] offsets)
@@ -60,7 +60,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return TryReadString(out result, maxLength, stringType, MainModule, baseOffset, offsets);
+        return TryReadString(out result, maxLength, stringType, MainModule.Base + baseOffset, offsets);
     }
 
     public bool TryReadString(
@@ -79,7 +79,13 @@ public partial class Basic
             return false;
         }
 
-        return TryReadString(out result, maxLength, stringType, Modules[moduleName], baseOffset, offsets);
+        if (!Modules.TryGetValue(moduleName, out Module? module))
+        {
+            result = default;
+            return false;
+        }
+
+        return TryReadString(out result, maxLength, stringType, module.Base + baseOffset, offsets);
     }
 
     public bool TryReadString(

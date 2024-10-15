@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="**/Struct/*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="$(ImplPath)/AslHelp.Basic/AslHelp.Basic.csproj" />
   </ItemGroup>
 

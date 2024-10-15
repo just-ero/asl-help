@@ -13,7 +13,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return ReadArray<T>(length, MainModule, baseOffset, offsets);
+        return ReadArray<T>(length, MainModule.Base + baseOffset, offsets);
     }
 
     public T[] ReadArray<T>(int length, string moduleName, int baseOffset, params int[] offsets)
@@ -21,7 +21,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(Modules);
 
-        return ReadArray<T>(length, Modules[moduleName], baseOffset, offsets);
+        return ReadArray<T>(length, Modules[moduleName].Base + baseOffset, offsets);
     }
 
     public T[] ReadArray<T>(int length, Module module, int baseOffset, params int[] offsets)
@@ -44,7 +44,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return TryReadArray(out result, length, MainModule, baseOffset, offsets);
+        return TryReadArray(out result, length, MainModule.Base + baseOffset, offsets);
     }
 
     public bool TryReadArray<T>([NotNullWhen(true)] out T[]? result, int length, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
@@ -54,11 +54,17 @@ public partial class Basic
 
         if (moduleName is null)
         {
-            result = null;
+            result = default;
             return false;
         }
 
-        return TryReadArray(out result, length, Modules[moduleName], baseOffset, offsets);
+        if (!Modules.TryGetValue(moduleName, out Module? module))
+        {
+            result = default;
+            return false;
+        }
+
+        return TryReadArray(out result, length, module.Base + baseOffset, offsets);
     }
 
     public bool TryReadArray<T>([NotNullWhen(true)] out T[]? result, int length, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)
@@ -203,39 +209,6 @@ public partial class Basic
         if (!TryDeref(out nint deref, baseAddress, offsets))
         {
             return false;
-        }
-
-        int size = GetNativeSizeOf<T>() * buffer.Length;
-
-        fixed (T* pBuffer = buffer)
-        {
-            return WinInteropWrapper.ReadMemory(_handle, deref, pBuffer, size);
-        }
-    }
-
-    private unsafe bool TryReadArray_Internal<T>(Span<T> buffer, nint baseAddress, params int[] offsets) where T : unmanaged
-    {
-        if (!TryDeref(out nint deref, baseAddress, offsets))
-        {
-            return false;
-        }
-
-        if (!Is64Bit && IsNativeInt<T>())
-        {
-            Span<uint> buf32 = MemoryMarshal.Cast<T, uint>(buffer);
-            Span<ulong> buf64 = MemoryMarshal.Cast<T, ulong>(buffer);
-
-            if (!TryReadArray_Internal(buf32[buf64.Length..], deref))
-            {
-                return false;
-            }
-
-            for (int i = 0; i < buf64.Length; i++)
-            {
-                buf64[i] = buf32[buf64.Length + i];
-            }
-
-            return true;
         }
 
         int size = GetNativeSizeOf<T>() * buffer.Length;

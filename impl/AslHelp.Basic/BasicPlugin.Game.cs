@@ -15,8 +15,39 @@ public partial class Basic
     public bool Is64Bit { get; private set; }
     public byte PointerSize { get; private set; }
 
-    public Module? MainModule { get; private set; }
-    public IReadOnlyKeyedCollection<string, Module>? Modules { get; private set; }
+    // TODO: Use semi-auto property in 9.0.
+#pragma warning disable IDE0032 // Use auto property
+    private Module? _mainModule;
+#pragma warning restore IDE0032
+    public Module? MainModule
+    {
+        get
+        {
+            if (_mainModule is null)
+            {
+                _ = Game;
+            }
+
+            return _mainModule;
+        }
+    }
+
+    // TODO: Use semi-auto property in 9.0.
+#pragma warning disable IDE0032 // Use auto property
+    private IReadOnlyKeyedCollection<string, Module>? _modules;
+#pragma warning restore IDE0032
+    public IReadOnlyKeyedCollection<string, Module>? Modules
+    {
+        get
+        {
+            if (_modules is null)
+            {
+                _ = Game;
+            }
+
+            return _modules;
+        }
+    }
 
     public IEnumerable<MemoryRange> GetMemoryPages()
     {
@@ -32,8 +63,8 @@ public partial class Basic
         Is64Bit = game.Is64Bit().Unwrap();
         PointerSize = (byte)(Is64Bit ? 0x8 : 0x4);
 
-        Modules = new ModuleCollection(game);
-        MainModule = Modules.FirstOrDefault();
+        _modules = new ModuleCollection(game);
+        _mainModule = Modules.FirstOrDefault();
     }
 
     protected override void DisposeMemory()
@@ -43,8 +74,8 @@ public partial class Basic
         Is64Bit = false;
         PointerSize = 0;
 
-        Modules = null;
-        MainModule = null;
+        _modules = null;
+        _mainModule = null;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

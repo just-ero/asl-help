@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 
 namespace AslHelp.LiveSplit;
 
@@ -9,10 +10,21 @@ public abstract partial class AslPluginBase
 
     protected AslPluginBase(bool generateCode)
     {
-        Initialize(generateCode);
+        try
+        {
+            Initialize(generateCode);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                "An error occurred while initializing asl-help:" + "\n" + ex,
+                "LiveSplit | asl-help");
+
+            throw;
+        }
     }
 
-    // TODO: Use semi-auto property in RC2.
+    // TODO: Use semi-auto property in 9.0.
 #pragma warning disable IDE0032 // Use auto property
     private string? _gameName;
 #pragma warning restore IDE0032

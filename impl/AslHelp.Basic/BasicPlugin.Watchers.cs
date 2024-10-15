@@ -34,15 +34,15 @@ public partial class Basic
         _tick++;
     }
 
-    public void MapPointers()
-    {
-        ThrowHelper.ThrowIfNull(_asl.Current);
+    // public void MapPointers()
+    // {
+    //     ThrowHelper.ThrowIfNull(_asl.Current);
 
-        foreach (var watcher in _watchers)
-        {
-            _asl.Current[watcher.Key] = watcher.Value.Current;
-        }
-    }
+    //     foreach (var watcher in _watchers)
+    //     {
+    //         _asl.Current[watcher.Key] = watcher.Value.Current;
+    //     }
+    // }
 
     public IWatcher<T> Make<T>(int baseOffset, params int[] offsets)
         where T : unmanaged

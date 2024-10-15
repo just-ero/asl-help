@@ -4,7 +4,7 @@ namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    // TODO: Use semi-auto property in RC2.
+    // TODO: Use semi-auto property in 9.0.
 #pragma warning disable IDE0032 // Use auto property
     private Process? _game;
 #pragma warning restore IDE0032
@@ -20,10 +20,6 @@ public partial class AslPluginBase
                 {
                     InitializeMemory(_game);
                 }
-            }
-            else if (_game.HasExited)
-            {
-                DisposeMemory();
             }
 
             return _game;

@@ -11,7 +11,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        Write(value, MainModule, baseOffset, offsets);
+        Write(value, MainModule.Base + baseOffset, offsets);
     }
 
     public void Write<T>(T value, string moduleName, int baseOffset, params int[] offsets)
@@ -19,7 +19,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(Modules);
 
-        Write(value, Modules[moduleName], baseOffset, offsets);
+        Write(value, Modules[moduleName].Base + baseOffset, offsets);
     }
 
     public void Write<T>(T value, Module module, int baseOffset, params int[] offsets)
@@ -46,7 +46,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return TryWrite(value, MainModule, baseOffset, offsets);
+        return TryWrite(value, MainModule.Base + baseOffset, offsets);
     }
 
     public bool TryWrite<T>(T value, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
@@ -59,7 +59,12 @@ public partial class Basic
             return false;
         }
 
-        return TryWrite(value, Modules[moduleName], baseOffset, offsets);
+        if (!Modules.TryGetValue(moduleName, out Module? module))
+        {
+            return false;
+        }
+
+        return TryWrite(value, module.Base + baseOffset, offsets);
     }
 
     public bool TryWrite<T>(T value, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)

@@ -23,6 +23,7 @@ public partial class Basic
         asl.Vars["LogFormat"] = (LogFormat)logFormat;
         AslDebug.Info("Created `vars.LogFormat(string format, params object?[] args)`.");
 
+        asl.Actions.Exit.Prepend($"vars.Helper.{nameof(Dispose)}();");
         asl.Actions.Shutdown.Prepend($"vars.Helper.{nameof(Dispose)}();");
 
         void log(object? output)

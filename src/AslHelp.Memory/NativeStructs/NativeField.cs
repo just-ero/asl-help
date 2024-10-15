@@ -26,142 +26,142 @@ public sealed class NativeField
 
     public static byte operator +(byte value, NativeField field)
     {
-        return (byte)(value + field.Offset);
+        return checked((byte)(value + field.Offset));
     }
 
     public static sbyte operator +(sbyte value, NativeField field)
     {
-        return (sbyte)(value + field.Offset);
+        return checked((sbyte)(value + field.Offset));
     }
 
     public static ushort operator +(ushort value, NativeField field)
     {
-        return (ushort)(value + field.Offset);
+        return checked((ushort)(value + field.Offset));
     }
 
     public static short operator +(short value, NativeField field)
     {
-        return (short)(value + field.Offset);
+        return checked((short)(value + field.Offset));
     }
 
     public static uint operator +(uint value, NativeField field)
     {
-        return value + field.Offset;
+        return checked(value + field.Offset);
     }
 
     public static int operator +(int value, NativeField field)
     {
-        return (int)(value + field.Offset);
+        return checked((int)(value + field.Offset));
     }
 
     public static ulong operator +(ulong value, NativeField field)
     {
-        return value + field.Offset;
+        return checked(value + field.Offset);
     }
 
     public static long operator +(long value, NativeField field)
     {
-        return value + field.Offset;
+        return checked(value + field.Offset);
     }
 
     public static nuint operator +(nuint value, NativeField field)
     {
-        return value + field.Offset;
+        return checked(value + field.Offset);
     }
 
     public static nint operator +(nint value, NativeField field)
     {
-        return (nint)(value + field.Offset);
+        return checked((nint)(value + field.Offset));
     }
 
     public static byte operator -(byte value, NativeField field)
     {
-        return (byte)(value - field.Offset);
+        return checked((byte)(value - field.Offset));
     }
 
     public static sbyte operator -(sbyte value, NativeField field)
     {
-        return (sbyte)(value - field.Offset);
+        return checked((sbyte)(value - field.Offset));
     }
 
     public static ushort operator -(ushort value, NativeField field)
     {
-        return (ushort)(value - field.Offset);
+        return checked((ushort)(value - field.Offset));
     }
 
     public static short operator -(short value, NativeField field)
     {
-        return (short)(value - field.Offset);
+        return checked((short)(value - field.Offset));
     }
 
     public static uint operator -(uint value, NativeField field)
     {
-        return value - field.Offset;
+        return checked(value - field.Offset);
     }
 
     public static int operator -(int value, NativeField field)
     {
-        return (int)(value - field.Offset);
+        return checked((int)(value - field.Offset));
     }
 
     public static ulong operator -(ulong value, NativeField field)
     {
-        return value - field.Offset;
+        return checked(value - field.Offset);
     }
 
     public static long operator -(long value, NativeField field)
     {
-        return value - field.Offset;
+        return checked(value - field.Offset);
     }
 
     public static nuint operator -(nuint value, NativeField field)
     {
-        return value - field.Offset;
+        return checked(value - field.Offset);
     }
 
     public static nint operator -(nint value, NativeField field)
     {
-        return (nint)(value - field.Offset);
+        return checked((nint)(value - field.Offset));
     }
 
     public static byte operator &(byte value, NativeField field)
     {
-        return (byte)((value & field.BitMask) >> field._trailingZeroes);
+        return checked((byte)((value & field.BitMask) >> field._trailingZeroes));
     }
 
     public static sbyte operator &(sbyte value, NativeField field)
     {
-        return (sbyte)((value & field.BitMask) >> field._trailingZeroes);
+        return checked((sbyte)((value & field.BitMask) >> field._trailingZeroes));
     }
 
     public static ushort operator &(ushort value, NativeField field)
     {
-        return (ushort)((value & field.BitMask) >> field._trailingZeroes);
+        return checked((ushort)((value & field.BitMask) >> field._trailingZeroes));
     }
 
     public static short operator &(short value, NativeField field)
     {
-        return (short)((value & field.BitMask) >> field._trailingZeroes);
+        return checked((short)((value & field.BitMask) >> field._trailingZeroes));
     }
 
     public static uint operator &(uint value, NativeField field)
     {
-        return (value & field.BitMask) >> field._trailingZeroes;
+        return checked((value & field.BitMask) >> field._trailingZeroes);
     }
 
     public static int operator &(int value, NativeField field)
     {
-        return (int)((value & field.BitMask) >> field._trailingZeroes);
+        return checked((int)((value & field.BitMask) >> field._trailingZeroes));
     }
 
     public static ulong operator &(ulong value, NativeField field)
     {
-        return (value & field.BitMask) >> field._trailingZeroes;
+        return checked((value & field.BitMask) >> field._trailingZeroes);
     }
 
     public static long operator &(long value, NativeField field)
     {
-        return (value & field.BitMask) >> field._trailingZeroes;
+        return checked((value & field.BitMask) >> field._trailingZeroes);
     }
 
     public string Type { get; }

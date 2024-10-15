@@ -11,7 +11,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        WriteArray(values, MainModule, baseOffset, offsets);
+        WriteArray(values, MainModule.Base + baseOffset, offsets);
     }
 
     public void WriteArray<T>(ReadOnlySpan<T> values, string moduleName, int baseOffset, params int[] offsets)
@@ -19,7 +19,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(Modules);
 
-        WriteArray(values, Modules[moduleName], baseOffset, offsets);
+        WriteArray(values, Modules[moduleName].Base + baseOffset, offsets);
     }
 
     public void WriteArray<T>(ReadOnlySpan<T> values, Module module, int baseOffset, params int[] offsets)
@@ -49,7 +49,7 @@ public partial class Basic
     {
         ThrowHelper.ThrowIfNull(MainModule);
 
-        return TryWriteArray(values, MainModule, baseOffset, offsets);
+        return TryWriteArray(values, MainModule.Base + baseOffset, offsets);
     }
 
     public bool TryWriteArray<T>(ReadOnlySpan<T> values, string? moduleName, int baseOffset, params int[] offsets)
@@ -62,7 +62,12 @@ public partial class Basic
             return false;
         }
 
-        return TryWriteArray(values, Modules[moduleName], baseOffset, offsets);
+        if (!Modules.TryGetValue(moduleName, out Module? module))
+        {
+            return false;
+        }
+
+        return TryWriteArray(values, module.Base + baseOffset, offsets);
     }
 
     public bool TryWriteArray<T>(ReadOnlySpan<T> values, Module? module, int baseOffset, params int[] offsets)

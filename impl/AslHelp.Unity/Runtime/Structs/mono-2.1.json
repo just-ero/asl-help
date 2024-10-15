@@ -1,38 +1,6 @@
 {
+  "inherits": { "runtime": "mono", "version": "2.0" },
   "structs": [
-    {
-      "name": "GList",
-      "fields": [
-        { "type": "void*", "name": "data" },
-        { "type": "GList*", "name": "next" },
-        { "type": "GList*", "name": "prev" }
-      ]
-    },
-    {
-      "name": "GSList",
-      "fields": [
-        { "type": "void*", "name": "data" },
-        { "type": "GSList*", "name": "next" }
-      ]
-    },
-    {
-      "name": "GHashTable",
-      "fields": [
-        { "type": "uint*", "name": "hash_func" },
-        { "type": "bool*", "name": "key_equal_func" },
-        { "type": "Slot**", "name": "table" },
-        { "type": "int", "name": "table_size" }
-      ]
-    },
-    {
-      "name": "Slot",
-      "fields": [
-        { "type": "void*", "name": "key" },
-        { "type": "void*", "name": "value" },
-        { "type": "Slot*", "name": "next" }
-      ]
-    },
-
     {
       "name": "MonoAssemblyName",
       "fields": [
@@ -49,59 +17,28 @@
         { "type": "ushort", "name": "major" },
         { "type": "ushort", "name": "minor" },
         { "type": "ushort", "name": "build" },
-        { "type": "ushort", "name": "revision" }
-      ]
-    },
-    {
-      "name": "MonoAssembly",
-      "fields": [
-        { "type": "int", "name": "ref_count" },
-        { "type": "sbyte*", "name": "basedir" },
-        { "type": "MonoAssemblyName", "name": "aname" },
-        { "type": "MonoImage*", "name": "image" }
+        { "type": "ushort", "name": "revision" },
+        { "type": "ushort", "name": "arch" },
+
+        { "type": "bool", "name": "without_version" },
+        { "type": "bool", "name": "without_culture" },
+        { "type": "bool", "name": "without_public_key_token" }
       ]
     },
 
-    {
-      "name": "MonoStreamHeader",
-      "fields": [
-        { "type": "byte*", "name": "data" },
-        { "type": "uint", "name": "size" }
-      ]
-    },
-    {
-      "name": "MonoTableInfo",
-      "fields": [
-        { "type": "byte*", "name": "base" },
-        { "type": "uint:24", "name": "rows" },
-        { "type": "uint:8", "name": "row_size" },
-        { "type": "uint", "name": "size_bitfield" }
-      ]
-    },
-    {
-      "name": "MonoInternalHashTable",
-      "fields": [
-        { "type": "uint*", "name": "hash_func" },
-        { "type": "void*", "name": "key_extract" },
-        { "type": "void*", "name": "next_value" },
-        { "type": "int", "name": "size" },
-        { "type": "int", "name": "num_entries" },
-        { "type": "void**", "name": "table" }
-      ]
-    },
     {
       "name": "MonoImage",
       "fields": [
         { "type": "int", "name": "ref_count" },
-        { "type": "void*", "name": "raw_data_handle" },
+        { "type": "MonoImageStorage*", "name": "storage" },
         { "type": "byte*", "name": "raw_data" },
         { "type": "uint", "name": "raw_data_len" },
 
-        { "type": "byte:1", "name": "raw_buffer_used" },
-        { "type": "byte:1", "name": "raw_data_allocated" },
         { "type": "byte:1", "name": "dynamic" },
         { "type": "byte:1", "name": "ref_only" },
         { "type": "byte:1", "name": "uncompressed_metadata" },
+        { "type": "byte:1", "name": "metadata_only" },
+        { "type": "byte:1", "name": "load_from_context" },
         { "type": "byte:1", "name": "checked_module_cctor" },
         { "type": "byte:1", "name": "has_module_cctor" },
         { "type": "byte:1", "name": "idx_string_wide" },
@@ -109,14 +46,17 @@
         { "type": "byte:1", "name": "idx_guid_wide" },
         { "type": "byte:1", "name": "idx_blob_wide" },
         { "type": "byte:1", "name": "core_clr_platform_code" },
+        { "type": "byte:1", "name": "minimal_delta" },
 
-        { "type": "sbyte*", "name": "name" },
-        { "type": "sbyte*", "name": "assembly_name" },
-        { "type": "sbyte*", "name": "module_name" },
-        { "type": "sbyte*", "name": "version" },
+        { "type": "char*", "name": "name" },
+        { "type": "char*", "name": "filename" },
+        { "type": "char*", "name": "assembly_name" },
+        { "type": "char*", "name": "module_name" },
+        { "type": "uint", "name": "time_date_stamp" },
+        { "type": "char*", "name": "version" },
         { "type": "short", "name": "md_version_major" },
         { "type": "short", "name": "md_version_minor" },
-        { "type": "sbyte*", "name": "guid" },
+        { "type": "char*", "name": "guid" },
         { "type": "MonoCLIImageInfo*", "name": "image_info" },
 
         { "type": "MonoMemPool*", "name": "mempool" },
@@ -127,76 +67,61 @@
         { "type": "MonoStreamHeader", "name": "heap_blob" },
         { "type": "MonoStreamHeader", "name": "heap_guid" },
         { "type": "MonoStreamHeader", "name": "heap_tables" },
+        { "type": "MonoStreamHeader", "name": "heap_pdb" },
 
         { "type": "byte*", "name": "tables_base" },
-        { "type": "MonoTableInfo[45]", "name": "tables" },
+        { "type": "ulong", "name": "referenced_tables" },
+        { "type": "int*", "name": "referenced_table_rows" },
+        { "type": "MonoTableInfo[56]", "name": "tables" },
 
         { "type": "MonoAssembly**", "name": "references" },
+        { "type": "int", "name": "nreferences" },
         { "type": "MonoImage**", "name": "modules" },
         { "type": "uint", "name": "module_count" },
         { "type": "bool*", "name": "modules_loaded" },
+
         { "type": "MonoImage**", "name": "files" },
+        { "type": "uint", "name": "file_count" },
         { "type": "MonoAotModule*", "name": "aot_module" },
+        { "type": "byte[16]", "name": "aotid" },
         { "type": "MonoAssembly*", "name": "assembly" },
+
         { "type": "GHashTable*", "name": "method_cache" },
         { "type": "MonoInternalHashTable", "name": "class_cache" }
       ]
     },
 
     {
-      "name": "MonoCustomMod",
-      "fields": [
-        { "type": "uint:1", "name": "required" },
-        { "type": "uint:31", "name": "token" }
-      ]
-    },
-    {
       "name": "MonoType",
       "fields": [
         { "type": "void*", "name": "data" },
         { "type": "uint:16", "name": "attrs" },
         { "type": "uint:8", "name": "type" },
-        { "type": "uint:6", "name": "num_mods" },
+        { "type": "uint:1", "name": "has_cmods" },
         { "type": "uint:1", "name": "byref" },
-        { "type": "uint:1", "name": "pinned" },
-        { "type": "MonoCustomMod[1]", "name": "modifiers" }
-      ]
-    },
-    {
-      "name": "MonoArrayType",
-      "fields": [
-        { "type": "MonoClass*", "name": "eklass" },
-        { "type": "byte", "name": "rank" },
-        { "type": "byte", "name": "numsizes" },
-        { "type": "byte", "name": "numlobounds" },
-        { "type": "int*", "name": "sizes" },
-        { "type": "int*", "name": "lobounds" }
+        { "type": "uint:1", "name": "pinned" }
       ]
     },
 
-    {
-      "name": "MonoClassRuntimeInfo",
-      "fields": [
-        { "type": "ushort", "name": "max_domain" },
-        { "type": "MonoVTable*[1]", "name": "domain_vtables" }
-      ]
-    },
     {
       "name": "MonoVTable",
       "fields": [
         { "type": "MonoClass*", "name": "klass" },
         { "type": "MonoGCDescriptor", "name": "gc_descr" },
         { "type": "MonoDomain*", "name": "domain" },
-        { "type": "void*", "name": "data" },
         { "type": "void*", "name": "type" },
         { "type": "byte*", "name": "interface_bitmap" },
         { "type": "ushort", "name": "max_interface_id" },
         { "type": "byte", "name": "rank" },
+        { "type": "byte", "name": "initialized" },
+        { "type": "byte", "name": "flags" },
         { "type": "uint:1", "name": "remote" },
-        { "type": "uint:1", "name": "initialized" },
         { "type": "uint:1", "name": "init_failed" },
+        { "type": "uint:1", "name": "has_static_fields" },
+        { "type": "uint:4", "name": "gc_bits" },
         { "type": "uint", "name": "imt_collisions_bitmap" },
         { "type": "MonoRuntimeGenericContext*", "name": "runtime_generic_context" },
+        { "type": "void*", "name": "interp_vtable" },
         { "type": "void*[1]", "name": "vtable" }
       ]
     },
@@ -208,16 +133,19 @@
         { "type": "MonoClass**", "name": "supertypes" },
         { "type": "ushort", "name": "idepth" },
         { "type": "byte", "name": "rank" },
+        { "type": "byte", "name": "class_kind" },
         { "type": "int", "name": "instance_size" },
 
         { "type": "uint:1", "name": "inited" },
-        { "type": "uint:1", "name": "init_pending" },
         { "type": "uint:1", "name": "size_inited" },
         { "type": "uint:1", "name": "valuetype" },
         { "type": "uint:1", "name": "enumtype" },
         { "type": "uint:1", "name": "blittable" },
         { "type": "uint:1", "name": "unicode" },
         { "type": "uint:1", "name": "wastypebuilder" },
+        { "type": "uint:1", "name": "is_array_special_interface" },
+
+        { "type": "uint:1", "name": "is_byreflike" },
 
         { "type": "byte", "name": "min_align" },
 
@@ -238,22 +166,23 @@
 
         { "type": "uint:1", "name": "interfaces_inited" },
         { "type": "uint:1", "name": "simd_type" },
-        { "type": "uint:1", "name": "is_generic" },
-        { "type": "uint:1", "name": "is_inflated" },
-
-        { "type": "byte", "name": "exception_type" },
+        { "type": "uint:1", "name": "has_finalize_inited" },
+        { "type": "uint:1", "name": "fields_inited" },
+        { "type": "uint:1", "name": "has_failure" },
+        { "type": "uint:1", "name": "has_weak_fields" },
+        { "type": "uint:1", "name": "has_dim_conflicts" },
 
         { "type": "MonoClass*", "name": "parent" },
         { "type": "MonoClass*", "name": "nested_in" },
         { "type": "MonoImage*", "name": "image" },
-        { "type": "sbyte*", "name": "name" },
-        { "type": "sbyte*", "name": "name_space" },
+        { "type": "string", "name": "name" },
+        { "type": "string", "name": "name_space" },
         { "type": "uint", "name": "type_token" },
         { "type": "int", "name": "vtable_size" },
 
         { "type": "ushort", "name": "interface_count" },
-        { "type": "ushort", "name": "interface_id" },
-        { "type": "ushort", "name": "max_interface_id" },
+        { "type": "uint", "name": "interface_id" },
+        { "type": "uint", "name": "max_interface_id" },
         { "type": "ushort", "name": "interface_offsets_count" },
         { "type": "MonoClass**", "name": "interfaces_packed" },
         { "type": "ushort*", "name": "interface_offsets_packed" },
@@ -261,54 +190,16 @@
         { "type": "MonoClass**", "name": "interfaces" },
 
         { "type": "int", "name": "sizes" },
-        { "type": "uint", "name": "flags" },
-        { "type": "uint", "name": "field.first" },
-        { "type": "uint", "name": "field.count" },
-        { "type": "uint", "name": "method.first" },
-        { "type": "uint", "name": "method.count" },
-        { "type": "MonoMarshalType*", "name": "marshal_info" },
-
         { "type": "MonoClassField*", "name": "fields" },
         { "type": "MonoMethod**", "name": "methods" },
         { "type": "MonoType", "name": "this_arg" },
         { "type": "MonoType", "name": "byval_arg" },
-        { "type": "MonoGenericClass*", "name": "generic_class" },
-        { "type": "MonoGenericContainer*", "name": "generic_container" },
-
-        { "type": "void*", "name": "reflection_info" },
-        { "type": "void*", "name": "gc_descr" },
+        { "type": "MonoGCDescriptor", "name": "gc_descr" },
 
         { "type": "MonoClassRuntimeInfo*", "name": "runtime_info" },
-        { "type": "MonoClass*", "name": "next_class_cache" },
         { "type": "MonoMethod**", "name": "vtable" },
-        { "type": "MonoClassExt*", "name": "ext" },
+        { "type": "MonoPropertyBag", "name": "infrequent_data" },
         { "type": "void*", "name": "user_data" }
-      ]
-    },
-    {
-      "name": "MonoGenericContext",
-      "fields": [
-        { "type": "MonoGenericInst*", "name": "class_inst" },
-        { "type": "MonoGenericInst*", "name": "method_inst" }
-      ]
-    },
-    {
-      "name": "MonoGenericClass",
-      "fields": [
-        { "type": "MonoClass*", "name": "container_class" },
-        { "type": "MonoGenericContext", "name": "context" },
-        { "type": "uint:1", "name": "is_dynamic" },
-        { "type": "uint:1", "name": "is_tb_open" },
-        { "type": "MonoClass*", "name": "cached_class" }
-      ]
-    },
-    {
-      "name": "MonoGenericInst",
-      "fields": [
-        { "type": "uint", "name": "id" },
-        { "type": "uint:22", "name": "type_argc" },
-        { "type": "uint:1", "name": "is_open" },
-        { "type": "MonoType*[1]", "name": "type_argv" }
       ]
     },
     {
@@ -317,10 +208,10 @@
         { "type": "MonoGenericContext", "name": "context" },
         { "type": "MonoGenericContainer*", "name": "parent" },
         { "type": "void*", "name": "owner" },
-        { "type": "int:31", "name": "type_argc" },
+        { "type": "int:29", "name": "type_argc" },
         { "type": "int:1", "name": "is_method" },
-        { "type": "MonoGenericParamFull*", "name": "type_params" },
-        { "type": "MonoImage*", "name": "image" }
+        { "type": "int:1", "name": "is_anonymous" },
+        { "type": "MonoGenericParamFull*", "name": "type_params" }
       ]
     },
     {
@@ -328,34 +219,14 @@
       "fields": [
         { "type": "MonoGenericContainer*", "name": "owner" },
         { "type": "ushort", "name": "num" },
-        { "type": "MonoImage*", "name": "image" }
-      ]
-    },
-    {
-      "name": "MonoGenericParamInfo",
-      "fields": [
-        { "type": "MonoClass*", "name": "pklass" },
-        { "type": "sbyte*", "name": "name" },
-        { "type": "ushort", "name": "flags" },
-        { "type": "uint", "name": "token" },
-        { "type": "MonoClass**", "name": "constraints" }
+        { "type": "MonoType*", "name": "gshared_constraint" },
+        { "type": "MonoGenericParamInfo", "name": "info" }
       ]
     },
     {
       "name": "MonoGenericParamFull",
       "fields": [
-        { "type": "MonoGenericParam", "name": "param" },
-        { "type": "MonoGenericParamInfo", "name": "info" }
-      ]
-    },
-
-    {
-      "name": "MonoClassField",
-      "fields": [
-        { "type": "MonoType*", "name": "type" },
-        { "type": "sbyte*", "name": "name" },
-        { "type": "MonoClass*", "name": "parent" },
-        { "type": "int", "name": "offset" }
+        { "type": "MonoGenericParam", "name": "param" }
       ]
     },
 
@@ -368,7 +239,7 @@
         { "type": "MonoClass*", "name": "klass" },
 
         { "type": "MonoMethodSignature*", "name": "signature" },
-        { "type": "sbyte*", "name": "name" },
+        { "type": "string", "name": "name" },
 
         { "type": "uint:1", "name": "inline_info" },
         { "type": "uint:1", "name": "inline_failure" },
@@ -377,11 +248,11 @@
 
         { "type": "uint:1", "name": "save_lmf" },
         { "type": "uint:1", "name": "dynamic" },
+        { "type": "uint:1", "name": "sre_method" },
         { "type": "uint:1", "name": "is_generic" },
         { "type": "uint:1", "name": "is_inflated" },
         { "type": "uint:1", "name": "skip_visibility" },
-        { "type": "uint:1", "name": "verification_success" },
-        { "type": "uint:1", "name": "is_mb_open" },
+        { "type": "uint:2", "name": "_unused" },
 
         { "type": "int:1", "name": "slot" }
       ]
@@ -389,22 +260,19 @@
     {
       "name": "MonoMethodSignature",
       "fields": [
-        { "type": "uint:1", "name": "hasthis" },
-        { "type": "uint:1", "name": "explicit_this" },
-        { "type": "uint:6", "name": "call_convention" },
-
-        { "type": "uint:1", "name": "pinvoke" },
-        { "type": "uint:23", "name": "ref_count" },
-
+        { "type": "MonoType*", "name": "ret" },
         { "type": "ushort", "name": "param_count" },
         { "type": "short", "name": "sentinelpos" },
 
-        { "type": "uint:31", "name": "generic_param_count" },
+        { "type": "uint:16", "name": "generic_param_count" },
+        { "type": "uint:6", "name": "call_convention" },
+        { "type": "uint:1", "name": "hasthis" },
+        { "type": "uint:1", "name": "explicit_this" },
+        { "type": "uint:1", "name": "pinvoke" },
         { "type": "uint:1", "name": "is_inflated" },
-
         { "type": "uint:1", "name": "has_type_parameters" },
+        { "type": "uint:1", "name": "suppress_gc_transition" },
 
-        { "type": "MonoType*", "name": "ret" },
         { "type": "MonoType*[1]", "name": "params" }
       ]
     }
