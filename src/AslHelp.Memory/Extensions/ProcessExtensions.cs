@@ -142,33 +142,10 @@ public static class ProcessExtensions
         if (!Is64Bit(process)
             .TryUnwrap(out bool is64Bit, out _))
         {
-            yield break;
+            return [];
         }
 
-        nint processHandle = process.Handle;
-        nint address = 0x10000, max = (nint)(is64Bit ? 0x7FFFFFFEFFFF : 0x7FFEFFFF);
-
-        do
-        {
-            if (WinInterop.VirtualQuery(processHandle, address, out MemoryBasicInformation mbi) == 0)
-            {
-                break;
-            }
-
-            address += mbi.RegionSize;
-
-            if (mbi.State != MemoryRangeState.Commit)
-            {
-                continue;
-            }
-
-            if ((mbi.Protect & MemoryRangeProtect.NoAccess) != 0)
-            {
-                continue;
-            }
-
-            yield return new(mbi);
-        } while (address < max);
+        return WinInteropWrapper.GetMemoryPages(process.Handle, is64Bit);
     }
 
     public static Result<Module> Inject(this Process process, string dllToInject)

@@ -10,8 +10,8 @@ public interface IProcessMemory : IMemoryReader, IMemoryWriter, IMemoryScanner, 
     bool Is64Bit { get; }
     byte PointerSize { get; }
 
-    Module? MainModule { get; }
-    IReadOnlyKeyedCollection<string, Module>? Modules { get; }
+    Module MainModule { get; }
+    IReadOnlyKeyedCollection<string, Module> Modules { get; }
 
     IEnumerable<MemoryRange> GetMemoryPages();
 

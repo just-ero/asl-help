@@ -136,7 +136,18 @@ public partial class Unity
 
     public List<string> ReadList(nint baseAddress, params int[] offsets)
     {
+        nint deref = Read<nint>(baseAddress, offsets);
+        int count = Read<int>(deref + (PointerSize * 3));
+        nint items = Read<nint>(deref + (PointerSize * 2));
 
+        List<string> result = new(count);
+
+        for (int i = 0; i < count; i++)
+        {
+            result.Add(ReadString(items + (PointerSize * 4) + (PointerSize * i)));
+        }
+
+        return result;
     }
 
     public bool TryReadList([NotNullWhen(true)] out List<string>? result, int baseOffset, params int[] offsets)
@@ -186,6 +197,37 @@ public partial class Unity
 
     public bool TryReadList([NotNullWhen(true)] out List<string>? result, nint baseAddress, params int[] offsets)
     {
+        if (!TryRead(out nint deref, baseAddress, offsets))
+        {
+            result = default;
+            return false;
+        }
 
+        if (!TryRead(out int count, deref + (PointerSize * 3)))
+        {
+            result = default;
+            return false;
+        }
+
+        if (!TryRead(out nint items, deref + (PointerSize * 2)))
+        {
+            result = default;
+            return false;
+        }
+
+        result = new(count);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (!TryReadString(out string? str, items + (PointerSize * 4) + (PointerSize * i)))
+            {
+                result = default;
+                return false;
+            }
+
+            result.Add(str);
+        }
+
+        return true;
     }
 }

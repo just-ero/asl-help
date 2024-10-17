@@ -1,9 +1,9 @@
 extern alias Ls;
 
-using Ls::LiveSplit.ComponentUtil;
-
 using System;
 using System.Diagnostics.CodeAnalysis;
+
+using Ls::LiveSplit.ComponentUtil;
 
 namespace AslHelp.Memory.Ipc;
 

@@ -1,13 +1,13 @@
 extern alias Ls;
 
-using Ls::LiveSplit.ASL;
-using Ls::LiveSplit.Model;
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 using AslHelp.LiveSplit.Extensions;
+
+using Ls::LiveSplit.ASL;
+using Ls::LiveSplit.Model;
 
 namespace AslHelp.LiveSplit;
 
@@ -23,7 +23,6 @@ public sealed partial class Autosplitter
         State = state;
         Actions = actions;
         Vars = script.Vars;
-        // Current = script.State.Data;
         SettingsBuilder = settingsBuilder;
     }
 
@@ -31,7 +30,7 @@ public sealed partial class Autosplitter
 
     public ScriptActions Actions { get; }
     public IDictionary<string, object?> Vars { get; }
-    // public IDictionary<string, object?>? Current { get; }
+    public IDictionary<string, object?>? Current => _script.State?.Data;
     public ASLSettingsBuilder SettingsBuilder { get; }
 
     public Process? Game

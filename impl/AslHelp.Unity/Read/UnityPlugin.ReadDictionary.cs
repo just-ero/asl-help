@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 using AslHelp.Memory;
-using AslHelp.Shared;
 
 public partial class Unity
 {
@@ -10,8 +9,6 @@ public partial class Unity
         where TKey : unmanaged
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
         return ReadDictionary<TKey, TValue>(MainModule.Base + baseOffset, offsets);
     }
 
@@ -19,8 +16,6 @@ public partial class Unity
         where TKey : unmanaged
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
         return ReadDictionary<TKey, TValue>(Modules[moduleName].Base + baseOffset, offsets);
     }
 
@@ -45,8 +40,6 @@ public partial class Unity
         where TKey : unmanaged
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
         return TryReadDictionary(out result, MainModule.Base + baseOffset, offsets);
     }
 
@@ -55,9 +48,9 @@ public partial class Unity
         [NotNullWhen(true)] string? moduleName,
         int baseOffset,
         params int[] offsets)
+        where TKey : unmanaged
+        where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
         if (moduleName is null)
         {
             result = default;
@@ -103,16 +96,12 @@ public partial class Unity
     public Dictionary<string, TValue> ReadDictionary<TValue>(int baseOffset, params int[] offsets)
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
         return ReadDictionary<TValue>(MainModule.Base + baseOffset, offsets);
     }
 
     public Dictionary<string, TValue> ReadDictionary<TValue>(string moduleName, int baseOffset, params int[] offsets)
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
         return ReadDictionary<TValue>(Modules[moduleName].Base + baseOffset, offsets);
     }
 
@@ -134,8 +123,6 @@ public partial class Unity
         params int[] offsets)
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
         return TryReadDictionary(out result, MainModule.Base + baseOffset, offsets);
     }
 
@@ -146,8 +133,6 @@ public partial class Unity
         params int[] offsets)
         where TValue : unmanaged
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
         if (moduleName is null)
         {
             result = default;
@@ -190,15 +175,11 @@ public partial class Unity
 
     public Dictionary<string, string> ReadDictionary(int baseOffset, params int[] offsets)
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
         return ReadDictionary(MainModule.Base + baseOffset, offsets);
     }
 
     public Dictionary<string, string> ReadDictionary(string moduleName, int baseOffset, params int[] offsets)
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
         return ReadDictionary(Modules[moduleName].Base + baseOffset, offsets);
     }
 
@@ -217,8 +198,6 @@ public partial class Unity
         int baseOffset,
         params int[] offsets)
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
         return TryReadDictionary(out result, MainModule.Base + baseOffset, offsets);
     }
 
@@ -228,8 +207,6 @@ public partial class Unity
         int baseOffset,
         params int[] offsets)
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
         if (moduleName is null)
         {
             result = default;

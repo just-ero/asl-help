@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using AslHelp.Memory.Native.Enums;
+using AslHelp.Memory.Native.Structs;
 using AslHelp.Shared;
 
 namespace AslHelp.Memory.Native;
 
-public static unsafe class WinInteropWrapper
+internal static unsafe class WinInteropWrapper
 {
     public static string GetLastWin32ErrorMessage(this Module module)
     {
@@ -91,5 +93,32 @@ public static unsafe class WinInteropWrapper
     {
         return WinInterop.WriteProcessMemory(processHandle, address, data, dataSize, out nint nWritten)
             && nWritten == dataSize;
+    }
+
+    public static IEnumerable<MemoryRange> GetMemoryPages(nint processHandle, bool is64Bit)
+    {
+        nint address = 0x10000, max = (nint)(is64Bit ? 0x7FFFFFFEFFFF : 0x7FFEFFFF);
+
+        do
+        {
+            if (WinInterop.VirtualQuery(processHandle, address, out MemoryBasicInformation mbi) == 0)
+            {
+                break;
+            }
+
+            address += mbi.RegionSize;
+
+            if (mbi.State != MemoryRangeState.Commit)
+            {
+                continue;
+            }
+
+            if ((mbi.Protect & MemoryRangeProtect.NoAccess) != 0)
+            {
+                continue;
+            }
+
+            yield return new(mbi);
+        } while (address < max);
     }
 }

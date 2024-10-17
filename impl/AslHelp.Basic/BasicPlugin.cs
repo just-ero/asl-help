@@ -1,10 +1,9 @@
 using System;
 
 using AslHelp.LiveSplit;
-using AslHelp.Memory.Ipc;
 
 [Obsolete("Do not use ASL-specific features.", true)]
-public partial class Basic : AslPluginBase, IProcessMemory
+public partial class Basic : AslPluginBase
 {
     public Basic()
         : this(true) { }

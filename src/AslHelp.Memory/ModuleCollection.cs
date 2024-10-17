@@ -7,7 +7,7 @@ using AslHelp.Memory.Extensions;
 
 namespace AslHelp.Memory;
 
-public sealed class ModuleCollection : KeyedCollection<string, Module>
+internal sealed class ModuleCollection : KeyedCollection<string, Module>
 {
     private readonly Process _process;
 

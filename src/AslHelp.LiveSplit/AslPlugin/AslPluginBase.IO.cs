@@ -1,12 +1,12 @@
 using AslHelp.IO;
 using AslHelp.LiveSplit.Control;
-// using AslHelp.LiveSplit.Settings;
+using AslHelp.LiveSplit.Settings;
 
 namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
 {
-    // public SettingsBuilder? Settings { get; private set; }
+    public SettingsBuilder? Settings { get; private set; }
     public TimerController? Timer { get; private set; }
     public TextComponentController? Texts { get; private set; }
 

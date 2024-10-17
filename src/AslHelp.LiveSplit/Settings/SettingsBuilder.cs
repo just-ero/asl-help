@@ -1,12 +1,12 @@
 extern alias Ls;
 
-using Ls::LiveSplit.ASL;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using AslHelp.Shared;
+
+using Ls::LiveSplit.ASL;
 
 namespace AslHelp.LiveSplit.Settings;
 
@@ -15,9 +15,9 @@ public sealed partial class SettingsBuilder
 {
     private readonly ASLSettingsBuilder _builder;
 
-    public SettingsBuilder(ASLSettingsBuilder builder)
+    public SettingsBuilder(Autosplitter asl)
     {
-        _builder = builder;
+        _builder = asl.SettingsBuilder;
     }
 
     public void Create(Dictionary<string, string> settings)

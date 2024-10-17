@@ -3,22 +3,19 @@ using System.Linq;
 using System.Security.Cryptography;
 
 using AslHelp.Memory;
-using AslHelp.Shared;
 
-public partial class Basic
+namespace AslHelp.LiveSplit;
+
+public partial class AslPluginBase
 {
     public string GetMD5Hash()
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
-        return GetMD5Hash(MainModule);
+        return GetMD5Hash(Memory.MainModule);
     }
 
     public string GetMD5Hash(string moduleName)
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
-        return GetMD5Hash(Modules[moduleName]);
+        return GetMD5Hash(Memory.Modules[moduleName]);
     }
 
     public string GetMD5Hash(Module module)
@@ -29,16 +26,12 @@ public partial class Basic
 
     public string GetSHA1Hash()
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
-        return GetSHA1Hash(MainModule);
+        return GetSHA1Hash(Memory.MainModule);
     }
 
     public string GetSHA1Hash(string moduleName)
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
-        return GetSHA1Hash(Modules[moduleName]);
+        return GetSHA1Hash(Memory.Modules[moduleName]);
     }
 
     public string GetSHA1Hash(Module module)
@@ -49,16 +42,12 @@ public partial class Basic
 
     public string GetSHA256Hash()
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
-        return GetSHA256Hash(MainModule);
+        return GetSHA256Hash(Memory.MainModule);
     }
 
     public string GetSHA256Hash(string moduleName)
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
-        return GetSHA256Hash(Modules[moduleName]);
+        return GetSHA256Hash(Memory.Modules[moduleName]);
     }
 
     public string GetSHA256Hash(Module module)
@@ -69,16 +58,12 @@ public partial class Basic
 
     public string GetSHA512Hash()
     {
-        ThrowHelper.ThrowIfNull(MainModule);
-
-        return GetSHA512Hash(MainModule);
+        return GetSHA512Hash(Memory.MainModule);
     }
 
     public string GetSHA512Hash(string moduleName)
     {
-        ThrowHelper.ThrowIfNull(Modules);
-
-        return GetSHA512Hash(Modules[moduleName]);
+        return GetSHA512Hash(Memory.Modules[moduleName]);
     }
 
     public string GetSHA512Hash(Module module)

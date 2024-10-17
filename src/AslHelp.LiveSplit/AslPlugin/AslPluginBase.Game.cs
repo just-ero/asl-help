@@ -1,5 +1,7 @@
 using System.Diagnostics;
 
+using AslHelp.Memory.Ipc;
+
 namespace AslHelp.LiveSplit;
 
 public partial class AslPluginBase
@@ -8,22 +10,10 @@ public partial class AslPluginBase
 #pragma warning disable IDE0032 // Use auto property
     private Process? _game;
 #pragma warning restore IDE0032
+
     public Process? Game
     {
-        get
-        {
-            if (_game is null)
-            {
-                _game = _asl.Game;
-
-                if (_game is not null)
-                {
-                    InitializeMemory(_game);
-                }
-            }
-
-            return _game;
-        }
+        get => _game ??= _asl.Game;
         set
         {
             _game = value;
@@ -33,13 +23,10 @@ public partial class AslPluginBase
             {
                 DisposeMemory();
             }
-            else
-            {
-                InitializeMemory(value);
-            }
         }
     }
 
-    protected abstract void InitializeMemory(Process game);
+    protected abstract IProcessMemory Memory { get; }
+
     protected abstract void DisposeMemory();
 }

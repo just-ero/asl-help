@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AslHelp.Basic", "impl\AslHe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AslHelp.Unity", "impl\AslHelp.Unity\AslHelp.Unity.csproj", "{3B328D5B-1D55-4A03-9A25-E83F29BA5F57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AslHelp.GameEngines", "src\AslHelp.GameEngines\AslHelp.GameEngines.csproj", "{A4E166D5-9CB1-4431-BA11-2B5E62C0C0B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{3B328D5B-1D55-4A03-9A25-E83F29BA5F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B328D5B-1D55-4A03-9A25-E83F29BA5F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B328D5B-1D55-4A03-9A25-E83F29BA5F57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4E166D5-9CB1-4431-BA11-2B5E62C0C0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4E166D5-9CB1-4431-BA11-2B5E62C0C0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4E166D5-9CB1-4431-BA11-2B5E62C0C0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4E166D5-9CB1-4431-BA11-2B5E62C0C0B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{43888091-87E7-4A49-A07D-6FBB988BD46C} = {A14C8A6B-F58F-4C04-B820-B0579FFCD735}
 		{9B98E947-4724-41A4-B9DB-1F831D6C8FFF} = {E4704941-4160-4E34-B8F9-E31EC63C2B2F}
 		{3B328D5B-1D55-4A03-9A25-E83F29BA5F57} = {E4704941-4160-4E34-B8F9-E31EC63C2B2F}
+		{A4E166D5-9CB1-4431-BA11-2B5E62C0C0B7} = {A14C8A6B-F58F-4C04-B820-B0579FFCD735}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E658CA9-DC0D-4168-968D-652E7FB6E63A}

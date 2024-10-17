@@ -1,8 +1,8 @@
 extern alias Ls;
 
-using Ls::LiveSplit.Model;
-
 using System.Windows.Forms;
+
+using Ls::LiveSplit.Model;
 
 namespace AslHelp.LiveSplit;
 

@@ -1,10 +1,5 @@
 extern alias Ls;
 
-using Ls::LiveSplit.ASL;
-using Ls::LiveSplit.Model;
-using Ls::LiveSplit.UI.Components;
-using Ls::LiveSplit.View;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +7,11 @@ using System.Windows.Forms;
 
 using AslHelp.Shared.Extensions;
 using AslHelp.Shared.Results;
+
+using Ls::LiveSplit.ASL;
+using Ls::LiveSplit.Model;
+using Ls::LiveSplit.UI.Components;
+using Ls::LiveSplit.View;
 
 namespace AslHelp.LiveSplit;
 

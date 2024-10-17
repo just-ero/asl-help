@@ -1,38 +1,36 @@
 extern alias Ls;
 
-using Ls::LiveSplit.ComponentUtil;
-
 using System.Linq;
 
 using AslHelp.Memory;
-using AslHelp.Memory.Ipc;
-using AslHelp.Memory.Scanning;
+
+using Ls::LiveSplit.ComponentUtil;
 
 public partial class Basic
 {
     public nint Scan(int offset, string pattern)
     {
-        return ((IMemoryScanner)this).Scan(ScanPattern.Parse(offset, pattern));
+        return Memory.Scan(offset, pattern);
     }
 
     public nint Scan(int offset, string pattern, string moduleName)
     {
-        return ((IMemoryScanner)this).Scan(ScanPattern.Parse(offset, pattern), moduleName);
+        return Memory.Scan(offset, pattern, moduleName);
     }
 
     public nint Scan(int offset, string pattern, Module module)
     {
-        return ((IMemoryScanner)this).Scan(ScanPattern.Parse(offset, pattern), module);
+        return Memory.Scan(offset, pattern, module);
     }
 
     public nint Scan(int offset, string pattern, nint startAddress, int size)
     {
-        return ((IMemoryScanner)this).Scan(ScanPattern.Parse(offset, pattern), startAddress, size);
+        return Memory.Scan(offset, pattern, startAddress, size);
     }
 
     public nint Scan(int offset, string pattern, nint startAddress, byte[] memory)
     {
-        return ((IMemoryScanner)this).Scan(ScanPattern.Parse(offset, pattern), startAddress, memory);
+        return Memory.Scan(offset, pattern, startAddress, memory);
     }
 
     public nint Scan(SigScanTarget target)
@@ -68,45 +66,5 @@ public partial class Basic
     public nint Scan(SigScanTarget target, nint startAddress, int size)
     {
         return ScanAll(target, startAddress, size).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, int size)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, size).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, string moduleName)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, moduleName).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, string moduleName, int size)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, moduleName, size).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, Module module)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, module).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, Module module, int size)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, module, size).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, nint startAddress, int size)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, startAddress, size).FirstOrDefault();
-    }
-
-    nint IMemoryScanner.Scan(ScanPattern pattern, nint startAddress, byte[] memory)
-    {
-        return ((IMemoryScanner)this).ScanAll(pattern, startAddress, memory).FirstOrDefault();
     }
 }

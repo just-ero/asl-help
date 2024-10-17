@@ -1,11 +1,11 @@
 extern alias Ls;
 
+using AslHelp.Shared.Results.Errors;
+
 using Ls::LiveSplit.ASL;
 using Ls::LiveSplit.Model;
 using Ls::LiveSplit.UI.Components;
 using Ls::LiveSplit.View;
-
-using AslHelp.Shared.Results.Errors;
 
 namespace AslHelp.LiveSplit;
 

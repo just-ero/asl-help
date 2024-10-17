@@ -1,10 +1,10 @@
 extern alias Ls;
 
-using Ls::LiveSplit.Model;
-using Ls::LiveSplit.UI.Components;
-
 using System.Collections;
 using System.Collections.Generic;
+
+using Ls::LiveSplit.Model;
+using Ls::LiveSplit.UI.Components;
 
 namespace AslHelp.LiveSplit.Control;
 

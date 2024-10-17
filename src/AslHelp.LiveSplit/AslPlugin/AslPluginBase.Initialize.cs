@@ -1,7 +1,5 @@
 extern alias Ls;
 
-using Ls::LiveSplit.ASL;
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -10,6 +8,8 @@ using System.Text;
 
 using AslHelp.LiveSplit.Diagnostics;
 using AslHelp.Shared;
+
+using Ls::LiveSplit.ASL;
 
 namespace AslHelp.LiveSplit;
 
@@ -53,12 +53,10 @@ public partial class AslPluginBase
 
             Timer = new(_asl.State);
             Texts = new(_asl.State);
-            // Settings = new(_asl.SettingsBuilder);
+            Settings = new(_asl);
 
             AslDebug.Info("Success.");
         }
-
-        // _initialized = true;
     }
 
     private static Assembly? AssemblyResolve(object? sender, ResolveEventArgs e)
