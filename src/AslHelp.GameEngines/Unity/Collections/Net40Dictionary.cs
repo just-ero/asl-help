@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 using AslHelp.Shared;
 
-namespace AslHelp.Unity.Collections;
+namespace AslHelp.GameEngines.Unity.Collections;
 
 internal sealed partial class Net40Dictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     where TKey : unmanaged

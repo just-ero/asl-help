@@ -4,12 +4,16 @@ using System.Runtime.CompilerServices;
 
 using AslHelp.Shared;
 
-namespace AslHelp.Unity.Collections;
+namespace AslHelp.GameEngines.Unity.Collections;
 
+#error Fix this: https://github.com/mono/mono/blob/026f444182c8fad5a803e5807a2a1d3819772e56/mcs/class/corlib/System.Collections.Generic/Dictionary.cs
 internal sealed partial class Net20Dictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     where TKey : unmanaged
     where TValue : unmanaged
 {
+    private const int NoSlot = -1;
+    private const int HashFlag = int.MinValue;
+
     private readonly int[] _table;
     private readonly Link[] _linkSlots;
 

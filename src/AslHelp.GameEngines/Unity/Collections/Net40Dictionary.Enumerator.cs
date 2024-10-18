@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace AslHelp.Unity.Collections;
+namespace AslHelp.GameEngines.Unity.Collections;
 
 internal partial class Net40Dictionary<TKey, TValue>
 {
@@ -57,7 +57,6 @@ internal partial class Net40Dictionary<TKey, TValue>
             Current = default;
         }
 
-        public readonly void Dispose()
-        { }
+        public readonly void Dispose() { }
     }
 }

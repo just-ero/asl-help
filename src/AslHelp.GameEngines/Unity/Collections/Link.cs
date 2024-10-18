@@ -1,4 +1,4 @@
-namespace AslHelp.Unity.Collections;
+namespace AslHelp.GameEngines.Unity.Collections;
 
 internal struct Link
 {

@@ -34,24 +34,28 @@ public partial class UnityMemory
         where TKey : unmanaged
         where TValue : unmanaged
     {
+        nint deref = Read<nint>(baseAddress, offsets);
+
         if (_version == DotnetRuntimeVersion.Net35)
         {
-            nint deref = Read<nint>(baseAddress, offsets);
             int count = Read<int>(deref + (PointerSize * 6) + (sizeof(int) * 2));
 
-            int[] table = ReadArray<int>(deref + (PointerSize * 2));
-            Link[] links = ReadArray<Link>(deref + (PointerSize * 3));
-            TKey[] keys = ReadArray<TKey>(deref + (PointerSize * 4));
-            TValue[] values = ReadArray<TValue>(deref + (PointerSize * 5));
+            var table = ReadArray<int>(deref + (PointerSize * 2));
+            var links = ReadArray<Link>(deref + (PointerSize * 3));
+            var keys = ReadArray<TKey>(deref + (PointerSize * 4));
+            var values = ReadArray<TValue>(deref + (PointerSize * 5));
 
             return new Net35Dictionary<TKey, TValue>(count, table, links, keys, values);
         }
         else
         {
+            int count = Read<int>(deref + (PointerSize * 8));
 
+            var buckets = ReadArray<int>(deref + (PointerSize * 2));
+            var entries = ReadArray<Net40Dictionary<TKey, TValue>.Entry>(deref + (PointerSize * 3));
+
+            return new Net40Dictionary<TKey, TValue>(count, buckets, entries);
         }
-
-        throw new NotImplementedException();
     }
 
     public bool TryReadDictionary<TKey, TValue>([NotNullWhen(true)] out IReadOnlyDictionary<TKey, TValue>? result, int baseOffset, params int[] offsets)
