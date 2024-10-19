@@ -3,15 +3,16 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class Net20HashSet<T>
+#error Use `touched`.
+internal sealed partial class MonoHashSet<T>
 {
     private struct Enumerator : IEnumerator<T>, IEnumerator
     {
-        private readonly Net20HashSet<T> _set;
+        private readonly MonoHashSet<T> _set;
 
         private int _next;
 
-        public Enumerator(Net20HashSet<T> set)
+        public Enumerator(MonoHashSet<T> set)
         {
             _set = set;
         }

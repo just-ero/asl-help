@@ -3,15 +3,16 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal partial class Net20Dictionary<TKey, TValue>
+#error Use Mono impl.
+internal partial class MonoDictionary<TKey, TValue>
 {
     private struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerator
     {
-        private readonly Net20Dictionary<TKey, TValue> _dictionary;
+        private readonly MonoDictionary<TKey, TValue> _dictionary;
 
         private int _next;
 
-        public Enumerator(Net20Dictionary<TKey, TValue> dictionary)
+        public Enumerator(MonoDictionary<TKey, TValue> dictionary)
         {
             _dictionary = dictionary;
         }

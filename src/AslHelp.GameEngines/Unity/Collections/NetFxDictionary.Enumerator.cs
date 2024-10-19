@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal partial class Net40Dictionary<TKey, TValue>
+internal partial class NetFxDictionary<TKey, TValue>
 {
     public struct Entry
     {
@@ -15,11 +15,11 @@ internal partial class Net40Dictionary<TKey, TValue>
 
     private struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerator
     {
-        private readonly Net40Dictionary<TKey, TValue> _dictionary;
+        private readonly NetFxDictionary<TKey, TValue> _dictionary;
 
         private int _next;
 
-        public Enumerator(Net40Dictionary<TKey, TValue> dictionary)
+        public Enumerator(NetFxDictionary<TKey, TValue> dictionary)
         {
             _dictionary = dictionary;
         }

@@ -7,14 +7,15 @@ using AslHelp.Shared;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class Net40Dictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+#error Check this again.
+internal sealed partial class NetFxDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     where TKey : unmanaged
     where TValue : unmanaged
 {
     private readonly int[] _buckets;
     private readonly Entry[] _entries;
 
-    public Net40Dictionary(int count, int[] buckets, Entry[] entries)
+    public NetFxDictionary(int count, int[] buckets, Entry[] entries)
     {
         _buckets = buckets;
         _entries = entries;

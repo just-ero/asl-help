@@ -6,8 +6,7 @@ using AslHelp.Shared;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-#error Fix this: https://github.com/mono/mono/blob/026f444182c8fad5a803e5807a2a1d3819772e56/mcs/class/corlib/System.Collections.Generic/Dictionary.cs
-internal sealed partial class Net20Dictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+internal sealed partial class MonoDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
     where TKey : unmanaged
     where TValue : unmanaged
 {
@@ -20,7 +19,7 @@ internal sealed partial class Net20Dictionary<TKey, TValue> : IReadOnlyDictionar
     private readonly TKey[] _keySlots;
     private readonly TValue[] _valueSlots;
 
-    public Net20Dictionary(int count, int[] table, Link[] linkSlots, TKey[] keySlots, TValue[] valueSlots)
+    public MonoDictionary(int count, int[] table, Link[] linkSlots, TKey[] keySlots, TValue[] valueSlots)
     {
         _table = table;
         _linkSlots = linkSlots;
@@ -60,35 +59,39 @@ internal sealed partial class Net20Dictionary<TKey, TValue> : IReadOnlyDictionar
     {
         get
         {
+            ThrowHelper.ThrowIfNull(key);
+
             ref TValue value = ref FindValue(key);
-            if (Unsafe.AsPointer(ref value) != null)
+            if (Unsafe.AsPointer(ref value) == null)
             {
-                return value;
+                string msg = $"The given key '{key}' was not present in the dictionary.";
+                ThrowHelper.ThrowKeyNotFoundException(msg);
             }
 
-            string msg = $"The given key '{key}' was not present in the dictionary.";
-            ThrowHelper.ThrowKeyNotFoundException(msg);
-
-            return default;
+            return value;
         }
     }
 
     public unsafe bool ContainsKey(TKey key)
     {
+        ThrowHelper.ThrowIfNull(key);
+
         return Unsafe.AsPointer(ref FindValue(key)) != null;
     }
 
     public unsafe bool TryGetValue(TKey key, out TValue value)
     {
+        ThrowHelper.ThrowIfNull(key);
+
         ref TValue valRef = ref FindValue(key);
-        if (Unsafe.AsPointer(ref valRef) != null)
+        if (Unsafe.AsPointer(ref valRef) == null)
         {
-            value = valRef;
-            return true;
+            value = default;
+            return false;
         }
 
-        value = default;
-        return false;
+        value = valRef;
+        return true;
     }
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
@@ -101,9 +104,14 @@ internal sealed partial class Net20Dictionary<TKey, TValue> : IReadOnlyDictionar
         return GetEnumerator();
     }
 
-    private ref int GetBucket(uint hashCode)
+    private int GetKeyHashCode(TKey key)
     {
-        return ref _table[(hashCode & 0x7FFFFFFF) % _table.Length];
+        return key.GetHashCode() | HashFlag;
+    }
+
+    private ref int GetSlot(int hashCode)
+    {
+        return ref _table[(hashCode & int.MaxValue) % _table.Length];
     }
 
     private unsafe ref TValue FindValue(TKey key)
@@ -112,23 +120,20 @@ internal sealed partial class Net20Dictionary<TKey, TValue> : IReadOnlyDictionar
 
         Link[] linkSlots = _linkSlots;
 
-        uint hashCode = (uint)key.GetHashCode();
-        int i = GetBucket(hashCode) - 1;
+        int hashCode = GetKeyHashCode(key);
+        int i = GetSlot(hashCode) - 1;
 
-        while (i >= 0)
+        while (i != NoSlot)
         {
-            if ((uint)i > (uint)linkSlots.Length)
-            {
-                break;
-            }
-
-            if (linkSlots[i].HashCode == hashCode && EqualityComparer<TKey>.Default.Equals(_keySlots[i], key))
+            Link link = linkSlots[i];
+            if (link.HashCode == hashCode
+                && EqualityComparer<TKey>.Default.Equals(_keySlots[i], key))
             {
                 value = ref _valueSlots[i];
                 break;
             }
 
-            i = linkSlots[i].Next;
+            i = link.Next;
         }
 
         return ref value;
