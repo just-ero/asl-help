@@ -19,12 +19,15 @@ internal sealed partial class MonoDictionary<TKey, TValue> : IReadOnlyDictionary
     private readonly TKey[] _keySlots;
     private readonly TValue[] _valueSlots;
 
-    public MonoDictionary(int count, int[] table, Link[] linkSlots, TKey[] keySlots, TValue[] valueSlots)
+    private readonly int _touchedSlots;
+
+    public MonoDictionary(int[] table, Link[] linkSlots, TKey[] keySlots, TValue[] valueSlots, int touchedSlots, int count)
     {
         _table = table;
         _linkSlots = linkSlots;
         _keySlots = keySlots;
         _valueSlots = valueSlots;
+        _touchedSlots = touchedSlots;
 
         Count = count;
     }

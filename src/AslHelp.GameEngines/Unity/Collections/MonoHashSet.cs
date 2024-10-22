@@ -16,11 +16,14 @@ internal sealed partial class MonoHashSet<T> : ISet<T>, IReadOnlyCollection<T>
 
     private readonly T[] _slots;
 
-    public MonoHashSet(int count, int[] table, Link[] links, T[] slots)
+    private readonly int _touched;
+
+    public MonoHashSet(int[] table, Link[] links, T[] slots, int touched, int count)
     {
         _table = table;
         _links = links;
         _slots = slots;
+        _touched = touched;
 
         Count = count;
     }
@@ -48,7 +51,7 @@ internal sealed partial class MonoHashSet<T> : ISet<T>, IReadOnlyCollection<T>
         ThrowHelper.ThrowIfNotInRange(arrayIndex, 0, array.Length);
         ThrowHelper.ThrowIfNotInRange(count, 0, Count);
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < _touched; i++)
         {
             if (GetLinkHashCode(i) != 0)
             {

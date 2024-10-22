@@ -1,9 +1,9 @@
 namespace AslHelp.GameEngines.Unity;
 
-public enum DotnetRuntimeVersion
+internal enum RuntimeVersion
 {
     Unknown,
 
-    Net35,
-    Net40
+    Mono,
+    NetFramework
 }

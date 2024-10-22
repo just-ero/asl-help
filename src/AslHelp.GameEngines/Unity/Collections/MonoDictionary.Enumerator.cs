@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-#error Use Mono impl.
 internal partial class MonoDictionary<TKey, TValue>
 {
     private struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerator
@@ -22,14 +21,14 @@ internal partial class MonoDictionary<TKey, TValue>
 
         public bool MoveNext()
         {
-            int next = _next, count = _dictionary.Count;
+            int next = _next, touched = _dictionary._touchedSlots;
 
             if (next < 0)
             {
                 return false;
             }
 
-            while (next < count)
+            while (next < touched)
             {
                 if ((_dictionary._linkSlots[next].HashCode & HashFlag) != 0)
                 {

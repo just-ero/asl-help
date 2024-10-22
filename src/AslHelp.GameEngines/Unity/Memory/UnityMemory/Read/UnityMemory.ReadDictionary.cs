@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+using AslHelp.GameEngines.Unity.Collections;
 using AslHelp.Memory;
-using AslHelp.Unity.Collections;
 
 namespace AslHelp.GameEngines.Unity.Memory;
 
@@ -36,25 +36,53 @@ public partial class UnityMemory
     {
         nint deref = Read<nint>(baseAddress, offsets);
 
-        if (_version == DotnetRuntimeVersion.Net35)
+        if (_version == RuntimeVersion.Mono)
         {
-            int count = Read<int>(deref + (PointerSize * 6) + (sizeof(int) * 2));
-
             var table = ReadArray<int>(deref + (PointerSize * 2));
             var links = ReadArray<Link>(deref + (PointerSize * 3));
             var keys = ReadArray<TKey>(deref + (PointerSize * 4));
             var values = ReadArray<TValue>(deref + (PointerSize * 5));
 
-            return new Net35Dictionary<TKey, TValue>(count, table, links, keys, values);
+            var touched = Read<int>(deref + (PointerSize * 6));
+            var count = Read<int>(deref + (PointerSize * 6) + (sizeof(int) * 2));
+
+            return new MonoDictionary<TKey, TValue>(table, links, keys, values, touched, count);
         }
         else
         {
-            int count = Read<int>(deref + (PointerSize * 8));
+            if (!Is64Bit)
+            {
+                if (IsNativeInt<TKey>())
+                {
+                    if (IsNativeInt<TValue>())
+                    {
+                        var buckets = ReadArray<int>(deref + (PointerSize * 2));
+                        var entries = ReadArray<NetFxDictionary<int, int>.Entry>(deref + (PointerSize * 3));
+
+                        var count = Read<int>(deref + (PointerSize * 8));
+
+                        return new NetFxDictionary<int, int>(buckets, entries, count);
+                    }
+                    else
+                    {
+                        var buckets = ReadArray<int>(deref + (PointerSize * 2));
+                        var entries = ReadArray<NetFxDictionary<int, TValue>.Entry>(deref + (PointerSize * 3));
+
+                        var count = Read<int>(deref + (PointerSize * 8));
+
+                        return new NetFxDictionary<int, TValue>(buckets, entries, count);
+                    }
+                }
+            }
+
+#error Holy fuck how do you do nint.
 
             var buckets = ReadArray<int>(deref + (PointerSize * 2));
-            var entries = ReadArray<Net40Dictionary<TKey, TValue>.Entry>(deref + (PointerSize * 3));
+            var entries = ReadArray<NetFxDictionary<TKey, TValue>.Entry>(deref + (PointerSize * 3));
 
-            return new Net40Dictionary<TKey, TValue>(count, buckets, entries);
+            var count = Read<int>(deref + (PointerSize * 8));
+
+            return new NetFxDictionary<TKey, TValue>(buckets, entries, count);
         }
     }
 
@@ -101,7 +129,43 @@ public partial class UnityMemory
         where TKey : unmanaged
         where TValue : unmanaged
     {
-        throw new NotImplementedException();
+        if (!TryRead(out nint deref, baseAddress, offsets))
+        {
+            result = default;
+            return false;
+        }
+
+        if (_version == RuntimeVersion.Mono)
+        {
+            if (!TryReadArray(out int[]? table, deref + (PointerSize * 2))
+                || !TryReadArray(out Link[]? links, deref + (PointerSize * 3))
+                || !TryReadArray(out TKey[]? keys, deref + (PointerSize * 4))
+                || !TryReadArray(out TValue[]? values, deref + (PointerSize * 5))
+                || !TryRead(out int touched, deref + (PointerSize * 6))
+                || !TryRead(out int count, deref + (PointerSize * 6) + (sizeof(int) * 2)))
+            {
+                result = default;
+                return false;
+            }
+
+            result = new MonoDictionary<TKey, TValue>(table, links, keys, values, touched, count);
+            return true;
+        }
+        else
+        {
+#error Holy fuck how do you do nint.
+
+            if (!TryReadArray(out int[]? buckets, deref + (PointerSize * 2))
+                || !TryReadArray(out NetFxDictionary<TKey, TValue>.Entry[]? entries, deref + (PointerSize * 3))
+                || !TryRead(out int count, deref + (PointerSize * 8)))
+            {
+                result = default;
+                return false;
+            }
+
+            result = new NetFxDictionary<TKey, TValue>(buckets, entries, count);
+            return true;
+        }
     }
 
     public IReadOnlyDictionary<string, TValue> ReadDictionary<TValue>(int baseOffset, params int[] offsets)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-#error Use `touched`.
 internal sealed partial class MonoHashSet<T>
 {
     private struct Enumerator : IEnumerator<T>, IEnumerator
@@ -22,19 +21,19 @@ internal sealed partial class MonoHashSet<T>
 
         public bool MoveNext()
         {
-            int next = _next, count = _set.Count;
+            int next = _next, touched = _set._touched;
 
             if (next < 0)
             {
                 return false;
             }
 
-            while (next < count)
+            while (next < touched)
             {
                 if (_set.GetLinkHashCode(next) != 0)
                 {
                     Current = _set._slots[next];
-                    _next = next;
+                    _next = next + 1;
 
                     return true;
                 }

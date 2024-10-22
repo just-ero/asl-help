@@ -15,7 +15,7 @@ internal sealed partial class NetFxDictionary<TKey, TValue> : IReadOnlyDictionar
     private readonly int[] _buckets;
     private readonly Entry[] _entries;
 
-    public NetFxDictionary(int count, int[] buckets, Entry[] entries)
+    public NetFxDictionary(int[] buckets, Entry[] entries, int count)
     {
         _buckets = buckets;
         _entries = entries;
