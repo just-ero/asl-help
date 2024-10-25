@@ -1,21 +1,17 @@
-using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 
-using AslHelp.GameEngines.Unity.Memory;
 using AslHelp.Shared;
-using AslHelp.Shared.Extensions;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class MonoHashSet(
-    IUnityReader memory,
+internal sealed partial class MonoHashSet<T>(
     int[] table,
     Link[] links,
-    nint[] slots,
+    T[] slots,
     int touched,
-    int count) : ISet<string?>, IReadOnlyCollection<string?>
+    int count) : ISet<T>, IReadOnlyCollection<T>
+    where T : unmanaged
 {
     private const int NoSlot = -1;
     private const int HashFlag = int.MinValue;
@@ -23,33 +19,31 @@ internal sealed partial class MonoHashSet(
     private readonly int[] _table = table;
     private readonly Link[] _links = links;
 
-    private readonly nint[] _slots = slots;
+    private readonly T[] _slots = slots;
 
     private readonly int _touched = touched;
-
-    private readonly IUnityReader _memory = memory;
-    private readonly string?[] _slotCache = new string?[slots.Length];
 
     public int Count { get; } = count;
     public bool IsReadOnly { get; } = true;
 
-    public bool Contains(string? item)
+    public bool Contains(T item)
     {
         return FindItem(item);
     }
 
-    public void CopyTo(string?[] array)
+    public void CopyTo(T[] array)
     {
         CopyTo(array, 0, Count);
     }
 
-    public void CopyTo(string?[] array, int arrayIndex)
+    public void CopyTo(T[] array, int arrayIndex)
     {
         CopyTo(array, arrayIndex, Count);
     }
 
-    public void CopyTo(string?[] array, int arrayIndex, int count)
+    public void CopyTo(T[] array, int arrayIndex, int count)
     {
+        ThrowHelper.ThrowIfNull(array);
         ThrowHelper.ThrowIfNotInRange(arrayIndex, 0, array.Length);
         ThrowHelper.ThrowIfNotInRange(count, 0, Count);
 
@@ -57,17 +51,12 @@ internal sealed partial class MonoHashSet(
         {
             if (GetLinkHashCode(i) != 0)
             {
-                array[arrayIndex++] = GetSlotValue(i);
+                array[arrayIndex++] = _slots[i];
             }
         }
     }
 
-    private int GetLinkHashCode(int index)
-    {
-        return _links[index].HashCode & HashFlag;
-    }
-
-    public bool IsSubsetOf(IEnumerable<string?> other)
+    public bool IsSubsetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
@@ -76,7 +65,7 @@ internal sealed partial class MonoHashSet(
             return true;
         }
 
-        HashSet<string?> otherSet = ToSet(other);
+        HashSet<T> otherSet = ToSet(other);
         if (Count > otherSet.Count)
         {
             return false;
@@ -85,7 +74,7 @@ internal sealed partial class MonoHashSet(
         return CheckIsSubsetOf(otherSet);
     }
 
-    public bool IsProperSubsetOf(IEnumerable<string?> other)
+    public bool IsProperSubsetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
@@ -94,7 +83,7 @@ internal sealed partial class MonoHashSet(
             return true;
         }
 
-        HashSet<string?> otherSet = ToSet(other);
+        HashSet<T> otherSet = ToSet(other);
         if (Count >= otherSet.Count)
         {
             return false;
@@ -103,11 +92,11 @@ internal sealed partial class MonoHashSet(
         return CheckIsSubsetOf(otherSet);
     }
 
-    public bool IsSupersetOf(IEnumerable<string?> other)
+    public bool IsSupersetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        HashSet<string?> otherSet = ToSet(other);
+        HashSet<T> otherSet = ToSet(other);
         if (Count < otherSet.Count)
         {
             return false;
@@ -116,11 +105,11 @@ internal sealed partial class MonoHashSet(
         return CheckIsSupersetOf(otherSet);
     }
 
-    public bool IsProperSupersetOf(IEnumerable<string?> other)
+    public bool IsProperSupersetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        HashSet<string?> otherSet = ToSet(other);
+        HashSet<T> otherSet = ToSet(other);
         if (Count <= otherSet.Count)
         {
             return false;
@@ -129,11 +118,11 @@ internal sealed partial class MonoHashSet(
         return CheckIsSupersetOf(otherSet);
     }
 
-    public bool Overlaps(IEnumerable<string?> other)
+    public bool Overlaps(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        foreach (string? item in other)
+        foreach (T item in other)
         {
             if (Contains(item))
             {
@@ -144,11 +133,11 @@ internal sealed partial class MonoHashSet(
         return false;
     }
 
-    public bool SetEquals(IEnumerable<string?> other)
+    public bool SetEquals(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        HashSet<string?> otherSet = ToSet(other);
+        HashSet<T> otherSet = ToSet(other);
         if (Count != otherSet.Count)
         {
             return false;
@@ -157,12 +146,12 @@ internal sealed partial class MonoHashSet(
         return CheckIsSupersetOf(otherSet);
     }
 
-    public IEnumerator<string?> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         return new Enumerator(this);
     }
 
-    public bool Add(string? item)
+    public bool Add(T item)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
@@ -170,7 +159,7 @@ internal sealed partial class MonoHashSet(
         return false;
     }
 
-    public bool Remove(string? item)
+    public bool Remove(T item)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
@@ -184,25 +173,25 @@ internal sealed partial class MonoHashSet(
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    public void ExceptWith(IEnumerable<string?> other)
+    public void ExceptWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    public void IntersectWith(IEnumerable<string?> other)
+    public void IntersectWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    public void SymmetricExceptWith(IEnumerable<string?> other)
+    public void SymmetricExceptWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    public void UnionWith(IEnumerable<string?> other)
+    public void UnionWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
@@ -213,25 +202,25 @@ internal sealed partial class MonoHashSet(
         return GetEnumerator();
     }
 
-    void ICollection<string?>.Add(string? item)
+    void ICollection<T>.Add(T item)
     {
         Add(item);
     }
 
-    private HashSet<string?> ToSet(IEnumerable<string?> source)
+    private HashSet<T> ToSet(IEnumerable<T> source)
     {
-        if (source is not HashSet<string?> set
-            || set.Comparer != EqualityComparer<string?>.Default)
+        if (source is not HashSet<T> set
+            || set.Comparer != EqualityComparer<T>.Default)
         {
-            set = new(source, EqualityComparer<string?>.Default);
+            set = new(source, EqualityComparer<T>.Default);
         }
 
         return set;
     }
 
-    private bool CheckIsSubsetOf(HashSet<string?> other)
+    private bool CheckIsSubsetOf(HashSet<T> other)
     {
-        foreach (string? item in this)
+        foreach (T item in this)
         {
             if (!other.Contains(item))
             {
@@ -242,9 +231,9 @@ internal sealed partial class MonoHashSet(
         return true;
     }
 
-    private bool CheckIsSupersetOf(HashSet<string?> other)
+    private bool CheckIsSupersetOf(HashSet<T> other)
     {
-        foreach (string? item in other)
+        foreach (T item in other)
         {
             if (!Contains(item))
             {
@@ -255,13 +244,13 @@ internal sealed partial class MonoHashSet(
         return true;
     }
 
-    private int GetItemHashCode(string? item)
+    private int GetLinkHashCode(int index)
     {
-        if (item is null)
-        {
-            return 0;
-        }
+        return _links[index].HashCode & HashFlag;
+    }
 
+    private int GetItemHashCode(T item)
+    {
         return item.GetHashCode() | HashFlag;
     }
 
@@ -270,7 +259,7 @@ internal sealed partial class MonoHashSet(
         return ref _table[(hashCode & int.MaxValue) % _table.Length];
     }
 
-    private bool FindItem(string? item)
+    private bool FindItem(T item)
     {
         int hashCode = GetItemHashCode(item);
         int i = GetSlot(hashCode) - 1;
@@ -279,7 +268,7 @@ internal sealed partial class MonoHashSet(
         {
             Link link = _links[i];
             if (link.HashCode == hashCode
-                && GetSlotValue(i) == item)
+                && EqualityComparer<T>.Default.Equals(_slots[i], item))
             {
                 return true;
             }
@@ -288,34 +277,5 @@ internal sealed partial class MonoHashSet(
         }
 
         return false;
-    }
-
-    private string? GetSlotValue(int index)
-    {
-        if (_slotCache[index] is string value)
-        {
-            return value;
-        }
-
-        nint deref = _slots[index];
-        if (deref == 0)
-        {
-            return null;
-        }
-
-        int length = _memory.Read<int>(deref + (_memory.PointerSize * 2));
-
-        char[]? rented = null;
-        Span<char> buffer = length <= 512
-            ? stackalloc char[512]
-            : (rented = ArrayPool<char>.Shared.Rent(length));
-
-        _memory.ReadArray(buffer[..length], deref + (_memory.PointerSize * 2) + sizeof(int));
-        value = buffer[..length].ToString();
-
-        ArrayPool<char>.Shared.ReturnIfNotNull(rented);
-        _slotCache[index] = value;
-
-        return value;
     }
 }

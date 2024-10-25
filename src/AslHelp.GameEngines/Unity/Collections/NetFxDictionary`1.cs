@@ -11,18 +11,18 @@ using AslHelp.Shared.Extensions;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class NetFxDictionary(
+internal sealed partial class NetFxDictionary<TValue>(
     IUnityReader memory,
     int[] buckets,
-    NetFxDictionary.Entry[] entries,
-    int count) : IReadOnlyDictionary<string, string?>
+    NetFxDictionary<TValue>.Entry[] entries,
+    int count) : IReadOnlyDictionary<string, TValue>
+    where TValue : unmanaged
 {
     private readonly int[] _buckets = buckets;
     private readonly Entry[] _entries = entries;
 
     private readonly IUnityReader _memory = memory;
     private readonly string?[] _keyCache = new string?[entries.Length];
-    private readonly string?[] _valueCache = new string?[entries.Length];
 
     public int Count { get; } = count;
 
@@ -38,7 +38,7 @@ internal sealed partial class NetFxDictionary(
         }
     }
 
-    public IEnumerable<string?> Values
+    public IEnumerable<TValue> Values
     {
         get
         {
@@ -50,11 +50,11 @@ internal sealed partial class NetFxDictionary(
         }
     }
 
-    public unsafe string? this[string key]
+    public unsafe TValue this[string key]
     {
         get
         {
-            ref string? value = ref FindValue(key);
+            ref TValue value = ref FindValue(key);
             if (Unsafe.AsPointer(ref value) != null)
             {
                 return value;
@@ -72,9 +72,9 @@ internal sealed partial class NetFxDictionary(
         return Unsafe.AsPointer(ref FindValue(key)) != null;
     }
 
-    public unsafe bool TryGetValue(string key, [MaybeNullWhen(false)] out string? value)
+    public unsafe bool TryGetValue(string key, [MaybeNullWhen(false)] out TValue value)
     {
-        ref string? valRef = ref FindValue(key);
+        ref TValue valRef = ref FindValue(key);
         if (Unsafe.AsPointer(ref valRef) != null)
         {
             value = valRef;
@@ -85,7 +85,7 @@ internal sealed partial class NetFxDictionary(
         return false;
     }
 
-    public IEnumerator<KeyValuePair<string, string?>> GetEnumerator()
+    public IEnumerator<KeyValuePair<string, TValue>> GetEnumerator()
     {
         return new Enumerator(this);
     }
@@ -100,9 +100,9 @@ internal sealed partial class NetFxDictionary(
         return ref _buckets[(hashCode & int.MaxValue) % _buckets.Length];
     }
 
-    private unsafe ref string? FindValue(string key)
+    private unsafe ref TValue FindValue(string key)
     {
-        ref string? value = ref Unsafe.AsRef<string?>(null);
+        ref TValue value = ref Unsafe.AsRef<TValue>(null);
 
         Entry[] entries = _entries;
 
@@ -120,7 +120,7 @@ internal sealed partial class NetFxDictionary(
             if (entry.HashCode == hashCode
                 && GetKey(i, entry) == key)
             {
-                value = ref GetValue(i, entry);
+                value = ref entry.Value;
                 break;
             }
 
@@ -142,7 +142,7 @@ internal sealed partial class NetFxDictionary(
             return key;
         }
 
-        nint deref = entry.Key;
+        nint deref = _entries[index].Key;
         int length = _memory.Read<int>(deref + (_memory.PointerSize * 2));
 
         char[]? rented = null;
@@ -157,40 +157,5 @@ internal sealed partial class NetFxDictionary(
         _keyCache[index] = result;
 
         return result;
-    }
-
-    /// <remarks>
-    ///     Same implementation as <see cref="UnityMemory.ReadString(nint, int[])"/>.<br/>
-    ///     Can't call that method since it expects the address of the pointer to the string.<br/>
-    ///     Might need to introduce methods which accept the raw starting address.
-    /// </remarks>
-    private ref string? GetValue(int index, Entry entry)
-    {
-        ref string? value = ref _valueCache[index];
-        if (value is not null)
-        {
-            return ref value;
-        }
-
-        nint deref = entry.Value;
-        if (deref == 0)
-        {
-            return ref value;
-        }
-
-        int length = _memory.Read<int>(deref + (_memory.PointerSize * 2));
-
-        char[]? rented = null;
-        Span<char> buffer = length <= 512
-            ? stackalloc char[512]
-            : (rented = ArrayPool<char>.Shared.Rent(length));
-
-        _memory.ReadArray(buffer[..length], deref + (_memory.PointerSize * 2) + sizeof(int));
-        value = buffer[..length].ToString();
-
-        ArrayPool<char>.Shared.ReturnIfNotNull(rented);
-        _keyCache[index] = value;
-
-        return ref value;
     }
 }

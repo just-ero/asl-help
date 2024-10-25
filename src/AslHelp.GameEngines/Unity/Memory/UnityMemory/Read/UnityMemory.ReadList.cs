@@ -8,43 +8,51 @@ namespace AslHelp.GameEngines.Unity.Memory;
 
 public partial class UnityMemory
 {
-    public List<T> ReadList<T>(int baseOffset, params int[] offsets)
+    private int ListItems => PointerSize * 2;
+    private int ListSize => PointerSize * 3;
+
+    public IReadOnlyList<T>? ReadList<T>(int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         return ReadList<T>(MainModule, baseOffset, offsets);
     }
 
-    public List<T> ReadList<T>(string moduleName, int baseOffset, params int[] offsets)
+    public IReadOnlyList<T>? ReadList<T>(string moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         return ReadList<T>(Modules[moduleName], baseOffset, offsets);
     }
 
-    public List<T> ReadList<T>(Module module, int baseOffset, params int[] offsets)
+    public IReadOnlyList<T>? ReadList<T>(Module module, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         return ReadList<T>(module.Base + baseOffset, offsets);
     }
 
-    public List<T> ReadList<T>(nint baseAddress, params int[] offsets)
+    public IReadOnlyList<T>? ReadList<T>(nint baseAddress, params int[] offsets)
         where T : unmanaged
     {
         nint deref = Read<nint>(baseAddress, offsets);
-        int count = Read<int>(deref + (PointerSize * 3));
+        if (deref == 0)
+        {
+            return null;
+        }
+
+        int count = Read<int>(deref + ListSize);
 
         List<T> result = new(count);
-        ReadArray(CollectionsMarshal<T>.AsSpan(result), deref + (PointerSize * 2), PointerSize * 4);
+        ReadArray(CollectionsMarshal<T>.AsSpan(result), deref + ListItems, ArrayData);
 
         return result;
     }
 
-    public bool TryReadList<T>([NotNullWhen(true)] out List<T>? result, int baseOffset, params int[] offsets)
+    public bool TryReadList<T>(out IReadOnlyList<T>? result, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         return TryReadList(out result, MainModule, baseOffset, offsets);
     }
 
-    public bool TryReadList<T>([NotNullWhen(true)] out List<T>? result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
+    public bool TryReadList<T>(out IReadOnlyList<T>? result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         if (moduleName is null)
@@ -62,7 +70,7 @@ public partial class UnityMemory
         return TryReadList(out result, module, baseOffset, offsets);
     }
 
-    public bool TryReadList<T>([NotNullWhen(true)] out List<T>? result, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)
+    public bool TryReadList<T>(out IReadOnlyList<T>? result, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)
         where T : unmanaged
     {
         if (module is null)
@@ -74,7 +82,7 @@ public partial class UnityMemory
         return TryReadList(out result, module.Base + baseOffset, offsets);
     }
 
-    public bool TryReadList<T>([NotNullWhen(true)] out List<T>? result, nint baseAddress, params int[] offsets)
+    public bool TryReadList<T>(out IReadOnlyList<T>? result, nint baseAddress, params int[] offsets)
         where T : unmanaged
     {
         if (!TryRead(out nint deref, baseAddress, offsets))
@@ -83,60 +91,72 @@ public partial class UnityMemory
             return false;
         }
 
-        if (!TryRead(out int count, deref + (PointerSize * 3))
+        if (deref == 0)
+        {
+            result = null;
+            return true;
+        }
+
+        if (!TryRead(out int count, deref + ListSize)
             || count < 0)
         {
             result = default;
             return false;
         }
 
-        result = new(count);
+        List<T> values = new(count);
 
-        if (!TryReadArray(CollectionsMarshal<T>.AsSpan(result), deref + (PointerSize * 2), PointerSize * 4))
+        if (!TryReadArray(CollectionsMarshal<T>.AsSpan(values), deref + ListItems, ArrayData))
         {
             result = default;
             return false;
         }
 
+        result = values;
         return true;
     }
 
-    public List<string> ReadList(int baseOffset, params int[] offsets)
+    public IReadOnlyList<string?>? ReadList(int baseOffset, params int[] offsets)
     {
         return ReadList(MainModule, baseOffset, offsets);
     }
 
-    public List<string> ReadList(string moduleName, int baseOffset, params int[] offsets)
+    public IReadOnlyList<string?>? ReadList(string moduleName, int baseOffset, params int[] offsets)
     {
         return ReadList(Modules[moduleName], baseOffset, offsets);
     }
 
-    public List<string> ReadList(Module module, int baseOffset, params int[] offsets)
+    public IReadOnlyList<string?>? ReadList(Module module, int baseOffset, params int[] offsets)
     {
         return ReadList(module.Base + baseOffset, offsets);
     }
 
-    public List<string> ReadList(nint baseAddress, params int[] offsets)
+    public IReadOnlyList<string?>? ReadList(nint baseAddress, params int[] offsets)
     {
         nint deref = Read<nint>(baseAddress, offsets);
-        int count = Read<int>(deref + (PointerSize * 3));
+        if (deref == 0)
+        {
+            return null;
+        }
 
-        List<string> result = new(count);
+        int count = Read<int>(deref + ListSize);
+
+        List<string?> result = new(count);
         for (int i = 0; i < count; i++)
         {
-            string value = ReadString(deref + (PointerSize * 2), (PointerSize * 4) + (PointerSize * i));
+            string? value = ReadString(deref + ListItems, ArrayData + (PointerSize * i));
             result.Add(value);
         }
 
         return result;
     }
 
-    public bool TryReadList([NotNullWhen(true)] out List<string>? result, int baseOffset, params int[] offsets)
+    public bool TryReadList(out IReadOnlyList<string?>? result, int baseOffset, params int[] offsets)
     {
         return TryReadList(out result, MainModule, baseOffset, offsets);
     }
 
-    public bool TryReadList([NotNullWhen(true)] out List<string>? result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
+    public bool TryReadList(out IReadOnlyList<string?>? result, [NotNullWhen(true)] string? moduleName, int baseOffset, params int[] offsets)
     {
         if (moduleName is null)
         {
@@ -153,7 +173,7 @@ public partial class UnityMemory
         return TryReadList(out result, module, baseOffset, offsets);
     }
 
-    public bool TryReadList([NotNullWhen(true)] out List<string>? result, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)
+    public bool TryReadList(out IReadOnlyList<string?>? result, [NotNullWhen(true)] Module? module, int baseOffset, params int[] offsets)
     {
         if (module is null)
         {
@@ -164,7 +184,7 @@ public partial class UnityMemory
         return TryReadList(out result, module.Base + baseOffset, offsets);
     }
 
-    public bool TryReadList([NotNullWhen(true)] out List<string>? result, nint baseAddress, params int[] offsets)
+    public bool TryReadList(out IReadOnlyList<string?>? result, nint baseAddress, params int[] offsets)
     {
         if (!TryRead(out nint deref, baseAddress, offsets))
         {
@@ -172,26 +192,29 @@ public partial class UnityMemory
             return false;
         }
 
-        if (!TryRead(out int count, deref + (PointerSize * 3))
+        if (deref == 0)
+        {
+            result = null;
+            return true;
+        }
+
+        if (!TryRead(out int count, deref + ListSize)
             || count < 0)
         {
             result = default;
             return false;
         }
 
-        result = new(count);
+        List<string?> values = new(count);
 
         for (int i = 0; i < count; i++)
         {
-            if (!TryReadString(out string? value, deref + (PointerSize * 2), (PointerSize * 4) + (PointerSize * i)))
-            {
-                result = default;
-                return false;
-            }
-
-            result.Add(value);
+            values.Add(TryReadString(out string? value, deref + ListItems, ArrayData + (PointerSize * i))
+                ? value
+                : null);
         }
 
+        result = values;
         return true;
     }
 }

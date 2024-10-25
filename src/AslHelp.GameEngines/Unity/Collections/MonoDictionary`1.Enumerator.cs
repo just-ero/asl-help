@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class MonoHashSet
+internal partial class MonoDictionary<TValue>
 {
-    private struct Enumerator : IEnumerator<string?>, IEnumerator
+    private struct Enumerator : IEnumerator<KeyValuePair<string, TValue>>, IEnumerator
     {
-        private readonly MonoHashSet _set;
+        private readonly MonoDictionary<TValue> _dictionary;
 
         private int _next;
 
-        public Enumerator(MonoHashSet set)
+        public Enumerator(MonoDictionary<TValue> dictionary)
         {
-            _set = set;
+            _dictionary = dictionary;
         }
 
-        public string? Current { get; private set; }
-        readonly object? IEnumerator.Current => Current;
+        public KeyValuePair<string, TValue> Current { get; private set; }
+        readonly object IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
-            int next = _next, touched = _set._touched;
+            int next = _next, touched = _dictionary._touchedSlots;
 
             if (next < 0)
             {
@@ -30,9 +30,9 @@ internal sealed partial class MonoHashSet
 
             while (next < touched)
             {
-                if (_set.GetLinkHashCode(next) != 0)
+                if ((_dictionary._linkSlots[next].HashCode & HashFlag) != 0)
                 {
-                    Current = _set.GetSlotValue(next);
+                    Current = new(_dictionary.GetKey(next), _dictionary._valueSlots[next]);
                     _next = next + 1;
 
                     return true;
@@ -42,6 +42,8 @@ internal sealed partial class MonoHashSet
             }
 
             _next = NoSlot;
+            Current = default;
+
             return false;
         }
 

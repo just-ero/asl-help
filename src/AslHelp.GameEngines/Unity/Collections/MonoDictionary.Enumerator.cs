@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal partial class MonoDictionary<TKey, TValue>
+internal partial class MonoDictionary
 {
-    private struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>, IEnumerator
+    private struct Enumerator : IEnumerator<KeyValuePair<string, string?>>, IEnumerator
     {
-        private readonly MonoDictionary<TKey, TValue> _dictionary;
+        private readonly MonoDictionary _dictionary;
 
         private int _next;
 
-        public Enumerator(MonoDictionary<TKey, TValue> dictionary)
+        public Enumerator(MonoDictionary dictionary)
         {
             _dictionary = dictionary;
         }
 
-        public KeyValuePair<TKey, TValue> Current { get; private set; }
+        public KeyValuePair<string, string?> Current { get; private set; }
         readonly object IEnumerator.Current => Current;
 
         public bool MoveNext()
@@ -32,7 +32,7 @@ internal partial class MonoDictionary<TKey, TValue>
             {
                 if ((_dictionary._linkSlots[next].HashCode & HashFlag) != 0)
                 {
-                    Current = new(_dictionary._keySlots[next], _dictionary._valueSlots[next]);
+                    Current = new(_dictionary.GetKey(next), _dictionary.GetValue(next));
                     _next = next + 1;
 
                     return true;

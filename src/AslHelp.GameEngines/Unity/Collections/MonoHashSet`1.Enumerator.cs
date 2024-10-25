@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class MonoHashSet
+internal sealed partial class MonoHashSet<T>
 {
-    private struct Enumerator : IEnumerator<string?>, IEnumerator
+    private struct Enumerator : IEnumerator<T>, IEnumerator
     {
-        private readonly MonoHashSet _set;
+        private readonly MonoHashSet<T> _set;
 
         private int _next;
 
-        public Enumerator(MonoHashSet set)
+        public Enumerator(MonoHashSet<T> set)
         {
             _set = set;
         }
 
-        public string? Current { get; private set; }
-        readonly object? IEnumerator.Current => Current;
+        public T Current { get; private set; }
+        readonly object IEnumerator.Current => Current;
 
         public bool MoveNext()
         {
@@ -32,7 +32,7 @@ internal sealed partial class MonoHashSet
             {
                 if (_set.GetLinkHashCode(next) != 0)
                 {
-                    Current = _set.GetSlotValue(next);
+                    Current = _set._slots[next];
                     _next = next + 1;
 
                     return true;

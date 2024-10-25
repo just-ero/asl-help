@@ -1,51 +1,44 @@
-using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using AslHelp.GameEngines.Unity.Memory;
 using AslHelp.Shared;
-using AslHelp.Shared.Extensions;
 
 namespace AslHelp.GameEngines.Unity.Collections;
 
-internal sealed partial class NetFxHashSet(
-    IUnityReader memory,
+internal sealed partial class NetFxHashSet<T>(
     int[] buckets,
-    NetFxHashSet<nint>.Slot[] slots,
+    NetFxHashSet<T>.Slot[] slots,
     int count,
-    int lastIndex) : ISet<string?>, IReadOnlyCollection<string?>
+    int lastIndex) : ISet<T>, IReadOnlyCollection<T>
+    where T : unmanaged
 {
     private const int Lower31BitMask = 0x7FFFFFFF;
 
     private readonly int[] _buckets = buckets;
-    private readonly NetFxHashSet<nint>.Slot[] _slots = slots;
+    private readonly Slot[] _slots = slots;
 
     private readonly int _lastIndex = lastIndex;
-
-    private readonly IUnityReader _memory = memory;
-    private readonly string?[] _slotCache = new string?[slots.Length];
 
     public int Count { get; } = count;
     public bool IsReadOnly { get; } = true;
 
-    public bool Contains(string? item)
+    public bool Contains(T item)
     {
         return InternalIndexOf(item) >= 0;
     }
 
-    public void CopyTo(string?[] array)
+    public void CopyTo(T[] array)
     {
         CopyTo(array, 0, Count);
     }
 
-    public void CopyTo(string?[] array, int arrayIndex)
+    public void CopyTo(T[] array, int arrayIndex)
     {
         CopyTo(array, arrayIndex, Count);
     }
 
-    public void CopyTo(string?[] array, int arrayIndex, int count)
+    public void CopyTo(T[] array, int arrayIndex, int count)
     {
         ThrowHelper.ThrowIfNotInRange(arrayIndex, 0, array.Length);
         ThrowHelper.ThrowIfNotInRange(count, 0, Count);
@@ -53,16 +46,15 @@ internal sealed partial class NetFxHashSet(
         int numCopied = 0;
         for (int i = 0; i < _lastIndex && numCopied < Count; i++)
         {
-            NetFxHashSet<nint>.Slot slot = _slots[i];
-            if (slot.HashCode >= 0)
+            if (_slots[i].HashCode >= 0)
             {
-                array[arrayIndex + numCopied] = GetSlotValue(i, slot);
+                array[arrayIndex + numCopied] = _slots[i].Value;
                 numCopied++;
             }
         }
     }
 
-    public bool IsSubsetOf(IEnumerable<string?> other)
+    public bool IsSubsetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
@@ -71,7 +63,7 @@ internal sealed partial class NetFxHashSet(
             return true;
         }
 
-        if (other is HashSet<string?> otherSet && otherSet.Comparer == EqualityComparer<string?>.Default)
+        if (other is HashSet<T> otherSet && otherSet.Comparer == EqualityComparer<T>.Default)
         {
             if (Count > otherSet.Count)
             {
@@ -85,9 +77,9 @@ internal sealed partial class NetFxHashSet(
         return result.UniqueCount == Count && result.UnfoundCount >= 0;
     }
 
-    private bool IsSubsetOfHasSetWithSameEC(HashSet<string?> other)
+    private bool IsSubsetOfHasSetWithSameEC(HashSet<T> other)
     {
-        foreach (string? item in this)
+        foreach (T item in this)
         {
             if (!other.Contains(item))
             {
@@ -98,16 +90,16 @@ internal sealed partial class NetFxHashSet(
         return true;
     }
 
-    public bool IsProperSubsetOf(IEnumerable<string?> other)
+    public bool IsProperSubsetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        if (other is ICollection<string?> { Count: > 0 })
+        if (other is ICollection<T> { Count: > 0 })
         {
             return Count == 0;
         }
 
-        if (other is HashSet<string?> otherSet && otherSet.Comparer == EqualityComparer<string?>.Default)
+        if (other is HashSet<T> otherSet && otherSet.Comparer == EqualityComparer<T>.Default)
         {
             if (Count >= otherSet.Count)
             {
@@ -121,16 +113,16 @@ internal sealed partial class NetFxHashSet(
         return result.UniqueCount == Count && result.UnfoundCount > 0;
     }
 
-    public bool IsSupersetOf(IEnumerable<string?> other)
+    public bool IsSupersetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        if (other is ICollection<string?> { Count: 0 })
+        if (other is ICollection<T> { Count: 0 })
         {
             return true;
         }
 
-        if (other is HashSet<string?> otherSet && otherSet.Comparer == EqualityComparer<string?>.Default)
+        if (other is HashSet<T> otherSet && otherSet.Comparer == EqualityComparer<T>.Default)
         {
             if (Count < otherSet.Count)
             {
@@ -141,7 +133,7 @@ internal sealed partial class NetFxHashSet(
         return ContainsAllElements(other);
     }
 
-    public bool IsProperSupersetOf(IEnumerable<string?> other)
+    public bool IsProperSupersetOf(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
@@ -150,12 +142,12 @@ internal sealed partial class NetFxHashSet(
             return false;
         }
 
-        if (other is ICollection<string?> { Count: 0 })
+        if (other is ICollection<T> { Count: 0 })
         {
             return true;
         }
 
-        if (other is HashSet<string?> otherSet && otherSet.Comparer == EqualityComparer<string?>.Default)
+        if (other is HashSet<T> otherSet && otherSet.Comparer == EqualityComparer<T>.Default)
         {
             if (Count <= otherSet.Count)
             {
@@ -169,7 +161,7 @@ internal sealed partial class NetFxHashSet(
         return result.UniqueCount < Count && result.UnfoundCount == 0;
     }
 
-    public bool Overlaps(IEnumerable<string?> other)
+    public bool Overlaps(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
@@ -178,7 +170,7 @@ internal sealed partial class NetFxHashSet(
             return false;
         }
 
-        foreach (string? element in other)
+        foreach (T element in other)
         {
             if (Contains(element))
             {
@@ -189,11 +181,11 @@ internal sealed partial class NetFxHashSet(
         return false;
     }
 
-    public bool SetEquals(IEnumerable<string?> other)
+    public bool SetEquals(IEnumerable<T> other)
     {
         ThrowHelper.ThrowIfNull(other);
 
-        if (other is HashSet<string?> otherSet && otherSet.Comparer == EqualityComparer<string?>.Default)
+        if (other is HashSet<T> otherSet && otherSet.Comparer == EqualityComparer<T>.Default)
         {
             if (Count != otherSet.Count)
             {
@@ -203,7 +195,7 @@ internal sealed partial class NetFxHashSet(
             return ContainsAllElements(otherSet);
         }
 
-        if (other is ICollection<string?> otherCollection && Count == 0 && otherCollection.Count > 0)
+        if (other is ICollection<T> otherCollection && Count == 0 && otherCollection.Count > 0)
         {
             return false;
         }
@@ -212,7 +204,7 @@ internal sealed partial class NetFxHashSet(
         return result.UniqueCount == Count && result.UnfoundCount == 0;
     }
 
-    private unsafe ElementCount CheckUniqueAndUnfoundElements(IEnumerable<string?> other, bool returnIfUnfound)
+    private unsafe ElementCount CheckUniqueAndUnfoundElements(IEnumerable<T> other, bool returnIfUnfound)
     {
         ElementCount result = default;
 
@@ -224,7 +216,7 @@ internal sealed partial class NetFxHashSet(
             return result;
         }
 
-        foreach (string? item in other)
+        foreach (T item in other)
         {
             int index = InternalIndexOf(item);
             if (index >= 0)
@@ -244,33 +236,28 @@ internal sealed partial class NetFxHashSet(
         return result;
     }
 
-    private int InternalIndexOf(string? item)
+    private int InternalIndexOf(T item)
     {
         int hashCode = InternalGetHashCode(item);
-
-        int i = _buckets[hashCode % _buckets.Length] - 1;
-        while (i >= 0)
+        for (int i = _buckets[hashCode % _buckets.Length] - 1; i >= 0; i = _slots[i].Next)
         {
-            NetFxHashSet<nint>.Slot slot = _slots[i];
-            if (slot.HashCode == hashCode && GetSlotValue(i, slot) == item)
+            if (_slots[i].HashCode == hashCode && EqualityComparer<T>.Default.Equals(_slots[i].Value, item))
             {
                 return i;
             }
-
-            i = slot.Next;
         }
 
         return -1;
     }
 
-    private int InternalGetHashCode(string? item)
+    private int InternalGetHashCode(T item)
     {
-        return EqualityComparer<string?>.Default.GetHashCode(item) & Lower31BitMask;
+        return EqualityComparer<T>.Default.GetHashCode(item) & Lower31BitMask;
     }
 
-    private bool ContainsAllElements(IEnumerable<string?> other)
+    private bool ContainsAllElements(IEnumerable<T> other)
     {
-        foreach (string? item in other)
+        foreach (T item in other)
         {
             if (!Contains(item))
             {
@@ -281,12 +268,12 @@ internal sealed partial class NetFxHashSet(
         return true;
     }
 
-    public IEnumerator<string?> GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         return new Enumerator(this);
     }
 
-    bool ISet<string?>.Add(string? item)
+    bool ISet<T>.Add(T item)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
@@ -294,7 +281,7 @@ internal sealed partial class NetFxHashSet(
         return false;
     }
 
-    bool ICollection<string?>.Remove(string? item)
+    bool ICollection<T>.Remove(T item)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
@@ -302,31 +289,31 @@ internal sealed partial class NetFxHashSet(
         return false;
     }
 
-    void ICollection<string?>.Clear()
+    void ICollection<T>.Clear()
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    void ISet<string?>.ExceptWith(IEnumerable<string?> other)
+    void ISet<T>.ExceptWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    void ISet<string?>.IntersectWith(IEnumerable<string?> other)
+    void ISet<T>.IntersectWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    void ISet<string?>.SymmetricExceptWith(IEnumerable<string?> other)
+    void ISet<T>.SymmetricExceptWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
     }
 
-    void ISet<string?>.UnionWith(IEnumerable<string?> other)
+    void ISet<T>.UnionWith(IEnumerable<T> other)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
@@ -337,43 +324,9 @@ internal sealed partial class NetFxHashSet(
         return GetEnumerator();
     }
 
-    void ICollection<string?>.Add(string? item)
+    void ICollection<T>.Add(T item)
     {
         const string Msg = "The collection is read-only.";
         ThrowHelper.ThrowNotSupportedException(Msg);
-    }
-
-    /// <remarks>
-    ///     Same implementation as <see cref="UnityMemory.ReadString(nint, int[])"/>.<br/>
-    ///     Can't call that method since it expects the address of the pointer to the string.<br/>
-    ///     Might need to introduce methods which accept the raw starting address.
-    /// </remarks>
-    private string? GetSlotValue(int index, NetFxHashSet<nint>.Slot slot)
-    {
-        if (_slotCache[index] is string value)
-        {
-            return value;
-        }
-
-        nint deref = slot.Value;
-        if (deref == 0)
-        {
-            return null;
-        }
-
-        int length = _memory.Read<int>(deref + (_memory.PointerSize * 2));
-
-        char[]? rented = null;
-        Span<char> buffer = length <= 512
-            ? stackalloc char[512]
-            : (rented = ArrayPool<char>.Shared.Rent(length));
-
-        _memory.ReadArray(buffer[..length], deref + (_memory.PointerSize * 2) + sizeof(int));
-        value = buffer[..length].ToString();
-
-        ArrayPool<char>.Shared.ReturnIfNotNull(rented);
-        _slotCache[index] = value;
-
-        return value;
     }
 }
