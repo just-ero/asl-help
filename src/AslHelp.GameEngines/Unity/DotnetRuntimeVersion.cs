@@ -1,6 +1,6 @@
 namespace AslHelp.GameEngines.Unity;
 
-public enum RuntimeVersion
+public enum DotnetRuntimeVersion
 {
     Unknown,
 

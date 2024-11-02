@@ -47,7 +47,7 @@ public partial class UnityMemory
             return null;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             var table = ReadArray<int>(deref + MonoSetTable);
             var links = ReadArray<Link>(deref + MonoSetLinks);
@@ -129,7 +129,7 @@ public partial class UnityMemory
             return true;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             if (!TryReadArray(out int[]? table, deref + MonoSetTable)
                 || !TryReadArray(out Link[]? links, deref + MonoSetLinks)
@@ -191,7 +191,7 @@ public partial class UnityMemory
             return null;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             var table = ReadArray<int>(deref + MonoSetTable);
             var links = ReadArray<Link>(deref + MonoSetLinks);
@@ -266,7 +266,7 @@ public partial class UnityMemory
             return true;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             if (!TryReadArray(out int[]? table, deref + MonoSetTable)
                 || !TryReadArray(out Link[]? links, deref + MonoSetLinks)

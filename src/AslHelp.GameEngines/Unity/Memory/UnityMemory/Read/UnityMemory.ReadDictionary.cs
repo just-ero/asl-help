@@ -51,7 +51,7 @@ public partial class UnityMemory
             return null;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             var table = ReadArray<int>(deref + MonoDictTable);
             var links = ReadArray<Link>(deref + MonoDictLinks);
@@ -147,7 +147,7 @@ public partial class UnityMemory
             return true;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             if (!TryReadArray(out int[]? table, deref + MonoDictTable)
                 || !TryReadArray(out Link[]? links, deref + MonoDictLinks)
@@ -224,7 +224,7 @@ public partial class UnityMemory
             return null;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             var table = ReadArray<int>(deref + MonoDictTable);
             var links = ReadArray<Link>(deref + MonoDictLinks);
@@ -309,7 +309,7 @@ public partial class UnityMemory
             return true;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             if (!TryReadArray(out int[]? table, deref + MonoDictTable)
                 || !TryReadArray(out Link[]? links, deref + MonoDictLinks)
@@ -375,7 +375,7 @@ public partial class UnityMemory
             return null;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             var table = ReadArray<int>(deref + MonoDictTable);
             var links = ReadArray<Link>(deref + MonoDictLinks);
@@ -449,7 +449,7 @@ public partial class UnityMemory
             return true;
         }
 
-        if (_version == RuntimeVersion.Mono)
+        if (_version == DotnetRuntimeVersion.Mono)
         {
             if (!TryReadArray(out int[]? table, deref + MonoDictTable)
                 || !TryReadArray(out Link[]? links, deref + MonoDictLinks)

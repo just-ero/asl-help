@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.Build.Traversal">
+﻿<Project Sdk="Microsoft.Build.Traversal/4.1.0">
 
   <PropertyGroup>
     <AssemblyName>asl-help</AssemblyName>

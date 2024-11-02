@@ -37,7 +37,7 @@ public partial class Basic
     }
 
     public bool Is64Bit => Memory.Is64Bit;
-    public byte PointerSize => Memory.PointerSize;
+    public byte PtrSize => Memory.PointerSize;
 
     public Module MainModule => Memory.MainModule;
     public IReadOnlyKeyedCollection<string, Module> Modules => Memory.Modules;
