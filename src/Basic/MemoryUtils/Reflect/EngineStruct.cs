@@ -36,7 +36,7 @@ internal record EngineStruct
         return _fields.TryGetValue(fieldName, out field);
     }
 
-    public int Size => Fields.LastOrDefault() is EngineField field ? field.Offset + field.Size : 0;
-    public int Alignment => Fields.FirstOrDefault() is EngineField field ? field.Alignment : ReflectUtils.MIN_ALIGN;
+    public int Size => Fields.LastOrDefault() is EngineField eField ? eField.Offset + eField.Size : 0;
+    public int Alignment => Fields.FirstOrDefault() is EngineField eField ? eField.Alignment : ReflectUtils.MIN_ALIGN;
     public int SelfAlignedSize => ReflectUtils.Align(Size, Alignment);
 }
