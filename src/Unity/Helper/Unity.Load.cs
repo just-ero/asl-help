@@ -49,7 +49,8 @@ public partial class Unity
                 _ when Il2CppVersion >= 29 => "29",
                 _ => "2019"
             });
-        };
+        }
+        ;
 
         throw new NotSupportedException("This version of Unity does not appear to be supported.");
     }

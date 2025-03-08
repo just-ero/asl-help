@@ -98,7 +98,7 @@ public class TaskBuilder<TResult> :
     {
         if (_failureMessage is not null)
         {
-            string msg = "Startup message was already set.";
+            string msg = "Failure message was already set.";
             throw new InvalidOperationException(msg);
         }
 

@@ -4,7 +4,7 @@
     <TargetFramework>net481</TargetFramework>
     <OutputPath>..\Merger\bin</OutputPath>
 
-    <LangVersion>preview</LangVersion>
+    <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <RootNamespace>AslHelp.Unity</RootNamespace>

@@ -82,23 +82,19 @@ public abstract class HelperBase<TManager> : Basic
 
         _cts = new();
 
-        Task.Run(async () =>
-        {
-            try
+        _ = TaskBuilder<bool>.Create(_cts)
+            .Exec(async ctx =>
             {
                 if (!await LoadAsync())
                 {
-                    return;
+                    return false;
                 }
 
                 if (TryLoad is null)
                 {
-                    Debug.Info();
-                    Debug.Info(this + " loading complete.");
-
                     Loaded = true;
 
-                    return;
+                    return true;
                 }
 
                 Manager = MakeManager();
@@ -106,21 +102,22 @@ public abstract class HelperBase<TManager> : Basic
                 Debug.Info();
                 if (!await DoOnLoad())
                 {
-                    return;
+                    return true;
                 }
 
-                Debug.Info();
-                Debug.Info(this + " loading complete.");
-
                 Loaded = true;
-            }
-            catch (Exception ex) when (ex is OperationCanceledException or TaskCanceledException) { }
-            catch (Exception ex)
-            {
-                Debug.Throw(ex);
-                throw;
-            }
-        });
+
+                return true;
+            })
+            .Catch<OperationCanceledException>()
+                .RetryOnFailure()
+            .Catch<TaskCanceledException>()
+                .RetryOnFailure()
+            .Catch<NotFoundException>()
+                .RetryOnFailure()
+            .WithTimeout(500)
+            .WithCompletionMessage(this + " loading complete.")
+            .RunAsync();
     }
 
     protected async Task<bool> DoOnLoad()
