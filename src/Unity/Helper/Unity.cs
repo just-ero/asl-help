@@ -47,6 +47,11 @@ public partial class Unity : HelperBase<UnityMemManager>
         return true;
     }
 
+    protected override void OnTryLoadFailure()
+    {
+        Manager.Images.Clear();
+    }
+
     public override void Dispose(bool removeTexts)
     {
         _unityVersion = default;

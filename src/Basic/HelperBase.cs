@@ -109,16 +109,14 @@ public abstract class HelperBase<TManager> : Basic
 
                 return true;
             })
-            .Catch<OperationCanceledException>()
-                .RetryOnFailure()
-            .Catch<TaskCanceledException>()
-                .RetryOnFailure()
             .Catch<NotFoundException>()
                 .RetryOnFailure()
             .WithTimeout(500)
             .WithCompletionMessage(this + " loading complete.")
             .RunAsync();
     }
+
+    protected virtual void OnTryLoadFailure() { }
 
     protected async Task<bool> DoOnLoad()
     {
@@ -149,6 +147,7 @@ public abstract class HelperBase<TManager> : Basic
                 .RetryOnFailure()
             .Catch<NotFoundException>()
                 .WithFailureMessage(ex => $"  => {ex.Message}")
+                .DoOnFailure(OnTryLoadFailure)
                 .RetryOnFailure()
             .Catch<Exception>()
                 .WithFailureMessage(ex => $"  => {ex.Message}")
@@ -182,7 +181,7 @@ public abstract class HelperBase<TManager> : Basic
             .Catch<ArgumentException>()
                 .WithFailureMessage("  => Module list locked.")
                 .RetryOnFailure()
-            .WithRetries(ModuleLoadAttempts - 1)
+            .WithRetries(ModuleLoadAttempts)
             .WithTimeout(ModuleLoadTimeout)
             .WithFailureMessage("  => No module found yet.")
             .WithCompletionMessage(m => $"  => Found {m.Name}.")

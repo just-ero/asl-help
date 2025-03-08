@@ -159,6 +159,7 @@ public class TaskBuilder<TResult> :
                     }
 
                     exs.FailureMessage?.Send(ex);
+                    exs.OnFailure?.Invoke();
 
                     switch (exs.FailureBehavior)
                     {
@@ -182,6 +183,7 @@ public class TaskBuilder<TResult> :
             if (_retries > 0)
             {
                 string times = _retries == 1 ? "time" : "times";
+                _retries--;
 
                 Debug.Info($"  => Retrying {_retries} more {times} in {_timeout}ms...");
             }
@@ -189,8 +191,6 @@ public class TaskBuilder<TResult> :
             {
                 Debug.Info($"  => Retrying in {_timeout}ms...");
             }
-
-            _retries--;
 
             await Task.Delay(_timeout, _cts.Token);
         }

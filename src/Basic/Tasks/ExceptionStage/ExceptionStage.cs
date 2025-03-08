@@ -1,3 +1,4 @@
+
 namespace AslHelp.Tasks;
 
 internal class ExceptionStage<TResult, TException> :
@@ -16,6 +17,7 @@ internal class ExceptionStage<TResult, TException> :
     public FailureBehavior FailureBehavior { get; protected set; }
 
     public BuilderMessage<Exception> FailureMessage { get; protected set; }
+    public Action OnFailure { get; protected set; }
 
     IExceptionStage<TResult, TException> IExceptionStage<TResult, TException>.WithFailureMessage(string message)
     {
@@ -38,6 +40,12 @@ internal class ExceptionStage<TResult, TException> :
         }
 
         FailureMessage = new(message);
+        return this;
+    }
+
+    public IExceptionStage<TResult, TException> DoOnFailure(Action action)
+    {
+        OnFailure = action;
         return this;
     }
 

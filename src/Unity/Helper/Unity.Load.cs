@@ -50,7 +50,6 @@ public partial class Unity
                 _ => "2019"
             });
         }
-        ;
 
         throw new NotSupportedException("This version of Unity does not appear to be supported.");
     }
