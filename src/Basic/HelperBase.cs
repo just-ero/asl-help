@@ -111,6 +111,9 @@ public abstract class HelperBase<TManager> : Basic
             })
             .Catch<NotFoundException>()
                 .RetryOnFailure()
+            .Catch<Exception>()
+                .WithFailureMessage(ex => $"  => Unhandled error: {ex.Message}")
+                .ThrowOnFailure()
             .WithTimeout(500)
             .WithCompletionMessage(this + " loading complete.")
             .RunAsync();

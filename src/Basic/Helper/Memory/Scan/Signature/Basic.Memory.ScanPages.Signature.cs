@@ -34,7 +34,7 @@ public partial class Basic
                 continue;
             }
 
-            foreach (nint scan in ScanAll(signature, page.Base, page.RegionSize, alignment))
+            foreach (nint scan in ScanAll(signature, page.Base, (int)page.RegionSize, alignment))
             {
                 yield return scan;
             }
