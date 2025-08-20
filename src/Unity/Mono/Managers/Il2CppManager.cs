@@ -93,7 +93,7 @@ internal class Il2CppManager : UnityMemManager
                 .FirstOrDefault(addr => _game.FromRelativeAddress(addr) == strRef);
 
             Signature shr = new("48 C1 E9");
-            nint metedataInitialize2 = _game.Scan(shr, metadataInitialize, 0xB0);
+            nint metedataInitialize2 = _game.Scan(shr, metadataInitialize, 0x100);
 
             Signature mov = new(3, "48 89 05");
             _typeInfoDefinitionTable = ReadPtr(_game.ScanRel(mov, metedataInitialize2, 0x20));
