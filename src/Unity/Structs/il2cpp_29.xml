@@ -65,7 +65,7 @@
     <Field Name="genericRecursionDepth" Type="byte" />
     <Field Name="rank" Type="byte" />
     <Field Name="minimumAlignment" Type="byte" />
-    <Field Name="naturalAligment" Type="byte" />
+    <!-- <Field Name="naturalAligment" Type="byte" /> field removed in IL2CPP 29. -->
     <Field Name="packingSize" Type="byte" />
 
     <Field Name="initialized_and_no_error" Type="byte:1" />
