@@ -374,3 +374,19 @@ dotnet_naming_style._camelcase.capitalization  = camel_case
 
 
 #### Suppressions ####
+
+[*.cs]
+# CA
+dotnet_diagnostic.CA1034.severity = none # Nested types should not be visible
+dotnet_diagnostic.CA1716.severity = none # Identifiers should not match keywords
+dotnet_diagnostic.CA1815.severity = none # Override equals and operator equals on value types
+dotnet_diagnostic.CA2225.severity = none # Operator overloads have named alternates
+
+[test/**/*.cs]
+# CS
+dotnet_diagnostic.CS1591.severity = none # Missing XML comment for publicly visible type or member
+
+# CA
+dotnet_diagnostic.CA1515.severity = none # Consider making public types internal
+dotnet_diagnostic.CA1707.severity = none # Identifiers should not contain underscores
+dotnet_diagnostic.CA2000.severity = none # Dispose objects before losing scope

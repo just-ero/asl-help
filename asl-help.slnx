@@ -18,4 +18,16 @@
     <Project Path="lib/LiveSplit/components/LiveSplit.ScriptableAutoSplit/src/LiveSplit.ScriptableAutoSplit/LiveSplit.ScriptableAutoSplit.csproj" />
   </Folder>
 
+  <Folder Name="/src/" />
+
+  <Folder Name="/src/core/">
+    <Project Path="src/core/AslHelp/AslHelp.csproj" />
+  </Folder>
+
+  <Folder Name="/test/" />
+
+  <Folder Name="/test/core/">
+    <Project Path="test/core/AslHelp.Tests/AslHelp.Tests.csproj" />
+  </Folder>
+
 </Solution>

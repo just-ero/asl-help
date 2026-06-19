@@ -5,9 +5,26 @@
     <RootPath>$(MSBuildThisFileDirectory)</RootPath>
 
     <LibPath>$(RootPath)/lib</LibPath>
+    <SrcPath>$(RootPath)/src</SrcPath>
+    <TestPath>$(RootPath)/test</TestPath>
 
     <LsComponentsPath>$(LibPath)/LiveSplit/components</LsComponentsPath>
     <LsSrcPath>$(LibPath)/LiveSplit/src</LsSrcPath>
+
+    <ArtifactsPath>$(RootPath)/artifacts</ArtifactsPath>
+  </PropertyGroup>
+
+  <!-- Common properties. -->
+  <PropertyGroup>
+    <LangVersion>14.0</LangVersion>
+
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
+
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
 </Project>
