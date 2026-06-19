@@ -1,0 +1,21 @@
+<Solution>
+
+  <Folder Name="/build/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+  </Folder>
+
+  <Folder Name="/lib/" />
+
+  <Folder Name="/lib/LiveSplit/">
+    <Project Path="lib/LiveSplit/src/LiveSplit.Core/LiveSplit.Core.csproj" />
+    <Project Path="lib/LiveSplit/src/LiveSplit.View/LiveSplit.View.csproj" />
+  </Folder>
+
+  <Folder Name="/lib/LiveSplit/components/">
+    <Project Path="lib/LiveSplit/components/LiveSplit.ScriptableAutoSplit/src/LiveSplit.ScriptableAutoSplit/LiveSplit.ScriptableAutoSplit.csproj" />
+  </Folder>
+
+</Solution>

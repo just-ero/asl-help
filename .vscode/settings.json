@@ -1,0 +1,11 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "asl-help.slnx": ".editorconfig, Directory.Build.props, Directory.Packages.props, global.json",
+    ".gitignore": ".gitattributes, .gitmodules",
+  },
+  "files.exclude": {
+    "artifacts/": true,
+    "lib/": true,
+  },
+}

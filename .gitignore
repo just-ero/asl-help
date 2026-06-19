@@ -1,0 +1,24 @@
+# IDE options & cache
+.vs/*
+.vscode/*
+.idea/*
+.zed/*
+
+!.vscode/settings.json
+
+# Artifacts
+artifacts/
+bin/
+obj/
+
+test/**/TestResults/
+coverage.*.xml
+
+BenchmarkDotNet.Artifacts/
+
+# User-specific files
+*.user
+
+# AI agents
+.claude/
+CLAUDE.md

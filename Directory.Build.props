@@ -1,0 +1,13 @@
+<Project>
+
+  <!-- Common paths. -->
+  <PropertyGroup>
+    <RootPath>$(MSBuildThisFileDirectory)</RootPath>
+
+    <LibPath>$(RootPath)/lib</LibPath>
+
+    <LsComponentsPath>$(LibPath)/LiveSplit/components</LsComponentsPath>
+    <LsSrcPath>$(LibPath)/LiveSplit/src</LsSrcPath>
+  </PropertyGroup>
+
+</Project>

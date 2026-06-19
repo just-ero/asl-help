@@ -1,0 +1,3 @@
+[submodule "LiveSplit"]
+	path = lib/LiveSplit
+	url = https://github.com/LiveSplit/LiveSplit
