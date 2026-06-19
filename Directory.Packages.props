@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageVersion Include="PolySharp" Version="1.16.0" />
+    <PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
 
     <!-- Testing -->
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
