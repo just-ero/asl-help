@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "docfx": {
+      "version": "2.78.5",
+      "commands": [
+        "docfx"
+      ]
+    },
+    "inheritdoctool": {
+      "version": "2.5.2",
+      "commands": [
+        "inheritdoc"
+      ]
+    }
+  }
+}

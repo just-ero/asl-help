@@ -4,6 +4,7 @@
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="dotnet-tools.json" />
     <File Path="global.json" />
   </Folder>
 
@@ -28,6 +29,12 @@
 
   <Folder Name="/test/core/">
     <Project Path="test/core/AslHelp.Tests/AslHelp.Tests.csproj" />
+  </Folder>
+
+  <Folder Name="/wiki/">
+    <File Path="wiki/generate.proj" />
+
+    <Project Path="wiki/AslHelp.WikiGen/AslHelp.WikiGen.csproj" />
   </Folder>
 
 </Solution>

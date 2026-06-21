@@ -1,3 +1,6 @@
 [submodule "LiveSplit"]
 	path = lib/LiveSplit
 	url = https://github.com/LiveSplit/LiveSplit
+[submodule "asl-help.wiki"]
+	path = wiki/asl-help.wiki
+	url = https://github.com/ero-qt/asl-help.wiki

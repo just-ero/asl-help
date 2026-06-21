@@ -1,0 +1,77 @@
+<Project DefaultTargets="GenerateWiki">
+
+  <Import Project="../Directory.Build.props" />
+
+  <!--
+    Orchestrates wiki generation end-to-end. docfx.json is generated from $(DocProjects), so the
+    documented project list lives in exactly one place and is overridable on the CLI.
+
+    Usage:
+      dotnet msbuild wiki/generate.proj
+      dotnet msbuild wiki/generate.proj -p:Configuration=Debug -p:WikiSidebar=Nested -p:WikiOutput=/path/to/wiki
+  -->
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+
+    <WikiName Condition="'$(WikiName)' == ''">AslHelp</WikiName>
+    <WikiOutput Condition="'$(WikiOutput)' == ''">$(RootPath)/wiki/asl-help.wiki</WikiOutput>
+    <WikiSidebar Condition="'$(WikiSidebar)' == ''">Collapsible</WikiSidebar>
+
+    <_DocfxConfig>$(ArtifactsPath)/wiki-gen/docfx.json</_DocfxConfig>
+    <_DocfxMetadata>$(ArtifactsPath)/wiki-gen/metadata</_DocfxMetadata>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <DocProject Include="$(SrcPath)/**/*.csproj">
+      <RelPath>$([MSBuild]::MakeRelative('$(SrcPath)', '%(FullPath)').Replace('\', '/'))</RelPath>
+    </DocProject>
+  </ItemGroup>
+
+  <Target Name="GenerateWiki">
+    <Exec Command="dotnet tool restore"
+      WorkingDirectory="$(RootPath)" />
+
+    <MSBuild Projects="@(DocProject)"
+      Targets="Build"
+      Properties="Configuration=$(Configuration)">
+      <Output TaskParameter="TargetOutputs" ItemName="_DocAssembly" />
+    </MSBuild>
+
+    <ItemGroup>
+      <_DocBins Include="@(_DocAssembly->'%(RootDir)%(Directory)')" KeepDuplicates="false" />
+      <_DocXml Include="@(_DocAssembly->'%(RootDir)%(Directory)%(Filename).xml')" />
+    </ItemGroup>
+
+    <!-- Expand <inheritdoc/> tags in the doc XML in-place. -->
+    <Exec Command="dotnet inheritdoc --base '%(_DocBins.Identity)' --overwrite"
+      WorkingDirectory="$(RootPath)"
+      EnvironmentVariables="DOTNET_ROLL_FORWARD=LatestMajor" />
+
+    <!-- Generate docfx.json from DocProject so the project list is never duplicated. -->
+    <PropertyGroup>
+      <_DocfxFiles>@(DocProject->' "%(RelPath)"', ',%0A')</_DocfxFiles>
+      <_DocfxJson>{ "metadata": [ { "src": [ { "files": [ $(_DocfxFiles) ], "src": "$(SrcPath.Replace('\', '/'))" } ] } ] }</_DocfxJson>
+    </PropertyGroup>
+
+    <WriteLinesToFile Lines="$(_DocfxJson)" File="$(_DocfxConfig)"
+      Overwrite="true"
+      WriteOnlyWhenDifferent="true" />
+
+    <MakeDir Directories="$(_DocfxMetadata)" />
+    <Exec Command="dotnet docfx metadata '$(_DocfxConfig)' -o '$(_DocfxMetadata)'"
+      WorkingDirectory="$(RootPath)" />
+
+    <!-- Render the wiki. -->
+    <PropertyGroup>
+      <_AssemblyArgs>@(_DocAssembly->'"%(Identity)"', ' ')</_AssemblyArgs>
+      <_XmlArgs>@(_DocXml->'"%(Identity)"', ' ')</_XmlArgs>
+    </PropertyGroup>
+
+    <Exec Command="dotnet run --project '$(RootPath)/wiki/AslHelp.WikiGen' -- '$(WikiOutput)' -n $(WikiName) -m '$(_DocfxMetadata)' -r '$(RootPath)' -a $(_AssemblyArgs) -x $(_XmlArgs) --sidebar $(WikiSidebar)"
+      WorkingDirectory="$(RootPath)" />
+
+    <Message Importance="high" Text="Wiki generated at: $(WikiOutput)" />
+  </Target>
+
+</Project>
