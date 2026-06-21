@@ -33,7 +33,7 @@
   </Folder>
 
   <Folder Name="/wiki/">
-    <File Path="wiki/generate.proj" />
+    <File Path="wiki/wiki-gen.proj" />
 
     <Project Path="wiki/AslHelp.WikiGen/AslHelp.WikiGen.csproj" />
   </Folder>

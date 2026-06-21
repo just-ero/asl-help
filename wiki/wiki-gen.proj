@@ -58,6 +58,7 @@
       Overwrite="true"
       WriteOnlyWhenDifferent="true" />
 
+    <RemoveDir Directories="$(_DocfxMetadata)" />
     <MakeDir Directories="$(_DocfxMetadata)" />
     <Exec Command="dotnet docfx metadata '$(_DocfxConfig)' -o '$(_DocfxMetadata)'"
       WorkingDirectory="$(RootPath)" />
