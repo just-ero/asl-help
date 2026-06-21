@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore asl-help.slnx
+
+      - name: Build
+        run: dotnet build asl-help.slnx -c Release --no-restore
+
+      - name: Test
+        shell: bash
+        run: |
+          dotnet test asl-help.slnx \
+            -c Release --no-build \
+            --collect:"XPlat Code Coverage" \
+            --results-directory coverage \
+            --logger "trx;LogFileName=test-results.trx"
+
+      # Coverage is informational only — reported to the run summary, never gated on a threshold.
+      - name: Coverage report
+        if: always()
+        shell: bash
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator \
+            "-reports:coverage/**/coverage.cobertura.xml" \
+            "-targetdir:coverage/report" \
+            "-reporttypes:MarkdownSummaryGithub;Html"
+          cat coverage/report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: coverage/report

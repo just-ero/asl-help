@@ -23,6 +23,7 @@
 
   <Folder Name="/src/core/">
     <Project Path="src/core/AslHelp/AslHelp.csproj" />
+    <Project Path="src/core/AslHelp.LiveSplit/AslHelp.LiveSplit.csproj" />
   </Folder>
 
   <Folder Name="/test/" />
