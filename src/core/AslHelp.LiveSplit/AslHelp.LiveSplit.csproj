@@ -7,9 +7,15 @@
 
   <ItemGroup>
     <ProjectReference Include="$(SrcPath)/core/AslHelp/AslHelp.csproj" />
+
+    <ProjectReference Include="$(LsSrcPath)/LiveSplit.Core/LiveSplit.Core.csproj" />
+    <ProjectReference Include="$(LsSrcPath)/LiveSplit.View/LiveSplit.View.csproj" />
+    <ProjectReference Include="$(LsComponentsPath)/LiveSplit.ScriptableAutoSplit/src/LiveSplit.ScriptableAutoSplit/LiveSplit.ScriptableAutoSplit.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+
     <PackageReference Include="PolySharp" PrivateAssets="all" />
   </ItemGroup>
 
