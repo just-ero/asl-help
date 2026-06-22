@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="$(TestPath)/AslHelp.Testing/AslHelp.Testing.csproj" />
 
-    <ProjectReference Include="$(SrcPath)/core/AslHelp/AslHelp.csproj" />
+    <ProjectReference Include="$(SrcPath)/memory/AslHelp.Memory/AslHelp.Memory.csproj" />
   </ItemGroup>
 
 </Project>

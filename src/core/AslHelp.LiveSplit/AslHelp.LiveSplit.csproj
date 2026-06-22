@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-
-    <PackageReference Include="PolySharp" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
