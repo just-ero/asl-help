@@ -1,10 +1,11 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Reflection;
 
 namespace AslHelp.Reflection;
 
 /// <summary>
-///     Reflection helpers for reading and writing fields by name, including non-public ones.
+///     Provides extension members for <see cref="object"/>.
 /// </summary>
 public static class ReflectionExtensions
 {
@@ -22,6 +23,7 @@ public static class ReflectionExtensions
         ///     The field's value.
         /// </returns>
         /// <exception cref="MissingFieldException">No field of type <typeparamref name="T"/> named <paramref name="name"/> exists.</exception>
+        [Pure]
         public T? GetFieldValue<T>(string name, BindingFlags flags = InstanceFlags)
         {
             ArgumentNullException.ThrowIfNull(name);

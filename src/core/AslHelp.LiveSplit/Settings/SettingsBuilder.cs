@@ -29,7 +29,7 @@ public sealed partial class SettingsBuilder(ASLSettingsBuilder builder)
     /// </summary>
     /// <param name="settings">The settings rows to add.</param>
     /// <exception cref="ArgumentException">A row has zero or more than five columns.</exception>
-#pragma warning disable CA1814 // TODO
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     public void Add(dynamic?[,] settings)
 #pragma warning restore CA1814
     {
@@ -41,7 +41,7 @@ public sealed partial class SettingsBuilder(ASLSettingsBuilder builder)
         Add(converted);
     }
 
-#pragma warning disable CA1814 // TODO
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
     private static IEnumerable<Setting> ConvertFromDynamic(dynamic?[,] settings)
 #pragma warning restore CA1814
     {

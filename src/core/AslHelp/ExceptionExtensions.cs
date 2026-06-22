@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace AslHelp;
 
 /// <summary>
-///     Polyfills the <see cref="ArgumentException"/> throw helper for netstandard2.0.
+///     Provides extension members for <see cref="ArgumentException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class ArgumentExceptionExtensions
@@ -32,7 +32,7 @@ public static class ArgumentExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="ArgumentNullException"/> throw and null-check helpers for netstandard2.0.
+///     Provides extension members for <see cref="ArgumentNullException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class ArgumentNullExceptionExtensions
@@ -110,7 +110,7 @@ public static class ArgumentNullExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="ArgumentOutOfRangeException"/> throw and range-check helpers for netstandard2.0.
+///     Provides extension members for <see cref="ArgumentOutOfRangeException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class ArgumentOutOfRangeExceptionExtensions
@@ -611,7 +611,7 @@ public static class ArgumentOutOfRangeExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="DllNotFoundException"/> throw helper for netstandard2.0.
+///     Provides extension members for <see cref="DllNotFoundException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class DllNotFoundExceptionExtensions
@@ -632,7 +632,7 @@ public static class DllNotFoundExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="EndOfStreamException"/> throw helper for netstandard2.0.
+///     Provides extension members for <see cref="EndOfStreamException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class EndOfStreamExceptionExtensions
@@ -653,7 +653,7 @@ public static class EndOfStreamExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="FormatException"/> throw helper for netstandard2.0.
+///     Provides extension members for <see cref="FormatException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class FormatExceptionExtensions
@@ -674,7 +674,7 @@ public static class FormatExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="InvalidOperationException"/> throw helpers for netstandard2.0.
+///     Provides extension members for <see cref="InvalidOperationException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class InvalidOperationExceptionExtensions
@@ -707,7 +707,7 @@ public static class InvalidOperationExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="KeyNotFoundException"/> throw helper for netstandard2.0.
+///     Provides extension members for <see cref="KeyNotFoundException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class KeyNotFoundExceptionExtensions
@@ -728,7 +728,7 @@ public static class KeyNotFoundExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="MissingFieldException"/> throw helper for netstandard2.0.
+///     Provides extension members for <see cref="MissingFieldException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class MissingFieldExceptionExtensions
@@ -751,7 +751,7 @@ public static class MissingFieldExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="NotImplementedException"/> throw helpers for netstandard2.0.
+///     Provides extension members for <see cref="NotImplementedException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class NotImplementedExceptionExtensions
@@ -784,7 +784,7 @@ public static class NotImplementedExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="ObjectDisposedException"/> throw and disposed-check helpers for netstandard2.0.
+///     Provides extension members for <see cref="ObjectDisposedException"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class ObjectDisposedExceptionExtensions
@@ -834,7 +834,7 @@ public static class ObjectDisposedExceptionExtensions
 }
 
 /// <summary>
-///     Polyfills the <see cref="Win32Exception"/> throw helpers for netstandard2.0.
+///     Provides extension members for <see cref="Win32Exception"/>.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class Win32ExceptionExtensions

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Buffers" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" />
   </ItemGroup>
 

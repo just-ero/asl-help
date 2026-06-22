@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace AslHelp.Logging;
 
 /// <summary>
-///     Provides level-specific logging convenience methods for <see cref="Logger"/>.
+///     Provides extension members for <see cref="Logger"/>.
 /// </summary>
 public static class LoggerExtensions
 {
