@@ -8,4 +8,8 @@
     <ProjectReference Include="$(SrcPath)/core/AslHelp/AslHelp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Memory" />
+  </ItemGroup>
+
 </Project>

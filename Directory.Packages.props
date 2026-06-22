@@ -7,6 +7,7 @@
   <!-- Shared package versions. -->
   <ItemGroup>
     <PackageVersion Include="PolySharp" Version="1.16.0" />
+    <PackageVersion Include="System.Memory" Version="4.5.5" />
     <PackageVersion Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
 
     <!-- Tooling -->
