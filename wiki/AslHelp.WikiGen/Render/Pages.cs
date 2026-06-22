@@ -81,14 +81,18 @@ internal static class Pages
             }
 
             bool valued = group is MemberGroup.Properties or MemberGroup.Fields;
+            bool enumValues = type.Kind == "Enum" && group is MemberGroup.Fields;
             sb.AppendLine($"## {group}").AppendLine();
-            sb.AppendLine(valued ? "| Name | Type | Summary |" : "| Name | Summary |");
+            sb.AppendLine(valued ? $"| Name | {(enumValues ? "Value" : "Type")} | Summary |" : "| Name | Summary |");
             sb.AppendLine(valued ? "| --- | --- | --- |" : "| --- | --- |");
             foreach (ApiMember m in pages)
             {
                 string link = Md(MemberNaming.For(m).Display, m.Ref);
+                string valueCell = enumValues
+                    ? (m.Value is null ? "" : $"`{m.Value}`")
+                    : (m.ValueType is null ? "" : LinkResolver.Link(m.ValueType));
                 sb.AppendLine(valued
-                    ? $"| {link} | {(m.ValueType is null ? "" : LinkResolver.Link(m.ValueType))} | {Cell(m.Summary)} |"
+                    ? $"| {link} | {valueCell} | {Cell(m.Summary)} |"
                     : $"| {link} | {Cell(m.Summary)} |");
             }
 

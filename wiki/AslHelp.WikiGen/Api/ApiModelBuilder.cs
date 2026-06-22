@@ -55,10 +55,11 @@ internal static partial class ApiModelBuilder
             string typeRef = uidToRef[item.Uid];
             string typeFile = $"{assembly}/{ns}/{typeRef}";
 
+            bool isEnum = item.Type == "Enum";
             var members = item.Children
                 .Select(uid => model.Items.GetValueOrDefault(uid))
                 .Where(m => m is not null)
-                .Select(m => ToMember(m!, resolver))
+                .Select(m => ToMember(m!, resolver, isEnum))
                 .ToList();
 
             if (extensions.TryGetValue(item.Uid, out List<ApiMember>? extra))
@@ -92,7 +93,7 @@ internal static partial class ApiModelBuilder
         return types;
     }
 
-    private static ApiMember ToMember(DocfxItem item, LinkResolver resolver)
+    private static ApiMember ToMember(DocfxItem item, LinkResolver resolver, bool declaringIsEnum)
     {
         bool valued = item.Type is "Property" or "Field";
         return new ApiMember(
@@ -105,7 +106,22 @@ internal static partial class ApiModelBuilder
                 .Select(p => new ApiParameter(p.Id, resolver.TypeLink(p.Type ?? ""), resolver.ToMarkdown(p.Description)))],
             ReturnType: !valued && item.Syntax?.Return?.Type is { } rt ? resolver.TypeLink(rt) : null,
             ReturnSummary: resolver.ToMarkdown(item.Syntax?.Return?.Description),
-            Source: ToSource(item.Source));
+            Source: ToSource(item.Source))
+        {
+            Value = declaringIsEnum && item.Type == "Field" ? EnumValue(item.Syntax?.Content) : null,
+        };
+    }
+
+    // An enum member's syntax content is "Name = value"; pull out the value text.
+    private static string? EnumValue(string? content)
+    {
+        if (content is null)
+        {
+            return null;
+        }
+
+        int eq = content.IndexOf('=');
+        return eq < 0 ? null : content[(eq + 1)..].Trim();
     }
 
     private static MemberGroup GroupOf(string kind)

@@ -52,6 +52,11 @@ internal sealed record ApiMember(
     ///     The nested file path written to (e.g. <c>AslHelp/AslHelp/Result-1/Result-1.IsOk</c>).
     /// </summary>
     public string File { get; init; } = "";
+
+    /// <summary>
+    ///     For an enum field, its constant value (e.g. <c>1</c>); otherwise <see langword="null"/>.
+    /// </summary>
+    public string? Value { get; init; }
 }
 
 /// <summary>
