@@ -80,7 +80,13 @@ internal static unsafe class MemoryMarshalExtensions
         [Pure]
         public static string CreateStringFromNullTerminated(ReadOnlySpan<byte> bytes)
         {
-            int i = bytes.IndexOf((byte)'\0');
+            if (bytes.IsEmpty)
+            {
+                // An empty span pins to a null pointer, which Encoding.GetString rejects on .NET Core.
+                return "";
+            }
+
+            var i = bytes.IndexOf((byte)'\0');
             fixed (byte* pBytes = bytes)
             {
                 return i == -1
