@@ -30,16 +30,19 @@
     <Project Path="src/memory/AslHelp.Memory/AslHelp.Memory.csproj" />
   </Folder>
 
-  <Folder Name="/test/">
-    <Project Path="test/AslHelp.Testing/AslHelp.Testing.csproj" />
-  </Folder>
+  <Folder Name="/test/" />
 
   <Folder Name="/test/core/">
     <Project Path="test/core/AslHelp.Tests/AslHelp.Tests.csproj" />
+    <Project Path="test/core/AslHelp.LiveSplit.Tests/AslHelp.LiveSplit.Tests.csproj" />
   </Folder>
 
   <Folder Name="/test/memory/">
     <Project Path="test/memory/AslHelp.Memory.Tests/AslHelp.Memory.Tests.csproj" />
+  </Folder>
+
+  <Folder Name="/test/wiki/">
+    <Project Path="test/wiki/AslHelp.WikiGen.Tests/AslHelp.WikiGen.Tests.csproj" />
   </Folder>
 
   <Folder Name="/wiki/">

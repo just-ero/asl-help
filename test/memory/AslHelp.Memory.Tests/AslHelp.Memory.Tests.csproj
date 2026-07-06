@@ -2,14 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>net4.8.1;net10.0</TargetFrameworks>
-
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(TestPath)/AslHelp.Testing/AslHelp.Testing.csproj" />
-
     <ProjectReference Include="$(SrcPath)/memory/AslHelp.Memory/AslHelp.Memory.csproj" />
   </ItemGroup>
 
