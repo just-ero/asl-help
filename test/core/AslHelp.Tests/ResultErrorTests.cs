@@ -56,4 +56,13 @@ public class ExceptionErrorTests
 
         Assert.That(error.ToString(), Is.EqualTo("InvalidOperationException: kaboom"));
     }
+
+    [Test]
+    public void ToString_WithCustomMessage_UsesExceptionTypeNameAndCustomMessage()
+    {
+        ExceptionError error = new(new InvalidOperationException("orig"), "custom");
+
+        // The runtime exception type, but the overriding custom message (not "orig").
+        Assert.That(error.ToString(), Is.EqualTo("InvalidOperationException: custom"));
+    }
 }

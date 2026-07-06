@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net4.8.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SrcPath)/core/AslHelp.LiveSplit/AslHelp.LiveSplit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Required for the dynamic?[,] settings overload on .NET Framework. -->
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
