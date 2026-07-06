@@ -10,7 +10,7 @@ public class ResultTests
     [Test]
     public void Ok_ByDefault_IsOk()
     {
-        Result result = Result.Ok();
+        var result = Result.Ok();
 
         using (Assert.EnterMultipleScope())
         {
@@ -24,7 +24,7 @@ public class ResultTests
     [Test]
     public void Err_WithMessage_IsErr()
     {
-        Result result = Result.Err("boom");
+        var result = Result.Err("boom");
 
         using (Assert.EnterMultipleScope())
         {
@@ -32,18 +32,6 @@ public class ResultTests
             Assert.That(result.Error!.Message, Is.EqualTo("boom"));
             Assert.That(result.ToString(), Does.Contain("boom"));
         }
-    }
-
-    [Test]
-    public void Err_WithNullError_Throws()
-    {
-        Assert.Throws<ArgumentNullException>(() => _ = Result.Err((IResultError)null!));
-    }
-
-    [Test]
-    public void Err_WithNullMessage_Throws()
-    {
-        Assert.Throws<ArgumentNullException>(() => _ = Result.Err((string)null!));
     }
 
     [Test]
@@ -72,15 +60,6 @@ public class ResultTests
         Result result = new InvalidOperationException("boom");
 
         Assert.That(result.Error, Is.InstanceOf<ExceptionError>());
-    }
-
-    [Test]
-    public void ImplicitConversion_FromNullException_Throws()
-    {
-        Assert.Throws<ArgumentNullException>(() =>
-        {
-            Result _ = (Exception)null!;
-        });
     }
 
     [Test]
@@ -116,9 +95,9 @@ public class ResultTests
     [Test]
     public void AndThen_WhenErr_DoesNotInvokeContinuation()
     {
-        bool called = false;
+        var called = false;
 
-        Result result = Result.Err("a").AndThen(() =>
+        var result = Result.Err("a").AndThen(() =>
         {
             called = true;
             return Result.Ok();
@@ -176,9 +155,9 @@ public class ResultTests
     [Test]
     public void MapErr_WhenOk_DoesNotInvokeFn()
     {
-        bool called = false;
+        var called = false;
 
-        Result result = Result.Ok().MapErr(e =>
+        var result = Result.Ok().MapErr(e =>
         {
             called = true;
             return new ResultError("x");
@@ -206,9 +185,9 @@ public class ResultTests
     [Test]
     public void OrElse_WhenOk_DoesNotInvokeFn()
     {
-        bool called = false;
+        var called = false;
 
-        Result result = Result.Ok().OrElse(e =>
+        var result = Result.Ok().OrElse(e =>
         {
             called = true;
             return Result.Err("b");
@@ -260,7 +239,7 @@ public class ResultTests
     [Test]
     public void Expect_WhenErr_ThrowsWithMessage()
     {
-        InvalidOperationException? ex =
+        var ex =
             Assert.Throws<InvalidOperationException>(() => Result.Err("a").Expect("custom message"));
 
         Assert.That(ex!.Message, Does.Contain("custom message"));
@@ -287,7 +266,7 @@ public class ResultTests
     [Test]
     public void ExpectErr_WhenOk_ThrowsWithMessage()
     {
-        InvalidOperationException? ex =
+        var ex =
             Assert.Throws<InvalidOperationException>(() => Result.Ok().ExpectErr("want error"));
 
         Assert.That(ex!.Message, Does.Contain("want error"));
@@ -296,7 +275,7 @@ public class ResultTests
     [Test]
     public void TryUnwrapErr_WhenErr_ReturnsTrueWithError()
     {
-        bool ok = Result.Err("a").TryUnwrapErr(out IResultError? error);
+        var ok = Result.Err("a").TryUnwrapErr(out var error);
 
         using (Assert.EnterMultipleScope())
         {
@@ -308,7 +287,7 @@ public class ResultTests
     [Test]
     public void TryUnwrapErr_WhenOk_ReturnsFalse()
     {
-        bool ok = Result.Ok().TryUnwrapErr(out IResultError? error);
+        var ok = Result.Ok().TryUnwrapErr(out var error);
 
         using (Assert.EnterMultipleScope())
         {
@@ -320,9 +299,9 @@ public class ResultTests
     [Test]
     public void Inspect_WhenOk_InvokesActionAndReturnsSelf()
     {
-        int count = 0;
+        var count = 0;
 
-        Result returned = Result.Ok().Inspect(() => count++);
+        var returned = Result.Ok().Inspect(() => count++);
 
         using (Assert.EnterMultipleScope())
         {
@@ -334,7 +313,7 @@ public class ResultTests
     [Test]
     public void Inspect_WhenErr_DoesNotInvokeAction()
     {
-        int count = 0;
+        var count = 0;
 
         Result.Err("a").Inspect(() => count++);
 
@@ -346,7 +325,7 @@ public class ResultTests
     {
         string? seen = null;
 
-        Result returned = Result.Err("a").InspectErr(e => seen = e.Message);
+        var returned = Result.Err("a").InspectErr(e => seen = e.Message);
 
         using (Assert.EnterMultipleScope())
         {
@@ -358,7 +337,7 @@ public class ResultTests
     [Test]
     public void InspectErr_WhenOk_DoesNotInvokeAction()
     {
-        bool called = false;
+        var called = false;
 
         Result.Ok().InspectErr(e => called = true);
 

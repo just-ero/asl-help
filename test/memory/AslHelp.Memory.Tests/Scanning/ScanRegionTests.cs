@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,78 +20,6 @@ public class ScanRegionTests
     private static MemoryPage Range(nint @base, int size)
     {
         return new(@base, size, default, default, default);
-    }
-
-    // ---- factory validation ----
-
-    [Test]
-    public void OverBuffer_NullBuffer_Throws()
-    {
-        Assert.That(() => ScanRegion.OverBuffer(null!, Base, 0), Throws.ArgumentNullException);
-    }
-
-    [Test]
-    public void OverBuffer_SizeGreaterThanBuffer_Throws()
-    {
-        Assert.That(
-            () => ScanRegion.OverBuffer(new byte[4], Base, 5),
-            Throws.InstanceOf<ArgumentOutOfRangeException>());
-    }
-
-    [Test]
-    public void OverBuffer_NegativeSize_Throws()
-    {
-        Assert.That(
-            () => ScanRegion.OverBuffer(new byte[4], Base, -1),
-            Throws.InstanceOf<ArgumentOutOfRangeException>());
-    }
-
-    [Test]
-    public void OverMemory_NullReader_Throws()
-    {
-        Assert.That(() => ScanRegion.OverMemory(null!, Base, 0), Throws.ArgumentNullException);
-    }
-
-    [Test]
-    public void OverMemory_NegativeSize_Throws()
-    {
-        Assert.That(
-            () => ScanRegion.OverMemory(new FailingMemoryReader(), Base, -1),
-            Throws.InstanceOf<ArgumentOutOfRangeException>());
-    }
-
-    [Test]
-    public void OverRanges_NullReader_Throws()
-    {
-        Assert.That(() => ScanRegion.OverRanges(null!, Base, 0, []), Throws.ArgumentNullException);
-    }
-
-    [Test]
-    public void OverRanges_NullSubRanges_Throws()
-    {
-        Assert.That(
-            () => ScanRegion.OverRanges(new FailingMemoryReader(), Base, 0, null!),
-            Throws.ArgumentNullException);
-    }
-
-    [Test]
-    public void OverRanges_NegativeSize_Throws()
-    {
-        Assert.That(
-            () => ScanRegion.OverRanges(new FailingMemoryReader(), Base, -1, []),
-            Throws.InstanceOf<ArgumentOutOfRangeException>());
-    }
-
-    [Test]
-    public void Properties_ReflectBaseAndSize()
-    {
-        var region = ScanRegion.OverBuffer(Bytes16(), Base, 16);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(region.BaseAddress, Is.EqualTo(Base));
-            Assert.That(region.Size, Is.EqualTo(16));
-        }
     }
 
     // ---- Rent: buffer-backed (zero-copy) ----

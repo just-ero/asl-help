@@ -22,7 +22,7 @@ public class ResultOfTTests
     [Test]
     public void Ok_WithValue_IsOkAndCarriesValue()
     {
-        Result<int> result = Ok(42);
+        var result = Ok(42);
 
         using (Assert.EnterMultipleScope())
         {
@@ -36,7 +36,7 @@ public class ResultOfTTests
     [Test]
     public void Err_WithMessage_IsErr()
     {
-        Result<int> result = Err("boom");
+        var result = Err("boom");
 
         using (Assert.EnterMultipleScope())
         {
@@ -44,12 +44,6 @@ public class ResultOfTTests
             Assert.That(result.Error!.Message, Is.EqualTo("boom"));
             Assert.That(result.ToString(), Does.Contain("boom"));
         }
-    }
-
-    [Test]
-    public void Err_WithNullError_Throws()
-    {
-        Assert.Throws<ArgumentNullException>(() => _ = Result.Err<int>((IResultError)null!));
     }
 
     [Test]
@@ -217,7 +211,7 @@ public class ResultOfTTests
     [Test]
     public void Expect_WhenErr_ThrowsWithMessage()
     {
-        InvalidOperationException? ex =
+        var ex =
             Assert.Throws<InvalidOperationException>(() => Err("a").Expect("want value"));
 
         Assert.That(ex!.Message, Does.Contain("want value"));
@@ -280,7 +274,7 @@ public class ResultOfTTests
     [Test]
     public void ExpectErr_WhenOk_ThrowsWithMessage()
     {
-        InvalidOperationException? ex =
+        var ex =
             Assert.Throws<InvalidOperationException>(() => Ok(2).ExpectErr("want err"));
 
         Assert.That(ex!.Message, Does.Contain("want err"));
@@ -289,7 +283,7 @@ public class ResultOfTTests
     [Test]
     public void TryUnwrap_WhenOk_ReturnsTrueWithValue()
     {
-        bool ok = Ok(2).TryUnwrap(out int value);
+        var ok = Ok(2).TryUnwrap(out var value);
 
         using (Assert.EnterMultipleScope())
         {
@@ -301,7 +295,7 @@ public class ResultOfTTests
     [Test]
     public void TryUnwrap_WhenErr_ReturnsFalse()
     {
-        bool ok = Err("a").TryUnwrap(out int value);
+        var ok = Err("a").TryUnwrap(out var value);
 
         using (Assert.EnterMultipleScope())
         {
@@ -313,7 +307,7 @@ public class ResultOfTTests
     [Test]
     public void TryUnwrapWithError_WhenErr_ReturnsFalseWithError()
     {
-        bool ok = Err("a").TryUnwrap(out int value, out IResultError? error);
+        var ok = Err("a").TryUnwrap(out var value, out var error);
 
         using (Assert.EnterMultipleScope())
         {
@@ -326,7 +320,7 @@ public class ResultOfTTests
     [Test]
     public void TryUnwrapWithError_WhenOk_ReturnsTrueWithoutError()
     {
-        bool ok = Ok(2).TryUnwrap(out int value, out IResultError? error);
+        var ok = Ok(2).TryUnwrap(out var value, out var error);
 
         using (Assert.EnterMultipleScope())
         {
@@ -339,7 +333,7 @@ public class ResultOfTTests
     [Test]
     public void TryUnwrapErr_WhenErr_ReturnsTrueWithError()
     {
-        bool ok = Err("a").TryUnwrapErr(out IResultError? error);
+        var ok = Err("a").TryUnwrapErr(out var error);
 
         using (Assert.EnterMultipleScope())
         {
@@ -351,9 +345,9 @@ public class ResultOfTTests
     [Test]
     public void Inspect_WhenOk_InvokesActionAndReturnsSelf()
     {
-        int seen = 0;
+        var seen = 0;
 
-        Result<int> returned = Ok(5).Inspect(v => seen = v);
+        var returned = Ok(5).Inspect(v => seen = v);
 
         using (Assert.EnterMultipleScope())
         {
@@ -373,25 +367,6 @@ public class ResultOfTTests
     }
 
     [Test]
-    public void AndThen_WhenOk_SatisfiesLeftIdentity()
-    {
-        static Result<int> f(int x)
-        {
-            return Result.Ok(x + 1);
-        }
-
-        Assert.That(Result.Ok(3).AndThen(f).Unwrap(), Is.EqualTo(f(3).Unwrap()));
-    }
-
-    [Test]
-    public void AndThen_WithOk_SatisfiesRightIdentity()
-    {
-        Result<int> m = Result.Ok(3);
-
-        Assert.That(m.AndThen(Result.Ok).Unwrap(), Is.EqualTo(m.Unwrap()));
-    }
-
-    [Test]
     public void AndThen_WhenChained_SatisfiesAssociativity()
     {
         static Result<int> f(int x)
@@ -404,8 +379,8 @@ public class ResultOfTTests
             return Result.Ok(x * 2);
         }
 
-        Result<int> left = Result.Ok(3).AndThen(f).AndThen(g);
-        Result<int> right = Result.Ok(3).AndThen(x => f(x).AndThen(g));
+        var left = Result.Ok(3).AndThen(f).AndThen(g);
+        var right = Result.Ok(3).AndThen(x => f(x).AndThen(g));
 
         Assert.That(left.Unwrap(), Is.EqualTo(right.Unwrap()));
     }

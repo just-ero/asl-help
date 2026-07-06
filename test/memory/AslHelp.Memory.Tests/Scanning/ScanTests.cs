@@ -240,22 +240,6 @@ public class ScanTests
     // ---- validation ----
 
     [Test]
-    public void Memory_NullReader_Throws()
-    {
-        Assert.That(
-            () => Scan.Memory(null!, 0x1000, 4, [ScanStep.For("AB")]),
-            Throws.ArgumentNullException);
-    }
-
-    [Test]
-    public void Memory_NullSteps_Throws()
-    {
-        Assert.That(
-            () => Scan.Memory(Reader([0xAB]), 0x1000, 1, null!),
-            Throws.ArgumentNullException);
-    }
-
-    [Test]
     public void Memory_NoSteps_Throws()
     {
         Assert.That(

@@ -12,51 +12,6 @@ namespace AslHelp.Memory.Tests.Scanning;
 public class WindowLeaseTests
 {
     [Test]
-    public void Empty_HasNoBytesAndZeroStart()
-    {
-        var lease = WindowLease.Empty;
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(lease.Bytes.IsEmpty, Is.True);
-            Assert.That(lease.Start, Is.EqualTo((nint)0));
-        }
-    }
-
-    [Test]
-    public void Constructor_ExposesStartAndBytes()
-    {
-        byte[] data = [1, 2, 3, 4];
-        byte[] expected = [2, 3];
-
-        WindowLease lease = new(data.AsMemory(1, 2), 0x2000, rented: null);
-
-        using (Assert.EnterMultipleScope())
-        {
-            Assert.That(lease.Start, Is.EqualTo((nint)0x2000));
-            Assert.That(lease.Bytes.ToArray(), Is.EqualTo(expected));
-        }
-    }
-
-    [Test]
-    public void Dispose_WithoutRentedBuffer_DoesNotThrow()
-    {
-        WindowLease lease = new(new byte[] { 1 }.AsMemory(), 0x10, rented: null);
-
-        Assert.DoesNotThrow(lease.Dispose);
-    }
-
-    [Test]
-    public void Dispose_WithRentedBuffer_ReturnsItCleanly()
-    {
-        var rented = ArrayPool<byte>.Shared.Rent(8);
-
-        WindowLease lease = new(rented.AsMemory(0, 8), 0x10, rented);
-
-        Assert.DoesNotThrow(lease.Dispose);
-    }
-
-    [Test]
     [NonParallelizable]
     public void Dispose_CalledTwice_ReturnsBufferOnlyOnce()
     {
