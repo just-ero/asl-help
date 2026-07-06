@@ -44,7 +44,7 @@
     </ItemGroup>
 
     <!-- Expand <inheritdoc/> tags in the doc XML in-place. -->
-    <Exec Command="dotnet inheritdoc --base '%(_DocBins.Identity)' --overwrite"
+    <Exec Command="dotnet inheritdoc --base &quot;$([System.IO.Path]::TrimEndingDirectorySeparator('%(_DocBins.Identity)'))&quot; --overwrite"
       WorkingDirectory="$(RootPath)"
       EnvironmentVariables="DOTNET_ROLL_FORWARD=LatestMajor" />
 
@@ -60,7 +60,7 @@
 
     <RemoveDir Directories="$(_DocfxMetadata)" />
     <MakeDir Directories="$(_DocfxMetadata)" />
-    <Exec Command="dotnet docfx metadata '$(_DocfxConfig)' -o '$(_DocfxMetadata)'"
+    <Exec Command="dotnet docfx metadata &quot;$(_DocfxConfig)&quot; -o &quot;$(_DocfxMetadata)&quot;"
       WorkingDirectory="$(RootPath)" />
 
     <!-- Render the wiki. -->
@@ -69,7 +69,7 @@
       <_XmlArgs>@(_DocXml->'"%(Identity)"', ' ')</_XmlArgs>
     </PropertyGroup>
 
-    <Exec Command="dotnet run --project '$(RootPath)/wiki/AslHelp.WikiGen' -- '$(WikiOutput)' -n $(WikiName) -m '$(_DocfxMetadata)' -r '$(RootPath)' -a $(_AssemblyArgs) -x $(_XmlArgs) --sidebar $(WikiSidebar)"
+    <Exec Command="dotnet run --project &quot;$(RootPath)/wiki/AslHelp.WikiGen&quot; -- &quot;$(WikiOutput)&quot; -n $(WikiName) -m &quot;$(_DocfxMetadata)&quot; -r &quot;$([System.IO.Path]::TrimEndingDirectorySeparator('$(RootPath)'))&quot; -a $(_AssemblyArgs) -x $(_XmlArgs) --sidebar $(WikiSidebar)"
       WorkingDirectory="$(RootPath)" />
 
     <Message Importance="high" Text="Wiki generated at: $(WikiOutput)" />
