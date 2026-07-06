@@ -28,7 +28,7 @@ internal static unsafe class MarshalExtensions
         {
             const int ERROR_INSUFFICIENT_BUFFER = 0x7A;
 
-            int errorCode = Marshal.GetLastWin32Error();
+            var errorCode = Marshal.GetLastWin32Error();
             var flags = FormatMessageFlags.IgnoreInserts
                 | FormatMessageFlags.FromSystem
                 | FormatMessageFlags.ArgumentArray;
@@ -41,7 +41,7 @@ internal static unsafe class MarshalExtensions
             Span<char> buffer = stackalloc char[256];
             fixed (char* pBuffer = buffer)
             {
-                int length = PInvoke.FormatMessage(
+                var length = PInvoke.FormatMessage(
                     flags,
                     (nuint)moduleHandle,
                     unchecked((uint)errorCode),
@@ -63,7 +63,7 @@ internal static unsafe class MarshalExtensions
                 nint nativeMsgPtr = default;
                 try
                 {
-                    int length = PInvoke.FormatMessage(
+                    var length = PInvoke.FormatMessage(
                         flags,
                         (nuint)moduleHandle,
                         unchecked((uint)errorCode),
@@ -87,7 +87,7 @@ internal static unsafe class MarshalExtensions
 
             static string getAndTrimString(ReadOnlySpan<char> buffer)
             {
-                int length = buffer.Length;
+                var length = buffer.Length;
                 while (length > 0 && buffer[length - 1] <= ' ')
                 {
                     length--;

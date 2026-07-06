@@ -107,7 +107,7 @@ internal sealed class ScanRegion
         long regionStart = baseAddress;
         var regionEnd = regionStart + size;
 
-        List<(nint, int)> readable = [with(subRanges.Count)];
+        var readable = new List<(nint, int)>(subRanges.Count);
         foreach (var range in subRanges)
         {
             long start = range.Base;

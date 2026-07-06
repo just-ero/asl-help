@@ -27,7 +27,7 @@ public sealed partial class SettingsBuilder
     /// <param name="path">The path of the JSON settings file.</param>
     public void FromJson(string path)
     {
-        using FileStream fs = File.OpenRead(path);
+        using var fs = File.OpenRead(path);
         var settings = JsonSerializer.Deserialize<Dictionary<string, JsonSetting>>(fs, _jsonOptions);
 
         if (settings is { Count: > 0 })
@@ -41,8 +41,8 @@ public sealed partial class SettingsBuilder
     {
         foreach (var setting in settings)
         {
-            string id = setting.Key;
-            JsonSetting value = setting.Value;
+            var id = setting.Key;
+            var value = setting.Value;
 
             yield return new(
                 Id: id,
@@ -53,7 +53,7 @@ public sealed partial class SettingsBuilder
 
             if (value.Children is { Count: > 0 } children)
             {
-                foreach (Setting child in ConvertFromJson(children, id))
+                foreach (var child in ConvertFromJson(children, id))
                 {
                     yield return child;
                 }

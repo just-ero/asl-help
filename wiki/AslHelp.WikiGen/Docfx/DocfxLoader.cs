@@ -14,7 +14,7 @@ internal static class DocfxLoader
 {
     public static DocfxModel Load(string metadataDir)
     {
-        IDeserializer deserializer = new DeserializerBuilder()
+        var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .IgnoreUnmatchedProperties()
             .Build();
@@ -22,20 +22,20 @@ internal static class DocfxLoader
         var items = new Dictionary<string, DocfxItem>(StringComparer.Ordinal);
         var references = new Dictionary<string, DocfxReference>(StringComparer.Ordinal);
 
-        foreach (string path in Directory.EnumerateFiles(metadataDir, "*.yml"))
+        foreach (var path in Directory.EnumerateFiles(metadataDir, "*.yml"))
         {
             if (string.Equals(Path.GetFileName(path), "toc.yml", StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            DocfxFile file = deserializer.Deserialize<DocfxFile>(File.ReadAllText(path));
-            foreach (DocfxItem item in file.Items)
+            var file = deserializer.Deserialize<DocfxFile>(File.ReadAllText(path));
+            foreach (var item in file.Items)
             {
                 items[item.Uid] = item;
             }
 
-            foreach (DocfxReference reference in file.References)
+            foreach (var reference in file.References)
             {
                 references.TryAdd(reference.Uid, reference);
             }
@@ -61,12 +61,12 @@ internal sealed class DocfxModel(
     /// <summary>Returns the display name for a UID, preferring a reference's short name.</summary>
     public string DisplayName(string uid)
     {
-        if (references.TryGetValue(uid, out DocfxReference? reference) && reference.Name is { } name)
+        if (references.TryGetValue(uid, out var reference) && reference.Name is { } name)
         {
             return name;
         }
 
-        if (items.TryGetValue(uid, out DocfxItem? item))
+        if (items.TryGetValue(uid, out var item))
         {
             return item.Name;
         }

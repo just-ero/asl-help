@@ -26,7 +26,7 @@ internal static class ScriptResolver
         [MaybeNullWhen(false)] out T component,
         [NotNullWhen(true)] out string? action)
     {
-        foreach ((T candidate, IReadOnlyDictionary<Module, string> actions) in candidates)
+        foreach (var (candidate, actions) in candidates)
         {
             if (actions.TryGetValue(callingModule, out action))
             {

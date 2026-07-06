@@ -30,7 +30,7 @@ internal static unsafe partial class PInvoke
     public static bool IsWow64Process(SafeProcessHandle processHandle, out bool isWow64)
     {
         int bWow64Process;
-        bool success = IsWow64Process(processHandle, &bWow64Process) != 0;
+        var success = IsWow64Process(processHandle, &bWow64Process) != 0;
 
         isWow64 = bWow64Process != 0;
         return success;

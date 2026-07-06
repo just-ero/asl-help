@@ -19,18 +19,18 @@ internal sealed partial class XmlSummaries
 
     public XmlSummaries(IEnumerable<string> xmlPaths)
     {
-        foreach (string xmlPath in xmlPaths)
+        foreach (var xmlPath in xmlPaths)
         {
-            foreach (XElement member in XDocument.Load(xmlPath).Descendants("member"))
+            foreach (var member in XDocument.Load(xmlPath).Descendants("member"))
             {
-                string? name = member.Attribute("name")?.Value;
-                XElement? summary = member.Element("summary");
+                var name = member.Attribute("name")?.Value;
+                var summary = member.Element("summary");
                 if (name is null || summary is null || name.Length < 2)
                 {
                     continue;
                 }
 
-                string key = MemberKey(name);
+                var key = MemberKey(name);
                 if (!_byMember.ContainsKey(key))
                 {
                     _byMember[key] = Convert(summary);
@@ -50,8 +50,8 @@ internal sealed partial class XmlSummaries
     // "M:AslHelp.ResultExtensions.Map``1(AslHelp.Result,``0)" -> "AslHelp.ResultExtensions.Map"
     private static string MemberKey(string xmlName)
     {
-        string id = xmlName[2..]; // drop "M:" / "P:" / "T:"
-        int paren = id.IndexOf('(', StringComparison.Ordinal);
+        var id = xmlName[2..]; // drop "M:" / "P:" / "T:"
+        var paren = id.IndexOf('(', StringComparison.Ordinal);
         if (paren >= 0)
         {
             id = id[..paren];
@@ -64,7 +64,7 @@ internal sealed partial class XmlSummaries
     private static string Convert(XElement summary)
     {
         var sb = new System.Text.StringBuilder();
-        foreach (XNode node in summary.Nodes())
+        foreach (var node in summary.Nodes())
         {
             switch (node)
             {
@@ -77,7 +77,7 @@ internal sealed partial class XmlSummaries
             }
         }
 
-        string text = sb.ToString();
+        var text = sb.ToString();
         text = Tags.Replace(text, "");
         return Whitespace.Replace(text, " ").Trim();
     }
@@ -96,14 +96,14 @@ internal sealed partial class XmlSummaries
 
     private static string LastSegment(string cref)
     {
-        string id = cref.Contains(':') ? cref[(cref.IndexOf(':') + 1)..] : cref;
-        int paren = id.IndexOf('(', StringComparison.Ordinal);
+        var id = cref.Contains(':') ? cref[(cref.IndexOf(':') + 1)..] : cref;
+        var paren = id.IndexOf('(', StringComparison.Ordinal);
         if (paren >= 0)
         {
             id = id[..paren];
         }
 
-        int dot = id.LastIndexOf('.');
+        var dot = id.LastIndexOf('.');
         return dot >= 0 ? id[(dot + 1)..] : id;
     }
 }

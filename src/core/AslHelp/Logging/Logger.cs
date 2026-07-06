@@ -98,7 +98,7 @@ public sealed class Logger : IDisposable
                 continue;
             }
 
-            int depth = frame is null ? 0 : frame.Counts[(int)sink.MinimumLevel];
+            var depth = frame is null ? 0 : frame.Counts[(int)sink.MinimumLevel];
             sink.Emit(e, depth);
         }
     }
@@ -146,8 +146,8 @@ public sealed class Logger : IDisposable
                 Array.Copy(current.Counts, counts, Levels);
             }
 
-            int top = (int)level;
-            for (int frame = 0; frame <= top; frame++)
+            var top = (int)level;
+            for (var frame = 0; frame <= top; frame++)
             {
                 counts[frame]++;
             }

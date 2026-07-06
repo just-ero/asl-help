@@ -24,18 +24,18 @@ internal sealed class WikiGenerator(GeneratorOptions options)
 
     public void Run()
     {
-        DocfxModel model = DocfxLoader.Load(options.MetadataDir);
+        var model = DocfxLoader.Load(options.MetadataDir);
         var summaries = new XmlSummaries(options.XmlPaths);
-        List<ApiType> types = ApiModelBuilder.Build(model, options.AssemblyPaths, summaries, options.RepoDir);
+        var types = ApiModelBuilder.Build(model, options.AssemblyPaths, summaries, options.RepoDir);
 
         CleanGeneratedFolders();
 
-        int memberPages = 0;
-        foreach (ApiType type in types)
+        var memberPages = 0;
+        foreach (var type in types)
         {
             Write(type.File, Pages.Type(type));
 
-            foreach (IGrouping<string, ApiMember> overloads in type.Members.GroupBy(m => m.Ref))
+            foreach (var overloads in type.Members.GroupBy(m => m.Ref))
             {
                 Write(overloads.First().File, Pages.Member(type, [.. overloads]));
                 memberPages++;
@@ -44,7 +44,7 @@ internal sealed class WikiGenerator(GeneratorOptions options)
 
         foreach (var ns in types.GroupBy(t => (t.Assembly, t.Namespace)))
         {
-            string file = $"{ns.Key.Assembly}/{ns.Key.Namespace}/{ns.Key.Namespace}";
+            var file = $"{ns.Key.Assembly}/{ns.Key.Namespace}/{ns.Key.Namespace}";
             Write(file, Pages.Namespace(ns.Key.Namespace, [.. ns]));
         }
 
@@ -56,7 +56,7 @@ internal sealed class WikiGenerator(GeneratorOptions options)
         WriteGeneratedRegion("Home", Pages.HomeScaffold(options.AssemblyName), Pages.HomeApi(types));
         WriteGeneratedRegion("_Sidebar", SidebarBuilder.Scaffold(), SidebarBuilder.Build(types, options.Sidebar));
 
-        int namespaces = types.Select(t => t.Namespace).Distinct().Count();
+        var namespaces = types.Select(t => t.Namespace).Distinct().Count();
         Console.WriteLine($"WikiGen: {types.Count} types ({memberPages} member pages), {namespaces} namespaces -> {options.OutputDir}");
     }
 
@@ -65,9 +65,9 @@ internal sealed class WikiGenerator(GeneratorOptions options)
     // wiki (tutorials, hand-authored pages) lives outside these folders and is left untouched.
     private void CleanGeneratedFolders()
     {
-        foreach (string assemblyPath in options.AssemblyPaths)
+        foreach (var assemblyPath in options.AssemblyPaths)
         {
-            string dir = Path.Combine(options.OutputDir, Path.GetFileNameWithoutExtension(assemblyPath));
+            var dir = Path.Combine(options.OutputDir, Path.GetFileNameWithoutExtension(assemblyPath));
             if (Directory.Exists(dir))
             {
                 Directory.Delete(dir, recursive: true);
@@ -77,7 +77,7 @@ internal sealed class WikiGenerator(GeneratorOptions options)
 
     private void Write(string pagePath, string content)
     {
-        string full = Path.Combine(options.OutputDir, pagePath + ".md");
+        var full = Path.Combine(options.OutputDir, pagePath + ".md");
         Directory.CreateDirectory(Path.GetDirectoryName(full)!);
         File.WriteAllText(full, content);
     }
@@ -88,16 +88,16 @@ internal sealed class WikiGenerator(GeneratorOptions options)
     // and gets the generated region appended once (subsequent runs then splice in place).
     private void WriteGeneratedRegion(string pagePath, string scaffold, string generated)
     {
-        string full = Path.Combine(options.OutputDir, pagePath + ".md");
-        string block = $"{RegionBegin}\n\n{generated.TrimEnd()}\n\n{RegionEnd}";
+        var full = Path.Combine(options.OutputDir, pagePath + ".md");
+        var block = $"{RegionBegin}\n\n{generated.TrimEnd()}\n\n{RegionEnd}";
 
         if (File.Exists(full))
         {
-            string existing = File.ReadAllText(full);
-            int begin = existing.IndexOf(RegionBegin, StringComparison.Ordinal);
-            int end = existing.IndexOf(RegionEnd, StringComparison.Ordinal);
+            var existing = File.ReadAllText(full);
+            var begin = existing.IndexOf(RegionBegin, StringComparison.Ordinal);
+            var end = existing.IndexOf(RegionEnd, StringComparison.Ordinal);
 
-            string merged = begin >= 0 && end > begin
+            var merged = begin >= 0 && end > begin
                 ? existing[..begin] + block + existing[(end + RegionEnd.Length)..]
                 : existing.TrimEnd() + "\n\n" + block + "\n";
 

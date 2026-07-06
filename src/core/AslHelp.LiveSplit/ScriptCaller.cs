@@ -26,9 +26,9 @@ internal static class ScriptCaller
         using (logger.BeginScopeTrace($"Searching {trace.FrameCount} stack frames for a compiled script..."))
         {
 
-            for (int i = 0; i < trace.FrameCount; i++)
+            for (var i = 0; i < trace.FrameCount; i++)
             {
-                MethodBase? method = trace.GetFrame(i)?.GetMethod();
+                var method = trace.GetFrame(i)?.GetMethod();
                 logger.LogTrace(
                     $"[{i}] {method?.DeclaringType?.FullName ?? "<global>"}.{method?.Name ?? "<unknown>"}");
 

@@ -164,13 +164,13 @@ public sealed class FileSink : ILogSink, IDisposable
     private void EraseLines()
     {
         // Sibling temp keeps the swap on the same volume so File.Replace is atomic.
-        string tempFile = FileName + ".tmp";
+        var tempFile = FileName + ".tmp";
 
-        int kept = 0;
+        var kept = 0;
         using (StreamReader reader = new(FileName))
         using (StreamWriter writer = new(tempFile, append: false))
         {
-            int skipped = 0;
+            var skipped = 0;
             string? line;
             while ((line = reader.ReadLine()) is not null)
             {

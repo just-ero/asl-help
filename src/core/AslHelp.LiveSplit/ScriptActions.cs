@@ -87,7 +87,7 @@ public sealed class ScriptActions
     internal static IReadOnlyDictionary<Module, string> GetActionModules(ASLScript.Methods methods)
     {
         Dictionary<Module, string> map = [];
-        foreach (ASLMethod method in methods)
+        foreach (var method in methods)
         {
             // Each defined action compiles into its own assembly; empty (no-op) actions share a
             // single placeholder module and carry no name, so they are skipped.
@@ -116,28 +116,28 @@ public sealed class ScriptActions
     {
         try
         {
-            string code = File.ReadAllText(scriptPath);
+            var code = File.ReadAllText(scriptPath);
 
             ASLGrammar grammar = new();
             Parser parser = new(grammar);
 
-            ParseTree tree = parser.Parse(code);
-            ParseTreeNode node = tree.Root.ChildNodes.First(n => n.Term.Name == "methodList");
+            var tree = parser.Parse(code);
+            var node = tree.Root.ChildNodes.First(n => n.Term.Name == "methodList");
 
-            Dictionary<string, ScriptAction> byName = CreateEmpty(methods);
-            foreach (ParseTreeNode method in node.ChildNodes[0].ChildNodes)
+            var byName = CreateEmpty(methods);
+            foreach (var method in node.ChildNodes[0].ChildNodes)
             {
-                string name = (string)method.ChildNodes[0].Token.Value;
+                var name = (string)method.ChildNodes[0].Token.Value;
                 if (!byName.ContainsKey(name))
                 {
                     logger.LogTrace($"Skipping unknown script method '{name}'.");
                     continue;
                 }
 
-                string body = (string)method.ChildNodes[2].Token.Value;
-                int line = method.ChildNodes[2].Token.Location.Line + 1;
+                var body = (string)method.ChildNodes[2].Token.Value;
+                var line = method.ChildNodes[2].Token.Location.Line + 1;
 
-                ASLMethod aslMethod = methods.GetFieldValue<ASLMethod>(name)!;
+                var aslMethod = methods.GetFieldValue<ASLMethod>(name)!;
                 byName[name] = new(methods, name, body, line, aslMethod.Module);
                 logger.LogTrace($"Parsed action '{name}' (line {line}).");
             }
@@ -157,7 +157,7 @@ public sealed class ScriptActions
     private static Dictionary<string, ScriptAction> CreateEmpty(ASLScript.Methods methods)
     {
         Dictionary<string, ScriptAction> byName = [];
-        foreach (string name in _names)
+        foreach (var name in _names)
         {
             byName[name] = new(methods, name);
         }

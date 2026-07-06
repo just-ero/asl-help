@@ -30,46 +30,46 @@ internal static partial class ApiModelBuilder
 
         // uid -> unique link basename: types (local name, arity -N) and their members (Type.member).
         var uidToRef = new Dictionary<string, string>(StringComparer.Ordinal);
-        foreach (DocfxItem t in typeItems)
+        foreach (var t in typeItems)
         {
-            string typeRef = TypeRef(t.Uid, t.Namespace ?? "");
+            var typeRef = TypeRef(t.Uid, t.Namespace ?? "");
             uidToRef[t.Uid] = typeRef;
-            foreach (string childUid in t.Children)
+            foreach (var childUid in t.Children)
             {
-                if (model.Items.TryGetValue(childUid, out DocfxItem? child))
+                if (model.Items.TryGetValue(childUid, out var child))
                 {
-                    string token = MemberNaming.For(child.Name, GroupOf(child.Type)).File;
+                    var token = MemberNaming.For(child.Name, GroupOf(child.Type)).File;
                     uidToRef[StripMemberUid(childUid)] = $"{typeRef}.{token}";
                 }
             }
         }
 
         var resolver = new LinkResolver(model, uidToRef);
-        Dictionary<string, List<ApiMember>> extensions = ExtensionCollector.Collect(assemblyPaths, summaries);
+        var extensions = ExtensionCollector.Collect(assemblyPaths, summaries);
 
         var types = new List<ApiType>();
-        foreach (DocfxItem item in typeItems)
+        foreach (var item in typeItems)
         {
-            string ns = item.Namespace ?? "";
-            string assembly = item.Assemblies.FirstOrDefault() ?? "";
-            string typeRef = uidToRef[item.Uid];
-            string typeFile = $"{assembly}/{ns}/{typeRef}";
+            var ns = item.Namespace ?? "";
+            var assembly = item.Assemblies.FirstOrDefault() ?? "";
+            var typeRef = uidToRef[item.Uid];
+            var typeFile = $"{assembly}/{ns}/{typeRef}";
 
-            bool isEnum = item.Type == "Enum";
+            var isEnum = item.Type == "Enum";
             var members = item.Children
                 .Select(uid => model.Items.GetValueOrDefault(uid))
                 .Where(m => m is not null)
                 .Select(m => ToMember(m!, resolver, isEnum))
                 .ToList();
 
-            if (extensions.TryGetValue(item.Uid, out List<ApiMember>? extra))
+            if (extensions.TryGetValue(item.Uid, out var extra))
             {
                 members.AddRange(extra);
             }
 
             members = [.. members.Select(m =>
             {
-                string memberRef = $"{typeRef}.{MemberNaming.For(m).File}";
+                var memberRef = $"{typeRef}.{MemberNaming.For(m).File}";
                 return m with { Ref = memberRef, File = $"{typeFile}/{memberRef}" };
             })];
 
@@ -95,7 +95,7 @@ internal static partial class ApiModelBuilder
 
     private static ApiMember ToMember(DocfxItem item, LinkResolver resolver, bool declaringIsEnum)
     {
-        bool valued = item.Type is "Property" or "Field";
+        var valued = item.Type is "Property" or "Field";
         return new ApiMember(
             Name: item.Name,
             Group: GroupOf(item.Type),
@@ -120,7 +120,7 @@ internal static partial class ApiModelBuilder
             return null;
         }
 
-        int eq = content.IndexOf('=');
+        var eq = content.IndexOf('=');
         return eq < 0 ? null : content[(eq + 1)..].Trim();
     }
 
@@ -140,7 +140,7 @@ internal static partial class ApiModelBuilder
     // Normalizes a member UID to the key form the resolver looks up (no parameters / method arity).
     private static string StripMemberUid(string uid)
     {
-        int paren = uid.IndexOf('(', StringComparison.Ordinal);
+        var paren = uid.IndexOf('(', StringComparison.Ordinal);
         return MethodArity.Replace(paren >= 0 ? uid[..paren] : uid, "");
     }
 
@@ -149,7 +149,7 @@ internal static partial class ApiModelBuilder
     /// </summary>
     public static string TypeRef(string uid, string ns)
     {
-        string local = ns.Length > 0 && uid.StartsWith(ns + ".", StringComparison.Ordinal)
+        var local = ns.Length > 0 && uid.StartsWith(ns + ".", StringComparison.Ordinal)
             ? uid[(ns.Length + 1)..]
             : uid;
         return Arity.Replace(local, m => "-" + m.Groups[1].Value);
@@ -162,16 +162,16 @@ internal static partial class ApiModelBuilder
             return null;
         }
 
-        string baseRepo = repo.TrimEnd('/');
+        var baseRepo = repo.TrimEnd('/');
         if (baseRepo.EndsWith(".git", StringComparison.Ordinal))
         {
             baseRepo = baseRepo[..^4];
         }
 
-        string branch = source.Remote.Branch ?? "main";
-        string encoded = path.Replace("{", "%7B").Replace("}", "%7D").Replace(" ", "%20");
-        int line = DeclarationLine(path, source.StartLine);
-        string anchor = line > 0 ? $"#L{line}" : "";
+        var branch = source.Remote.Branch ?? "main";
+        var encoded = path.Replace("{", "%7B").Replace("}", "%7D").Replace(" ", "%20");
+        var line = DeclarationLine(path, source.StartLine);
+        var anchor = line > 0 ? $"#L{line}" : "";
         return new ApiSource(System.IO.Path.GetFileName(path), $"{baseRepo}/blob/{branch}/{encoded}{anchor}");
     }
 
@@ -184,8 +184,8 @@ internal static partial class ApiModelBuilder
             return 0;
         }
 
-        string full = System.IO.Path.Combine(_repoDir, repoRelativePath.Replace('/', System.IO.Path.DirectorySeparatorChar));
-        if (!_fileLines.TryGetValue(full, out string[]? lines))
+        var full = System.IO.Path.Combine(_repoDir, repoRelativePath.Replace('/', System.IO.Path.DirectorySeparatorChar));
+        if (!_fileLines.TryGetValue(full, out var lines))
         {
             lines = System.IO.File.Exists(full) ? System.IO.File.ReadAllLines(full) : [];
             _fileLines[full] = lines;
@@ -196,10 +196,10 @@ internal static partial class ApiModelBuilder
             return startLine + 1; // fall back to docfx line (0-based -> 1-based)
         }
 
-        int i = startLine;
+        var i = startLine;
         while (i < lines.Length)
         {
-            string trimmed = lines[i].TrimStart();
+            var trimmed = lines[i].TrimStart();
             if (trimmed.Length == 0 || trimmed.StartsWith('['))
             {
                 i++;

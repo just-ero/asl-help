@@ -45,8 +45,8 @@ internal sealed partial class LinkResolver(DocfxModel model, IReadOnlyDictionary
     /// </summary>
     public string? ResolveToPath(string uid)
     {
-        string u = OpenForm(Uri.UnescapeDataString(uid));
-        int paren = u.IndexOf('(', StringComparison.Ordinal);
+        var u = OpenForm(Uri.UnescapeDataString(uid));
+        var paren = u.IndexOf('(', StringComparison.Ordinal);
         if (paren >= 0)
         {
             u = u[..paren];
@@ -56,12 +56,12 @@ internal sealed partial class LinkResolver(DocfxModel model, IReadOnlyDictionary
 
         while (true)
         {
-            if (uidToPath.TryGetValue(u, out string? path))
+            if (uidToPath.TryGetValue(u, out var path))
             {
                 return path;
             }
 
-            int dot = u.LastIndexOf('.');
+            var dot = u.LastIndexOf('.');
             if (dot < 0)
             {
                 return null;
@@ -82,7 +82,7 @@ internal sealed partial class LinkResolver(DocfxModel model, IReadOnlyDictionary
         }
 
         var sb = new StringBuilder();
-        int i = 0;
+        var i = 0;
         while (i < uid.Length)
         {
             if (uid[i] == '{')
@@ -128,9 +128,9 @@ internal sealed partial class LinkResolver(DocfxModel model, IReadOnlyDictionary
             return "";
         }
 
-        string text = Xref.Replace(html, m =>
+        var text = Xref.Replace(html, m =>
         {
-            string uid = m.Groups[1].Value;
+            var uid = m.Groups[1].Value;
             return Link(new ApiLink(model.DisplayName(Uri.UnescapeDataString(uid)), ResolveToPath(uid)));
         });
 

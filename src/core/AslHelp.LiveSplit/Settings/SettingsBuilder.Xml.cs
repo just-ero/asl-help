@@ -26,8 +26,9 @@ public sealed partial class SettingsBuilder
         {
             if ((string?)node.Attribute("Id") is not { Length: > 0 } id)
             {
-                throw new FormatException(
+                FormatException.Throw(
                     "Xml settings file was in an incorrect format: a <Setting> is missing its 'Id' attribute.");
+                yield break;
             }
 
             var label = (string?)node.Attribute("Label");

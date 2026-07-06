@@ -47,7 +47,7 @@ public sealed partial class SettingsBuilder(ASLSettingsBuilder builder)
     {
         var (outerCount, innerCount) = (settings.GetLength(0), settings.GetLength(1));
 
-        for (int i = 0; i < outerCount; i++)
+        for (var i = 0; i < outerCount; i++)
         {
             if (innerCount is <= 0 or > 5)
             {
@@ -71,7 +71,7 @@ public sealed partial class SettingsBuilder(ASLSettingsBuilder builder)
 
     private void Add(IEnumerable<Setting> settings)
     {
-        foreach (Setting setting in settings)
+        foreach (var setting in settings)
         {
             ArgumentNullException.ThrowIfNull(setting.Id, paramName: "ASLSetting.Id");
             ArgumentNullException.ThrowIfNull(setting.Label, paramName: "ASLSetting.Label");

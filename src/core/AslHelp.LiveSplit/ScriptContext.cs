@@ -93,7 +93,7 @@ public sealed class ScriptContext
     internal static Result<ScriptContext> Find(Logger logger, LiveSplitState state)
     {
         if (!ScriptCaller.FindCallingModule(logger)
-            .TryUnwrap(out Module? callingModule, out var callerError))
+            .TryUnwrap(out var callingModule, out var callerError))
         {
             return Result.Err<ScriptContext>(callerError);
         }
@@ -105,7 +105,7 @@ public sealed class ScriptContext
 
             using (logger.BeginScopeTrace("Inspecting loaded ASL components..."))
             {
-                foreach (ASLComponent component in EnumerateComponents(state))
+                foreach (var component in EnumerateComponents(state))
                 {
                     var settings = component.GetFieldValue<ComponentSettings>("_settings")!;
                     inspected.Add(settings.ScriptPath);
@@ -125,7 +125,7 @@ public sealed class ScriptContext
             }
 
 #pragma warning disable CA2000 // Dispose objects before losing scope (ASLComponent)
-            if (!ScriptResolver.TryMatch(callingModule, candidates, out ASLComponent? owner, out string? action))
+            if (!ScriptResolver.TryMatch(callingModule, candidates, out var owner, out var action))
 #pragma warning restore CA2000
             {
                 return AttachError.ScriptComponentNotFound(inspected);
@@ -148,7 +148,7 @@ public sealed class ScriptContext
                 return AttachError.LiveSplitInternalsChanged("ASLSettings.Builder");
             }
 
-            ScriptActions actions = ScriptActions.Parse(logger, ownerSettings.ScriptPath, ownerMethods);
+            var actions = ScriptActions.Parse(logger, ownerSettings.ScriptPath, ownerMethods);
 
             logger.LogDebug($"Resolved script '{ownerSettings.ScriptPath}'.");
             return new ScriptContext(
@@ -167,7 +167,7 @@ public sealed class ScriptContext
             yield return autoSplitter;
         }
 
-        foreach (IComponent component in state.Layout.Components)
+        foreach (var component in state.Layout.Components)
         {
             if (component is ASLComponent asl)
             {

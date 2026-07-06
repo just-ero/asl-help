@@ -37,12 +37,12 @@ internal static unsafe partial class PInvoke
         out int count,
         ListModulesFilter filter)
     {
-        uint cb = checked((uint)modules.Length * (uint)sizeof(nuint));
+        var cb = checked((uint)modules.Length * (uint)sizeof(nuint));
         uint bytesNeeded;
 
         fixed (nuint* pModules = modules)
         {
-            bool success = EnumProcessModulesEx(processHandle, (void**)pModules, cb, &bytesNeeded, (uint)filter) != 0;
+            var success = EnumProcessModulesEx(processHandle, (void**)pModules, cb, &bytesNeeded, (uint)filter) != 0;
 
             count = (int)(bytesNeeded / (uint)sizeof(nuint));
             return success;

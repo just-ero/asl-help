@@ -52,7 +52,7 @@ public static class UnsafeAccessor
 
         DynamicMethod dm = new($"get{name}", typeof(TField), [typeof(TTarget)], true);
 
-        ILGenerator il = dm.GetILGenerator();
+        var il = dm.GetILGenerator();
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Ldfld, fi);
         il.Emit(OpCodes.Ret);
@@ -83,7 +83,7 @@ public static class UnsafeAccessor
 
         DynamicMethod dm = new($"set{name}", null, [typeof(TTarget), typeof(TField)], true);
 
-        ILGenerator il = dm.GetILGenerator();
+        var il = dm.GetILGenerator();
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Ldarg_1);
         il.Emit(OpCodes.Stfld, fi);

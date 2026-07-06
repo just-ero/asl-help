@@ -193,7 +193,7 @@ public class LoggerExtensionsTests
     [Test]
     public void LogMethods_WhenCalled_EmitWithMatchingLevel()
     {
-        (Logger logger, FakeSink sink) = NewLogger();
+        var (logger, sink) = NewLogger();
 
         logger.LogTrace("t");
         logger.LogDebug("d");
@@ -218,7 +218,7 @@ public class LoggerExtensionsTests
     [Test]
     public void Log_WhenCalled_CapturesCallerMemberName()
     {
-        (Logger logger, FakeSink sink) = NewLogger();
+        var (logger, sink) = NewLogger();
 
         logger.LogInformation("hello");
 
@@ -252,7 +252,7 @@ public class LoggerExtensionsTests
     [Test]
     public void BeginScopeMethods_WhenCalled_LogHeaderThenIndent()
     {
-        (Logger logger, FakeSink sink) = NewLogger();
+        var (logger, sink) = NewLogger();
 
         using (logger.BeginScopeTrace("st"))
         {
@@ -308,7 +308,7 @@ public class LogFormatterTests
     {
         LogEvent e = new(level, "msg", "m", "f", 1);
 
-        string formatted = LogFormatter.Default(in e, 0);
+        var formatted = LogFormatter.Default(in e, 0);
 
         Assert.That(formatted, Does.StartWith(expectedPrefix));
     }
@@ -318,7 +318,7 @@ public class LogFormatterTests
     {
         LogEvent e = new(LogLevel.Information, "msg", "m", "f", 1);
 
-        string formatted = LogFormatter.Default(in e, 2);
+        var formatted = LogFormatter.Default(in e, 2);
 
         // "[info] " (trailing space) + 8 indent spaces + message.
         Assert.That(formatted, Is.EqualTo("[info] " + new string(' ', 8) + "msg"));

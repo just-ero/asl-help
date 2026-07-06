@@ -21,7 +21,7 @@ internal static class ExtensionCollector
     {
         var result = new Dictionary<string, List<ApiMember>>(StringComparer.Ordinal);
 
-        foreach (string assemblyPath in assemblyPaths)
+        foreach (var assemblyPath in assemblyPaths)
         {
             CollectFrom(Assembly.LoadFrom(assemblyPath), summaries, result);
         }
@@ -31,21 +31,21 @@ internal static class ExtensionCollector
 
     private static void CollectFrom(Assembly assembly, XmlSummaries summaries, Dictionary<string, List<ApiMember>> result)
     {
-        foreach (Type type in SafeTypes(assembly))
+        foreach (var type in SafeTypes(assembly))
         {
             if (!type.IsPublic || !type.IsAbstract || !type.IsSealed) // static class
             {
                 continue;
             }
 
-            foreach (MethodInfo method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
             {
                 if (!method.IsDefined(typeof(ExtensionAttribute), inherit: false))
                 {
                     continue;
                 }
 
-                (result.TryGetValue(type.FullName!, out List<ApiMember>? list) ? list : result[type.FullName!] = [])
+                (result.TryGetValue(type.FullName!, out var list) ? list : result[type.FullName!] = [])
                     .Add(ToMember(method, summaries.For(type.FullName!, method.Name)));
             }
         }
@@ -53,7 +53,7 @@ internal static class ExtensionCollector
 
     private static ApiMember ToMember(MethodInfo method, string? summary)
     {
-        string name = method.Name + GenericSuffix(method.GetGenericArguments());
+        var name = method.Name + GenericSuffix(method.GetGenericArguments());
         return new ApiMember(
             Name: name,
             Group: MemberGroup.Methods,
@@ -72,8 +72,8 @@ internal static class ExtensionCollector
         sb.Append(TypeName(method.ReturnType)).Append(' ').Append(method.Name);
         sb.Append(GenericSuffix(method.GetGenericArguments())).Append('(');
 
-        ParameterInfo[] ps = method.GetParameters();
-        for (int i = 0; i < ps.Length; i++)
+        var ps = method.GetParameters();
+        for (var i = 0; i < ps.Length; i++)
         {
             if (i > 0)
             {
@@ -115,9 +115,9 @@ internal static class ExtensionCollector
 
         if (type.IsGenericType)
         {
-            string raw = type.Name;
-            int tick = raw.IndexOf('`', StringComparison.Ordinal);
-            string baseName = tick >= 0 ? raw[..tick] : raw;
+            var raw = type.Name;
+            var tick = raw.IndexOf('`', StringComparison.Ordinal);
+            var baseName = tick >= 0 ? raw[..tick] : raw;
             return $"{baseName}<{string.Join(", ", type.GetGenericArguments().Select(TypeName))}>";
         }
 

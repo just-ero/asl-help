@@ -43,7 +43,7 @@ internal static unsafe class MemoryMarshalExtensions
         [Pure]
         public static string CreateStringFromNullTerminated(ReadOnlySpan<char> chars)
         {
-            int i = chars.IndexOf('\0');
+            var i = chars.IndexOf('\0');
             return i == -1
                 ? chars.ToString()
                 : chars[..i].ToString();

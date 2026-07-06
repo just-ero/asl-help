@@ -22,8 +22,8 @@ internal static class MemberNaming
                 : ("op_Implicit", "implicit operator");
         }
 
-        string baseName = name;
-        int cut = baseName.IndexOfAny(['<', '(']);
+        var baseName = name;
+        var cut = baseName.IndexOfAny(['<', '(']);
         if (cut >= 0)
         {
             baseName = baseName[..cut];
@@ -35,7 +35,7 @@ internal static class MemberNaming
     private static string Sanitize(string name)
     {
         var sb = new StringBuilder(name.Length);
-        foreach (char c in name)
+        foreach (var c in name)
         {
             sb.Append(char.IsLetterOrDigit(c) || c is '_' or '-' ? c : '_');
         }

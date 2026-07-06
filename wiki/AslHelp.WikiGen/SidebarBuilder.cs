@@ -32,7 +32,7 @@ internal static class SidebarBuilder
     {
         var sb = new StringBuilder();
 
-        bool collapse = style == SidebarStyle.Collapsible;
+        var collapse = style == SidebarStyle.Collapsible;
         if (collapse)
         {
             sb.AppendLine("<details>");
@@ -50,7 +50,7 @@ internal static class SidebarBuilder
             foreach (var ns in assembly.GroupBy(t => t.Namespace).OrderBy(g => g.Key, StringComparer.Ordinal))
             {
                 sb.AppendLine($"  - {LinkResolver.Link(ns.Key, ns.Key)}");
-                foreach (ApiType type in ns.OrderBy(t => t.Display, StringComparer.Ordinal))
+                foreach (var type in ns.OrderBy(t => t.Display, StringComparer.Ordinal))
                 {
                     sb.AppendLine($"    - {LinkResolver.Link(type.Display, type.Ref)}");
                 }

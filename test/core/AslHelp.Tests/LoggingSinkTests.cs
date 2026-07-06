@@ -84,7 +84,7 @@ public class FileSinkTests
     [SetUp]
     public void SetUp()
     {
-        _path = Path.Combine(Path.GetTempPath(), $"aslhelp-{Guid.NewGuid():N}.log");
+        _path = Path.Combine(Path.GetTempPath(), $"asl-help-{Guid.NewGuid():N}.log");
     }
 
     [TearDown]
@@ -141,15 +141,15 @@ public class FileSinkTests
     public void Emit_WhenExceedingMaximumLines_RotatesOldestAway()
     {
         FileSink sink = new(_path, LogLevel.Trace, maximumLines: 4, linesToErase: 2);
-        for (int i = 1; i <= 10; i++)
+        for (var i = 1; i <= 10; i++)
         {
             sink.Emit(new LogEvent(LogLevel.Information, $"line-{i:00}", "m", "f", 1), 0);
         }
 
         sink.Dispose();
 
-        string[] lines = File.ReadAllLines(_path);
-        string text = string.Join("\n", lines);
+        var lines = File.ReadAllLines(_path);
+        var text = string.Join("\n", lines);
 
         using (Assert.EnterMultipleScope())
         {
