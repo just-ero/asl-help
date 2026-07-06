@@ -24,7 +24,7 @@ internal unsafe struct MemoryBasicInformation
     /// <summary>
     ///     The memory protection option when the region was initially allocated.
     /// </summary>
-    public MemoryRangeProtect AllocationProtect;
+    public MemoryPageProtect AllocationProtect;
 
     /// <summary>
     ///     The size of the region beginning at the base address in which all pages have identical attributes, in bytes.
@@ -34,16 +34,16 @@ internal unsafe struct MemoryBasicInformation
     /// <summary>
     ///     The state of the pages in the region.
     /// </summary>
-    public MemoryRangeState State;
+    public MemoryPageState State;
 
     /// <summary>
     ///     The access protection of the pages in the region.
     /// </summary>
-    public MemoryRangeProtect Protect;
+    public MemoryPageProtect Protect;
 
     /// <summary>
     ///     The type of pages in the region.
     /// </summary>
-    public MemoryRangeType Type;
+    public MemoryPageType Type;
 }
 

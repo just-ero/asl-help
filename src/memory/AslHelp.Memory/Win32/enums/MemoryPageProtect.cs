@@ -12,7 +12,7 @@
 #pragma warning disable CA1008 // Enums should have zero value
 #pragma warning disable CA1027 // Mark enums with FlagsAttribute
 #pragma warning disable CA1028 // Enum storage should be int
-public enum MemoryRangeProtect : uint
+public enum MemoryPageProtect : uint
 #pragma warning restore CA1008, CA1027, CA1028
 {
     /// <summary>

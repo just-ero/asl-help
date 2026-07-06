@@ -168,8 +168,8 @@ internal static unsafe partial class PInvoke
         SafeProcessHandle processHandle,
         nuint baseAddress,
         uint size,
-        MemoryRangeState allocationType,
-        MemoryRangeProtect memoryProtection)
+        MemoryPageState allocationType,
+        MemoryPageProtect memoryProtection)
     {
         return VirtualAllocEx(processHandle, (void*)baseAddress, size, (uint)allocationType, (uint)memoryProtection);
 
@@ -210,7 +210,7 @@ internal static unsafe partial class PInvoke
         SafeProcessHandle processHandle,
         nuint baseAddress,
         uint size,
-        MemoryRangeState freeType)
+        MemoryPageState freeType)
     {
         return VirtualFreeEx(processHandle, (void*)baseAddress, size, (uint)freeType) != 0;
 
