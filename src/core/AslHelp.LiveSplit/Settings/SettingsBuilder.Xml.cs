@@ -1,64 +1,50 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Xml.Linq;
 
 namespace AslHelp.LiveSplit.Settings;
 
 public sealed partial class SettingsBuilder
 {
-    [XmlRoot("Setting")]
-    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes",
-        Justification = "Instantiated by the XML deserializer via reflection.")]
-    private sealed class XmlSetting
-    {
-        [XmlAttribute] public required string Id { get; set; }
-        [XmlAttribute] public string? Label { get; set; }
-        [XmlAttribute] public string? State { get; set; }
-        [XmlAttribute] public string? ToolTip { get; set; }
-
-        [XmlElement("Setting")] public XmlSetting[]? Children { get; set; }
-    }
-
     /// <summary>
     ///     Loads settings from the XML file at <paramref name="path"/> and adds them.
     /// </summary>
     /// <param name="path">The path of the XML settings file.</param>
     public void FromXml(string path)
     {
-        using var fs = File.OpenRead(path);
-        using var reader = XmlReader.Create(fs);
-        var ser = new XmlSerializer(typeof(XmlSetting[]), root: new("Settings"));
-        if (ser.Deserialize(reader) is not XmlSetting[] settings)
+        if (XDocument.Load(path).Root is not { } root)
         {
-            FormatException.Throw(
-                "Xml settings file was in an incorrect format.");
             return;
         }
 
-        var converted = ConvertFromXml(settings);
-        Add(converted);
+        Add(ConvertFromXml(root.Elements("Setting"), null));
     }
 
-    private static IEnumerable<Setting> ConvertFromXml(XmlSetting[] nodes, string? parent = null)
+    private static IEnumerable<Setting> ConvertFromXml(IEnumerable<XElement> nodes, string? parent)
     {
-        for (int i = 0; i < nodes.Length; i++)
+        foreach (var node in nodes)
         {
-            XmlSetting node = nodes[i];
-            yield return new(
-                Id: node.Id,
-                State: bool.TryParse(node.State, out bool state) ? state : false,
-                Label: node.Label ?? node.Id,
-                Parent: parent,
-                Tooltip: node.ToolTip);
-
-            if (node.Children is { Length: > 0 } children)
+            if ((string?)node.Attribute("Id") is not { Length: > 0 } id)
             {
-                foreach (Setting setting in ConvertFromXml(children, node.Id))
+                throw new FormatException(
+                    "Xml settings file was in an incorrect format: a <Setting> is missing its 'Id' attribute.");
+            }
+
+            var label = (string?)node.Attribute("Label");
+
+            yield return new(
+                Id: id,
+                State: bool.TryParse((string?)node.Attribute("State"), out var state) && state,
+                Label: label ?? id,
+                Parent: parent,
+                Tooltip: (string?)node.Attribute("ToolTip"));
+
+            List<XElement> children = [.. node.Elements("Setting")];
+            if (children.Count > 0)
+            {
+                foreach (var child in ConvertFromXml(children, id))
                 {
-                    yield return setting;
+                    yield return child;
                 }
             }
         }
