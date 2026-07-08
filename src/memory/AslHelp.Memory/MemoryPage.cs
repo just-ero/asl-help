@@ -94,7 +94,7 @@ internal static class MemoryPageExtensions
         ///     Merges address-adjacent ranges into contiguous chunks, breaking at every gap.
         ///     Assumes <paramref name="pages"/> is ascending by base and non-overlapping.
         /// </summary>
-        public IEnumerable<MemoryRange> CombineContiguousRanges()
+        public IEnumerable<MemoryRange> AsContiguousRanges()
         {
             using var e = pages.GetEnumerator();
             if (!e.MoveNext())

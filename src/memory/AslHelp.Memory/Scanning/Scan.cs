@@ -5,7 +5,7 @@ namespace AslHelp.Memory.Scanning;
 
 /// <summary>
 ///     Runs a chain of <see cref="ScanStep"/>s over raw bytes (<see cref="Buffer"/>) or a process's
-///     memory (<see cref="Memory(IMemoryReader, nint, int, ScanStep[])"/>). The first step scans the
+///     memory (<see cref="Memory(IProcessMemory, nint, int, ScanStep[])"/>). The first step scans the
 ///     region; each later step is re-anchored at every match the previous step produced. Results are
 ///     yielded lazily, so terminal LINQ such as <c>First()</c> or <c>Take(n)</c> stops the scan
 ///     early.
@@ -51,7 +51,7 @@ public static class Scan
     ///     Reads <c>[address, address + size)</c> and runs <paramref name="steps"/> over it, mapping
     ///     the final offsets back to process addresses.
     /// </summary>
-    /// <param name="reader">The reader supplying the region bytes.</param>
+    /// <param name="memory">The reader supplying the region bytes.</param>
     /// <param name="address">The base address of the region to scan.</param>
     /// <param name="size">The length of the region, in bytes.</param>
     /// <param name="steps">
@@ -62,23 +62,23 @@ public static class Scan
     ///     The process addresses produced by the final step, enumerated lazily.
     /// </returns>
     /// <exception cref="ArgumentNullException">
-    ///     <paramref name="reader"/> or <paramref name="steps"/> is <see langword="null"/>.
+    ///     <paramref name="memory"/> or <paramref name="steps"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="ArgumentException">
     ///     <paramref name="steps"/> is empty.
     /// </exception>
-    public static IEnumerable<nint> Memory(IMemoryReader reader, nint address, int size, params ScanStep[] steps)
+    public static IEnumerable<nint> Memory(IProcessMemory memory, nint address, int size, params ScanStep[] steps)
     {
-        ArgumentNullException.ThrowIfNull(reader);
+        ArgumentNullException.ThrowIfNull(memory);
         ValidateSteps(steps);
 
-        return MemoryIterator(reader, address, size, steps);
+        return MemoryIterator(memory, address, size, steps);
     }
 
-    private static IEnumerable<nint> MemoryIterator(IMemoryReader reader, nint address, int size, ScanStep[] steps)
+    private static IEnumerable<nint> MemoryIterator(IProcessMemory memory, nint address, int size, ScanStep[] steps)
     {
         var buffer = new byte[size];
-        reader.Read(address, buffer).Unwrap();
+        memory.Read(address, buffer).Unwrap();
 
         foreach (var result in Fold(buffer, address, steps, 0, address))
         {

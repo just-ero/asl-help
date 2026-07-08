@@ -14,7 +14,7 @@ public class MemoryRangeExtensionsTests
 
     private static void AssertCombined(MemoryPage[] pages, params (nint Base, int Size)[] expected)
     {
-        Assert.That(pages.CombineContiguousRanges().Select(r => (r.Base, r.Size)), Is.EqualTo(expected));
+        Assert.That(pages.AsContiguousRanges().Select(r => (r.Base, r.Size)), Is.EqualTo(expected));
     }
 
     // ---- CombineContiguousRanges ----
@@ -24,7 +24,7 @@ public class MemoryRangeExtensionsTests
     {
         MemoryPage[] pages = [];
 
-        Assert.That(pages.CombineContiguousRanges(), Is.Empty);
+        Assert.That(pages.AsContiguousRanges(), Is.Empty);
     }
 
     [Test]
@@ -71,7 +71,7 @@ public class MemoryRangeExtensionsTests
             Page(unchecked((nint)(0x1000L + int.MaxValue)), int.MaxValue),
         ];
 
-        MemoryRange[] combined = [.. pages.CombineContiguousRanges()];
+        MemoryRange[] combined = [.. pages.AsContiguousRanges()];
 
         using (Assert.EnterMultipleScope())
         {

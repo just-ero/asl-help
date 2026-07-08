@@ -1,0 +1,18 @@
+<Project>
+
+  <Target Name="MergeAssemblies" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <AssembliesToMerge Include="$(OutputPath)/$(AssemblyName).dll" />
+
+      <AssembliesToMerge Include="$(OutputPath)/AslHelp.dll" />
+      <AssembliesToMerge Include="$(OutputPath)/AslHelp.*.dll" />
+    </ItemGroup>
+
+    <ILRepack
+      TargetKind="Dll"
+      LibraryPath="$(OutputPath)"
+      InputAssemblies="@(AssembliesToMerge)"
+      OutputFile="$(LsPath)/Components/$(AssemblyName)" />
+  </Target>
+
+</Project>

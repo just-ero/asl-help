@@ -7,24 +7,24 @@ namespace AslHelp.Memory.Scanning;
 
 /// <summary>
 ///     Provides region bytes to the scan engine, either from a buffer (zero-copy) or through an
-///     <see cref="IMemoryReader"/> (pooled), over one or more ascending, non-overlapping readable
+///     <see cref="IProcessMemory"/> (pooled), over one or more ascending, non-overlapping readable
 ///     sub-ranges. Gaps between sub-ranges are holes; a leased window never crosses one.
 /// </summary>
 internal sealed class ScanRegion
 {
     private readonly byte[]? _buffer;
-    private readonly IMemoryReader? _reader;
+    private readonly IProcessMemory? _memory;
     private readonly (nint Start, int Length)[] _readable;
 
     private ScanRegion(
         nint baseAddress,
         int size,
         byte[]? buffer,
-        IMemoryReader? reader,
+        IProcessMemory? memory,
         (nint Start, int Length)[] readable)
     {
         _buffer = buffer;
-        _reader = reader;
+        _memory = memory;
         _readable = readable;
 
         BaseAddress = baseAddress;
@@ -63,31 +63,31 @@ internal sealed class ScanRegion
         ArgumentOutOfRangeException.ThrowIfGreaterThan(size, buffer.Length);
         ArgumentOutOfRangeException.ThrowIfLessThan(size, 0);
 
-        return new(baseAddress, size, buffer, reader: null, [(baseAddress, size)]);
+        return new(baseAddress, size, buffer, memory: null, [(baseAddress, size)]);
     }
 
     /// <summary>
-    ///     Creates a region over a contiguous readable span served by <paramref name="reader"/>.
+    ///     Creates a region over a contiguous readable span served by <paramref name="memory"/>.
     /// </summary>
-    /// <param name="reader">The reader providing the bytes.</param>
+    /// <param name="memory">The reader providing the bytes.</param>
     /// <param name="baseAddress">The inclusive start of the span.</param>
     /// <param name="size">The length of the span, in bytes.</param>
     /// <returns>
     ///     The reader-backed region.
     /// </returns>
-    public static ScanRegion OverMemory(IMemoryReader reader, nint baseAddress, int size)
+    public static ScanRegion OverMemory(IProcessMemory memory, nint baseAddress, int size)
     {
-        ArgumentNullException.ThrowIfNull(reader);
+        ArgumentNullException.ThrowIfNull(memory);
         ArgumentOutOfRangeException.ThrowIfLessThan(size, 0);
 
-        return new(baseAddress, size, buffer: null, reader, [(baseAddress, size)]);
+        return new(baseAddress, size, buffer: null, memory, [(baseAddress, size)]);
     }
 
     /// <summary>
     ///     Creates a region over the readable sub-ranges of a logical span, skipping the gaps
     ///     between them.
     /// </summary>
-    /// <param name="reader">The reader providing the bytes inside each sub-range.</param>
+    /// <param name="memory">The reader providing the bytes inside each sub-range.</param>
     /// <param name="baseAddress">The inclusive start of the logical span.</param>
     /// <param name="size">The length of the logical span, in bytes.</param>
     /// <param name="subRanges">Readable sub-ranges, ascending by base, non-overlapping.</param>
@@ -95,12 +95,12 @@ internal sealed class ScanRegion
     ///     The reader-backed, hole-aware region.
     /// </returns>
     public static ScanRegion OverRanges(
-        IMemoryReader reader,
+        IProcessMemory memory,
         nint baseAddress,
         int size,
         IReadOnlyList<MemoryPage> subRanges)
     {
-        ArgumentNullException.ThrowIfNull(reader);
+        ArgumentNullException.ThrowIfNull(memory);
         ArgumentOutOfRangeException.ThrowIfLessThan(size, 0);
         ArgumentNullException.ThrowIfNull(subRanges);
 
@@ -131,7 +131,7 @@ internal sealed class ScanRegion
 
         AssertAscendingNonOverlapping(readable);
 
-        return new(baseAddress, size, buffer: null, reader, [.. readable]);
+        return new(baseAddress, size, buffer: null, memory, [.. readable]);
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ internal sealed class ScanRegion
         }
 
         var rented = ArrayPool<byte>.Shared.Rent(len);
-        if (_reader!.Read(from, rented.AsSpan(0, len)).IsErr)
+        if (_memory!.Read(from, rented.AsSpan(0, len)).IsErr)
         {
             // Page freed or protection changed under us; treat the window as a hole.
             ArrayPool<byte>.Shared.Return(rented);

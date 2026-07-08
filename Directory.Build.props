@@ -5,6 +5,7 @@
     <RootPath>$(MSBuildThisFileDirectory)</RootPath>
 
     <LibPath>$(RootPath)/lib</LibPath>
+    <PluginsPath>$(RootPath)/plugins</PluginsPath>
     <SrcPath>$(RootPath)/src</SrcPath>
     <TestPath>$(RootPath)/test</TestPath>
 

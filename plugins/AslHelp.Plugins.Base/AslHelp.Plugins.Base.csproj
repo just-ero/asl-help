@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>asl-help-base</AssemblyName>
+    <TargetFramework>net4.8.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SrcPath)/core/AslHelp.LiveSplit/AslHelp.LiveSplit.csproj" />
+  </ItemGroup>
+
+</Project>

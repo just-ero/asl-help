@@ -1,0 +1,11 @@
+<Project>
+
+  <PropertyGroup>
+    <LsPath Condition="'$(LsPath)' == ''">$(OutputPath)</LsPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <GlobalPackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.45" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

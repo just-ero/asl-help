@@ -18,6 +18,10 @@
   <Folder Name="/lib/LiveSplit/components/">
     <Project Path="lib/LiveSplit/components/LiveSplit.ScriptableAutoSplit/src/LiveSplit.ScriptableAutoSplit/LiveSplit.ScriptableAutoSplit.csproj" />
   </Folder>
+  <Folder Name="/plugins/" />
+  <Folder Name="/plugins/AslHelp.Plugins.Base/">
+    <Project Path="plugins/AslHelp.Plugins.Base/AslHelp.Plugins.Base.csproj" />
+  </Folder>
 
   <Folder Name="/src/" />
 
